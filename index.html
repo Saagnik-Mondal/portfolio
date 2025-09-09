@@ -5,1954 +5,637 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Artist Portfolio</title>
     
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Custom styles for the scroll-based experience */
+        /* A more creative, unique, and artistic design system */
+        :root {
+            --background-color: #00000a; /* Deep cosmic blue */
+            --text-color: #c5c5c5;
+            --heading-color: #ffffff;
+            --accent-color: #FFD700; /* Divine Gold */
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e5e5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            cursor: none; /* Hide the default cursor */
+            overflow: hidden; /* Disable scroll initially */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
-        /* Hide scrollbar for a cleaner look, but still allow scrolling */
-        body::-webkit-scrollbar {
-            display: none;
+        body::-webkit-scrollbar { display: none; }
+
+        h1, h2, h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            color: var(--heading-color);
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
         }
 
-        /* Each main section will be a full-screen panel */
-        .panel {
-            min-height: 100vh;
-            width: 100%;
+        /* --- Enter Screen --- */
+        #enter-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background-color: var(--background-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+        }
+        #enter-button {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: 'Syne', sans-serif;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        #enter-button:hover {
+            background-color: var(--accent-color);
+            color: var(--background-color);
+            box-shadow: 0 0 20px var(--accent-color);
         }
 
-        /* The background image for parallax effect */
-        .panel-bg {
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background-size: cover;
-            background-position: center center;
-            z-index: -1;
-            will-change: transform;
-        }
-
-        /* Gradient overlay for better text readability */
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%);
-            z-index: 1;
-        }
-        
-        /* Styles for the animated hero text */
-        .hero-title span {
-            display: inline-block;
-        }
-        
-        /* Enhanced scroll down indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            z-index: 10;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-20px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-        }
-        
-        /* Enhanced gallery item styles */
-        .gallery-item {
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(1deg);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            z-index: 10;
-        }
-        .gallery-item img {
-            transition: transform 0.5s ease;
-        }
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Artwork panel enhancements */
-        .artwork-panel {
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .artwork-panel:hover .panel-bg {
-            transform: scale(1.02);
-        }
-        
-        .artwork-panel::after {
-            content: '🔍 Click to view full size';
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-        
-        .artwork-panel:hover::after {
-            opacity: 1;
-        }
-
-        /* Full-screen art viewer */
-        .art-viewer {
+        /* --- Custom Cursor --- */
+        #cursor, #cursor-follower {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 10002; /* Increased z-index to be above the enter screen */
+            transition: transform 0.2s ease-out, opacity 0.3s ease-in-out;
         }
-
-        .art-viewer.active {
-            opacity: 1;
-            visibility: visible;
+        #cursor {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
         }
-
-        .art-viewer-content {
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .art-viewer-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        }
-
-        .art-viewer-close {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
+        #cursor-follower {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+            border: 1px solid var(--accent-color);
+            opacity: 0.5;
+        }
+        .cursor-active #cursor-follower, .cursor-hover #cursor-follower {
+            transform: scale(1.5);
+        }
+        .cursor-active #cursor, .cursor-hover #cursor {
+            opacity: 0;
         }
 
-        .art-viewer-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .art-viewer-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .art-viewer-nav:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .art-viewer-prev {
-            left: -80px;
-        }
-
-        .art-viewer-next {
-            right: -80px;
-        }
-
-        .art-viewer-info {
-            position: absolute;
-            bottom: -80px;
+        /* --- WebGL Canvas Background --- */
+        #hero-canvas {
+            position: fixed;
+            top: 0;
             left: 0;
-            right: 0;
-            text-align: center;
-            color: white;
-        }
-
-        .art-viewer-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .art-viewer-description {
-            font-size: 1rem;
-            opacity: 0.8;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Advanced Image Slider Styles */
-        .artwork-slider {
-            position: relative;
             width: 100%;
             height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-        }
-
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slider-track {
-            display: flex;
-            width: 500%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform;
-        }
-
-        .slider-slide {
-            width: 20%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .slider-slide.active .slide-image {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .slider-slide.active .slide-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .slide-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            filter: blur(20px) brightness(0.3);
-            transform: scale(1.1);
-            z-index: 1;
-        }
-
-        .slide-image {
-            max-width: 60%;
-            max-height: 70%;
-            object-fit: contain;
-            border-radius: 15px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-            transform: scale(0.8);
-            opacity: 0.5;
-            transition: all 0.8s ease;
-            z-index: 3;
-            position: relative;
-        }
-
-        .slide-content {
-            position: absolute;
-            bottom: 10%;
-            left: 50%;
-            transform: translateX(-50%) translateY(50px);
-            text-align: center;
-            color: white;
-            z-index: 4;
-            opacity: 0;
-            transition: all 0.8s ease;
-            max-width: 600px;
-            padding: 0 20px;
-        }
-
-        .slide-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-        }
-
-        .slide-description {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            line-height: 1.6;
-            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Slider Navigation */
-        .slider-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.8rem;
-            color: white;
-            transition: all 0.3s ease;
-            z-index: 10;
-            user-select: none;
-        }
-
-        .slider-nav:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .slider-prev {
-            left: 3%;
-        }
-
-        .slider-next {
-            right: 3%;
-        }
-
-        /* Slider Indicators */
-        .slider-indicators {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 10;
-        }
-
-        .slider-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .slider-indicator.active {
-            background: white;
-            transform: scale(1.3);
-        }
-
-        .slider-indicator:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(1.2);
-        }
-
-        /* Thumbnail Navigation */
-        .thumbnail-nav {
-            position: absolute;
-            top: 3%;
-            right: 3%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 60px;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .thumbnail.active {
-            opacity: 1;
-            border-color: white;
-            transform: scale(1.05);
-        }
-
-        .thumbnail:hover {
-            opacity: 0.8;
-            transform: scale(1.02);
-        }
-
-        .thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Slider Progress Bar */
-        .slider-progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 10;
-        }
-
-        .slider-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
-            width: 20%;
-            transition: all 0.8s ease;
-        }
-
-        /* Slider Info Panel */
-        .slider-info {
-            position: absolute;
-            top: 3%;
-            left: 3%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 300px;
-            z-index: 10;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .slider-counter {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-
-        .slider-info-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .slider-info-desc {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            line-height: 1.4;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .slide-image {
-                max-width: 85%;
-                max-height: 60%;
-            }
-            
-            .slide-title {
-                font-size: 1.8rem;
-            }
-            
-            .thumbnail-nav {
-                display: none;
-            }
-            
-            .slider-info {
-                max-width: 250px;
-                padding: 15px;
-            }
-            
-            .slider-nav {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-        }
-
-        /* Stable headings that don't use text-reveal */
-        .stable-heading {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        .stable-heading.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Floating particles */
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* Text reveal animations */
-        .text-reveal {
-            overflow: hidden;
-            position: relative;
+            z-index: 0;
         }
         
-        .text-reveal::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0a;
-            transform: translateX(-100%);
-            z-index: 2;
-        }
-
-        .text-reveal.animate::after {
-            animation: textRevealSlide 1.5s ease-in-out forwards;
-        }
-
-        @keyframes textRevealSlide {
-            0% { 
-                transform: translateX(-100%); 
-            }
-            50% { 
-                transform: translateX(0%); 
-            }
-            100% { 
-                transform: translateX(100%); 
-            }
-        }
-
-        /* Advanced interactive buttons */
-        .interactive-button {
-            background: linear-gradient(45deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 50px;
-            padding: 12px 30px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .interactive-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .interactive-button:hover::before {
-            left: 100%;
-        }
-
-        .interactive-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Magnetic effect for interactive elements */
-        .magnetic {
-            transition: transform 0.2s ease-out;
-        }
-
-        /* Custom cursor */
-        .custom-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 0.1s ease;
-            mix-blend-mode: difference;
-        }
-
-        .custom-cursor.hover {
-            transform: scale(2);
-            background: rgba(99, 102, 241, 0.8);
-            mix-blend-mode: normal;
-        }
-
-        /* Scroll progress indicator */
-        .scroll-progress {
+        /* --- Navigation --- */
+        #main-nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1000;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 10, 0.8), transparent);
+            transform: translateY(-100%);
+            transition: transform 0.5s ease-in-out;
+        }
+        #main-nav.is-visible {
+            transform: translateY(0);
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--accent-color);
         }
 
-        .scroll-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
-            width: 0%;
-            transition: width 0.1s ease;
+        /* --- Art Journey Section --- */
+        .art-slide {
+            mix-blend-mode: lighten;
         }
-
-        /* 3D tilt effect for panels */
-        .tilt-panel {
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease;
-        }
-
-        /* Morphing background shapes */
-        .morphing-bg {
+        .art-image {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            scale: 1.1;
         }
-
-        .morphing-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
-            filter: blur(40px);
-            animation: morph 20s infinite ease-in-out;
-        }
-
-        @keyframes morph {
-            0%, 100% { 
-                transform: scale(1) rotate(0deg) translate(0, 0);
-                border-radius: 50% 50% 50% 50%;
-            }
-            25% { 
-                transform: scale(1.2) rotate(90deg) translate(20px, -20px);
-                border-radius: 60% 40% 60% 40%;
-            }
-            50% { 
-                transform: scale(0.8) rotate(180deg) translate(-20px, 20px);
-                border-radius: 40% 60% 40% 60%;
-            }
-            75% { 
-                transform: scale(1.1) rotate(270deg) translate(20px, 20px);
-                border-radius: 70% 30% 70% 30%;
-            }
-        }
-
-        /* Enhanced text content styling */
-        .enhanced-text-content {
+        .art-info {
             position: relative;
             z-index: 10;
+            mix-blend-mode: difference; /* Creative text effect over images */
+            color: white;
+            padding: 5vw;
+        }
+
+        /* --- Horizontal Gallery --- */
+        #gallery-section {
+            padding: 10vh 0;
+            overflow: hidden;
+            background-color: #111;
+        }
+        .gallery-container {
+            display: flex;
+            gap: 4vw;
+            padding: 0 5vw;
+        }
+        .gallery-item {
+            flex-shrink: 0;
+            width: 40vw; /* Wider items */
+            height: 60vh;
+            border-radius: 0.5rem;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .gallery-item:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+        
+        /* --- Unique Gemini Button --- */
+        .gemini-button {
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--heading-color);
             backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .gemini-button:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
-        /* Glitch effect for titles */
-        .glitch {
-            position: relative;
+        /* --- Loader --- */
+        .loader {
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .split-char { display: inline-block; }
 
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-        }
-
-        .glitch::before {
-            animation: glitch-1 0.5s infinite;
-            color: #ff0040;
-            z-index: -1;
-        }
-
-        .glitch::after {
-            animation: glitch-2 0.5s infinite;
-            color: #00ffff;
-            z-index: -2;
-        }
-
-        @keyframes glitch-1 {
-            0% { transform: translate(0); opacity: 0; }
-            20% { transform: translate(-2px, 2px); opacity: 1; }
-            40% { transform: translate(-2px, -2px); opacity: 1; }
-            60% { transform: translate(2px, 2px); opacity: 1; }
-            80% { transform: translate(2px, -2px); opacity: 1; }
-            100% { transform: translate(0); opacity: 0; }
-        }
-
-        @keyframes glitch-2 {
-            0% { transform: translate(0); opacity: 0; }
-            20% { transform: translate(2px, -2px); opacity: 1; }
-            40% { transform: translate(2px, 2px); opacity: 1; }
-            60% { transform: translate(-2px, -2px); opacity: 1; }
-            80% { transform: translate(-2px, 2px); opacity: 1; }
-            100% { transform: translate(0); opacity: 0; }
+        /* Manually Added Utility Classes (Replacement for Tailwind CDN) */
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .fixed { position: fixed; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .z-0 { z-index: 0; }
+        .z-10 { z-index: 10; }
+        .z-100 { z-index: 100; }
+        .h-screen { height: 100vh; }
+        .w-full { width: 100%; }
+        .w-1\/2 { width: 50%; }
+        .container { width: 100%; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .flex { display: flex; }
+        .inline-flex { display: inline-flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-end { justify-content: flex-end; }
+        .gap-8 { gap: 2rem; }
+        .p-4 { padding: 1rem; }
+        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+        .text-5xl { font-size: 3rem; line-height: 1; }
+        .text-6xl { font-size: 3.75rem; line-height: 1; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+        .uppercase { text-transform: uppercase; }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .text-neutral-300 { color: rgb(212 212 212); }
+        .text-neutral-400 { color: rgb(163 163 163); }
+        .text-neutral-600 { color: rgb(82 82 82); }
+        .leading-relaxed { line-height: 1.625; }
+        .rounded-full { border-radius: 9999px; }
+        .bg-black { background-color: #000; }
+        .opacity-0 { opacity: 0; }
+        .overflow-hidden { overflow: hidden; }
+        .hidden { display: none; }
+        .hover\:underline:hover { text-decoration-line: underline; }
+        @media (min-width: 768px) {
+            .md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+            .md\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+            .md\:text-5xl { font-size: 3rem; line-height: 1; }
+            .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
+            .md\:text-8xl { font-size: 6rem; line-height: 1; }
+            .md\:text-9xl { font-size: 8rem; line-height: 1; }
+            .md\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
         }
     </style>
 </head>
 <body class="overscroll-none">
-    <!-- Custom cursor -->
-    <div class="custom-cursor"></div>
     
-    <!-- Scroll progress indicator -->
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar"></div>
+    <!-- Enter Screen -->
+    <div id="enter-screen">
+        <!-- New canvas for the "chaotic" particle background -->
+        <canvas id="enter-canvas" class="absolute inset-0 z-0"></canvas>
+        <button id="enter-button" class="relative z-10">Enter the Realm</button>
     </div>
 
-    <!-- Floating particles -->
-    <div class="particles-container"></div>
+    <!-- Custom Cursor Elements -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Animated Hero Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <nav id="main-nav">
+        <div class="font-bold text-lg tracking-wider">DA</div>
+        <div class="flex gap-8 text-sm font-medium text-neutral-300">
+            <a href="#art-journey" class="nav-link">Work</a>
+            <a href="#gallery-section" class="nav-link">Gallery</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
-    <header id="hero" class="panel flex-col text-center tilt-panel">
-        <div class="morphing-bg">
-            <div class="morphing-shape" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
-            <div class="morphing-shape" style="width: 200px; height: 200px; top: 60%; right: 15%;"></div>
-            <div class="morphing-shape" style="width: 250px; height: 250px; bottom: 20%; left: 50%;"></div>
-        </div>
-        <div class="z-10 p-4">
-            <h1 class="hero-title text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter uppercase glitch" data-text="Digital Dreams">
-                <!-- Text will be animated by GSAP -->
-                <span>Digital</span> <span>Dreams</span>
-            </h1>
-            <p class="hero-subtitle text-lg md:text-2xl mt-4 font-light text-neutral-300">
-                <!-- Text will be animated by GSAP -->
-                <span>An</span> <span>Exhibition</span> <span>of</span> <span>Modern</span> <span>Art.</span>
-            </p>
-            <div class="mt-8">
-                <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center">
-                    🎨 Explore Gallery
-                </button>
-            </div>
-        </div>
-        <!-- This is a subtle animated gradient background instead of an image for the hero -->
-        <div class="absolute inset-0 z-0 bg-gradient-to-br from-indigo-900 via-zinc-900 to-rose-900 animate-[gradient_15s_ease_infinite]" style="background-size: 400% 400%;"></div>
-        <div class="scroll-indicator text-neutral-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-        </div>
+    <header class="h-screen w-full flex flex-col items-center justify-center text-center p-4 relative z-10">
+        <h1 class="text-6xl md:text-9xl opacity-0">
+            <span class="hero-line">DIGITAL</span>
+            <span class="hero-line">ARTIST</span>
+        </h1>
+        <p class="hero-subtitle text-lg md:text-xl text-neutral-400 mt-6 max-w-2xl opacity-0">
+            A curated portfolio showcasing the intersection of technology and creativity through immersive digital art experiences.
+        </p>
     </header>
 
-    <!-- Advanced Artwork Slider -->
-    <section class="artwork-slider">
-        <!-- Progress Bar -->
-        <div class="slider-progress">
-            <div class="slider-progress-bar"></div>
-        </div>
-        
-        <!-- Info Panel -->
-        <div class="slider-info">
-            <div class="slider-counter">
-                <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
-            </div>
-            <div class="slider-info-title" id="sliderInfoTitle">Celestial Echo</div>
-            <div class="slider-info-desc" id="sliderInfoDesc">A journey through nebulae and forgotten starlight...</div>
-        </div>
-        
-        <!-- Thumbnail Navigation -->
-        <div class="thumbnail-nav" id="thumbnailNav">
-            <div class="thumbnail active" data-slide="0">
-                <img src="https://placehold.co/160x120/000000/FFFFFF?text=Celestial" alt="Celestial Echo">
-            </div>
-            <div class="thumbnail" data-slide="1">
-                <img src="https://placehold.co/160x120/44337A/FFFFFF?text=Urban" alt="Urban Serenity">
-            </div>
-            <div class="thumbnail" data-slide="2">
-                <img src="https://placehold.co/160x120/A95C68/FFFFFF?text=Melody" alt="Forgotten Melody">
-            </div>
-            <div class="thumbnail" data-slide="3">
-                <img src="https://placehold.co/160x120/311D3F/FFFFFF?text=Ethereal" alt="Ethereal Visions">
-            </div>
-            <div class="thumbnail" data-slide="4">
-                <img src="https://placehold.co/160x120/004D40/FFFFFF?text=Digital" alt="Digital Landscapes">
-            </div>
-        </div>
-        
-        <!-- Slider Container -->
-        <div class="slider-container">
-            <div class="slider-track" id="sliderTrack">
-                <!-- Slide 1 -->
-                <div class="slider-slide active" data-artwork="0">
-                    <div class="slide-background" style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Celestial+Echo');"></div>
-                    <img src="https://placehold.co/1200x800/000000/FFFFFF?text=Celestial+Echo" alt="Celestial Echo" class="slide-image">
-                    <div class="slide-content">
-                        <h2 class="slide-title">Celestial Echo</h2>
-                        <p class="slide-description">A journey through nebulae and forgotten starlight, rendered in vibrant acrylics on a digital canvas. This piece explores the infinite vastness of space and the delicate beauty found in cosmic silence.</p>
-                    </div>
-                </div>
-                
-                <!-- Slide 2 -->
-                <div class="slider-slide" data-artwork="1">
-                    <div class="slide-background" style="background-image: url('https://placehold.co/1920x1080/44337A/FFFFFF?text=Urban+Serenity');"></div>
-                    <img src="https://placehold.co/1200x800/44337A/FFFFFF?text=Urban+Serenity" alt="Urban Serenity" class="slide-image">
-                    <div class="slide-content">
-                        <h2 class="slide-title">Urban Serenity</h2>
-                        <p class="slide-description">Finding peace in the chaos of the city. This piece explores the contrast between concrete jungles and inner calm, where moments of tranquility emerge from the urban symphony.</p>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="slider-slide" data-artwork="2">
-                    <div class="slide-background" style="background-image: url('https://placehold.co/1920x1080/A95C68/FFFFFF?text=Forgotten+Melody');"></div>
-                    <img src="https://placehold.co/1200x800/A95C68/FFFFFF?text=Forgotten+Melody" alt="Forgotten Melody" class="slide-image">
-                    <div class="slide-content">
-                        <h2 class="slide-title">Forgotten Melody</h2>
-                        <p class="slide-description">An abstract representation of a song half-remembered, blending color and form to evoke nostalgia. The harmonies of memory dance across the canvas in waves of emotion and time.</p>
-                    </div>
-                </div>
-                
-                <!-- Slide 4 -->
-                <div class="slider-slide" data-artwork="3">
-                    <div class="slide-background" style="background-image: url('https://placehold.co/1920x1080/311D3F/FFFFFF?text=Ethereal+Visions');"></div>
-                    <img src="https://placehold.co/1200x800/311D3F/FFFFFF?text=Ethereal+Visions" alt="Ethereal Visions" class="slide-image">
-                    <div class="slide-content">
-                        <h2 class="slide-title">Ethereal Visions</h2>
-                        <p class="slide-description">Dreamlike forms emerge from the digital ether, creating a portal between reality and imagination. This piece captures the essence of lucid dreaming in visual form.</p>
-                    </div>
-                </div>
-                
-                <!-- Slide 5 -->
-                <div class="slider-slide" data-artwork="4">
-                    <div class="slide-background" style="background-image: url('https://placehold.co/1920x1080/004D40/FFFFFF?text=Digital+Landscapes');"></div>
-                    <img src="https://placehold.co/1200x800/004D40/FFFFFF?text=Digital+Landscapes" alt="Digital Landscapes" class="slide-image">
-                    <div class="slide-content">
-                        <h2 class="slide-title">Digital Landscapes</h2>
-                        <p class="slide-description">Nature reimagined through the lens of technology. These synthetic vistas explore what landscapes might look like in a fully digital world.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Navigation Arrows -->
-        <button class="slider-nav slider-prev" id="sliderPrev">‹</button>
-        <button class="slider-nav slider-next" id="sliderNext">›</button>
-        
-        <!-- Slide Indicators -->
-        <div class="slider-indicators" id="sliderIndicators">
-            <div class="slider-indicator active" data-slide="0"></div>
-            <div class="slider-indicator" data-slide="1"></div>
-            <div class="slider-indicator" data-slide="2"></div>
-            <div class="slider-indicator" data-slide="3"></div>
-            <div class="slider-indicator" data-slide="4"></div>
-        </div>
-    </section>
-
     <main>
-        <!-- Art Piece 1 -->
-        <section class="panel tilt-panel artwork-panel" data-artwork="0">
-            <div class="panel-bg" style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Celestial+Echo');"></div>
-            <div class="overlay"></div>
-            <div class="enhanced-text-content text-center max-w-4xl mx-4">
-                <h2 class="artwork-title text-4xl md:text-6xl font-bold tracking-tight text-reveal glitch" data-text="Celestial Echo">Celestial Echo</h2>
-                <p class="artwork-description mt-6 md:text-xl text-neutral-200 leading-relaxed">A journey through nebulae and forgotten starlight, rendered in vibrant acrylics on a digital canvas. This piece explores the infinite vastness of space and the delicate beauty found in cosmic silence.</p>
-                <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center view-fullscreen-btn">
-                        🔍 View Full Size
-                    </button>
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center">
-                        ⭐ View Details
-                    </button>
+        <!-- Pinned Scrolling Section for Featured Art -->
+        <div id="art-journey" class="relative h-screen w-full overflow-hidden">
+            <!-- All slides are positioned absolutely on top of each other -->
+            
+            <!-- Slide 1 -->
+            <div class="art-slide absolute inset-0">
+                <div class="art-image" style="background: linear-gradient(135deg, #000000, #333333);"></div>
+                <div class="art-info flex items-center w-full h-full">
+                    <div class="w-1/2">
+                         <h2 class="artwork-title text-6xl md:text-8xl">Digital Dreamscape</h2>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Art Piece 2 -->
-        <section class="panel tilt-panel artwork-panel" data-artwork="1">
-            <div class="panel-bg" style="background-image: url('https://placehold.co/1920x1080/44337A/FFFFFF?text=Urban+Serenity');"></div>
-            <div class="overlay"></div>
-            <div class="enhanced-text-content text-center max-w-4xl mx-4">
-                <h2 class="artwork-title text-4xl md:text-6xl font-bold tracking-tight text-reveal glitch" data-text="Urban Serenity">Urban Serenity</h2>
-                <p class="artwork-description mt-6 md:text-xl text-neutral-200 leading-relaxed">Finding peace in the chaos of the city. This piece explores the contrast between concrete jungles and inner calm, where moments of tranquility emerge from the urban symphony.</p>
-                <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center view-fullscreen-btn">
-                        🔍 View Full Size
-                    </button>
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center">
-                        �️ View Details
-                    </button>
+            <!-- Slide 2 -->
+            <div class="art-slide absolute inset-0 opacity-0">
+                <div class="art-image" style="background: linear-gradient(135deg, #44337A, #6C63FF);"></div>
+                 <div class="art-info flex items-center justify-end w-full h-full">
+                    <div class="w-1/2 text-right">
+                        <h2 class="artwork-title text-6xl md:text-8xl">Neon Visions</h2>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Art Piece 3 -->
-        <section class="panel tilt-panel artwork-panel" data-artwork="2">
-            <div class="panel-bg" style="background-image: url('https://placehold.co/1920x1080/A95C68/FFFFFF?text=Forgotten+Melody');"></div>
-            <div class="overlay"></div>
-            <div class="enhanced-text-content text-center max-w-4xl mx-4">
-                <h2 class="artwork-title text-4xl md:text-6xl font-bold tracking-tight text-reveal glitch" data-text="Forgotten Melody">Forgotten Melody</h2>
-                <p class="artwork-description mt-6 md:text-xl text-neutral-200 leading-relaxed">An abstract representation of a song half-remembered, blending color and form to evoke nostalgia. The harmonies of memory dance across the canvas in waves of emotion and time.</p>
-                <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center view-fullscreen-btn">
-                        🔍 View Full Size
-                    </button>
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center">
-                        🎼 Listen
-                    </button>
+            <!-- Slide 3 -->
+            <div class="art-slide absolute inset-0 opacity-0">
+                <div class="art-image" style="background: linear-gradient(135deg, #A95C68, #FFB6C1);"></div>
+                 <div class="art-info flex items-center w-full h-full">
+                    <div class="w-1/2">
+                        <h2 class="artwork-title text-6xl md:text-8xl">Abstract Flow</h2>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
         
-        <!-- Gallery Section -->
-        <section id="gallery" class="py-20 md:py-32 bg-[#111111] relative">
-            <div class="morphing-bg">
-                <div class="morphing-shape" style="width: 400px; height: 400px; top: 20%; right: 10%;"></div>
-                <div class="morphing-shape" style="width: 300px; height: 300px; bottom: 30%; left: 20%;"></div>
+        <!-- Interactive Description Section -->
+        <section class="py-20 md:py-32 bg-black flex flex-col items-center justify-center text-center">
+            <h3 class="text-2xl md:text-3xl text-neutral-400 mb-4">A Deeper Look</h3>
+            <p id="dynamic-description" class="text-4xl md:text-6xl font-bold max-w-4xl h-48 flex items-center justify-center">Where creativity meets technology in digital form.</p>
+            <div class="mt-8">
+                <button id="gemini-vision-button" class="gemini-button text-base font-semibold py-3 px-6 rounded-full inline-flex items-center">
+                    <span>✨ Shift Perspective</span>
+                </button>
+                <div id="vision-loader" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
             </div>
-            <div class="container mx-auto px-6 relative z-10">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 stable-heading glitch" data-text="The Archive">The Archive</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    <!-- Gallery Items -->
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="3">
-                        <img src="https://placehold.co/600x600/311D3F/FFFFFF?text=Ethereal+Visions" alt="Ethereal Visions" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Ethereal Visions</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="4">
-                        <img src="https://placehold.co/600x600/004D40/FFFFFF?text=Digital+Landscapes" alt="Digital Landscapes" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Digital Landscapes</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="5">
-                        <img src="https://placehold.co/600x600/BF360C/FFFFFF?text=Abstract+Emotions" alt="Abstract Emotions" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Abstract Emotions</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="6">
-                        <img src="https://placehold.co/600x600/4E342E/FFFFFF?text=Neon+Dreams" alt="Neon Dreams" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Neon Dreams</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="7">
-                        <img src="https://placehold.co/600x600/0D47A1/FFFFFF?text=Cosmic+Rhythms" alt="Cosmic Rhythms" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Cosmic Rhythms</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="8">
-                        <img src="https://placehold.co/600x600/263238/FFFFFF?text=Midnight+Reflections" alt="Midnight Reflections" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <p class="text-white font-semibold">Midnight Reflections</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-16">
-                    <button class="interactive-button magnetic text-lg font-semibold inline-flex items-center">
-                        🎭 View All Artworks
-                    </button>
-                </div>
+        </section>
+
+
+        <!-- Horizontal Gallery Section -->
+        <section id="gallery-section">
+            <div class="gallery-container">
+                <div class="gallery-item" style="background: linear-gradient(135deg, #311D3F, #8E44AD);"></div>
+                <div class="gallery-item" style="background: linear-gradient(135deg, #004D40, #26A69A);"></div>
+                <div class="gallery-item" style="background: linear-gradient(135deg, #BF360C, #FF7043);"></div>
+                <div class="gallery-item" style="background: linear-gradient(135deg, #4E342E, #8D6E63);"></div>
+                <div class="gallery-item" style="background: linear-gradient(135deg, #0D47A1, #42A5F5);"></div>
+                <div class="gallery-item" style="background: linear-gradient(135deg, #263238, #607D8B);"></div>
             </div>
         </section>
 
     </main>
-
-    <!-- Full-screen Art Viewer -->
-    <div class="art-viewer" id="artViewer">
-        <div class="art-viewer-content">
-            <button class="art-viewer-close" id="closeViewer">×</button>
-            <button class="art-viewer-nav art-viewer-prev" id="prevArt">‹</button>
-            <img class="art-viewer-image" id="viewerImage" src="" alt="">
-            <button class="art-viewer-nav art-viewer-next" id="nextArt">›</button>
-            <div class="art-viewer-info">
-                <div class="art-viewer-title" id="viewerTitle"></div>
-                <div class="art-viewer-description" id="viewerDescription"></div>
+    
+    <footer id="contact" class="py-20 md:py-32 bg-black">
+         <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="text-4xl md:text-5xl mb-8">About the Artist</h2>
+            <p id="artist-bio" class="text-lg text-neutral-300 mb-12 leading-relaxed">I am a digital artist exploring the intersection of technology and emotion. My work aims to create immersive visual experiences that challenge perception and evoke a sense of wonder.</p>
+             <div class="mb-16">
+                <button id="generate-statement-button" class="gemini-button text-sm font-semibold py-2 px-5 rounded-full inline-flex items-center">✨ Regenerate Statement</button>
+                <div id="statement-loader-container" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
             </div>
+            <h3 class="text-3xl mb-8">Get In Touch</h3>
+            <p class="text-neutral-400">For inquiries & commissions:</p>
+            <a href="mailto:hello@example.com" class="text-lg hover:underline" style="color: var(--accent-color);">hello@example.com</a>
         </div>
-    </div>
-
-    <!-- About & Contact Section -->
-    <footer id="contact" class="stable-footer py-20 md:py-32 relative">
-        <div class="morphing-bg">
-            <div class="morphing-shape" style="width: 350px; height: 350px; top: 10%; left: 20%;"></div>
-            <div class="morphing-shape" style="width: 200px; height: 200px; bottom: 20%; right: 30%;"></div>
-        </div>
-        <div class="container mx-auto px-6 max-w-4xl text-center relative z-10">
-            <h2 class="text-4xl md:text-5xl font-bold mb-8 stable-heading glitch" data-text="About the Artist">About the Artist</h2>
-            <div class="bg-neutral-900/50 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-neutral-800">
-                <p id="artist-bio" class="text-lg text-neutral-300 leading-relaxed">
-                    I am a digital artist exploring the intersection of technology and emotion. My work aims to create immersive visual experiences that challenge perception and evoke a sense of wonder. This portfolio is a curated collection of my journey through color, light, and imagination.
-                </p>
-                <div class="mt-8">
-                    <button class="interactive-button magnetic text-sm font-semibold inline-flex items-center">
-                        🎨 My Creative Process
-                    </button>
-                </div>
-            </div>
-            
-            <h3 class="text-3xl font-bold mb-8 stable-heading">Get In Touch</h3>
-            <div class="bg-neutral-900/50 backdrop-blur-sm rounded-2xl p-8 border border-neutral-800">
-                <!-- Enhanced contact form -->
-                <form class="max-w-xl mx-auto text-left">
-                    <div class="mb-6">
-                        <label for="name" class="block text-neutral-400 mb-2 font-medium">Name</label>
-                        <input type="text" id="name" class="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-300">
-                    </div>
-                    <div class="mb-6">
-                        <label for="email" class="block text-neutral-400 mb-2 font-medium">Email</label>
-                        <input type="email" id="email" class="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-300">
-                    </div>
-                    <div class="mb-8">
-                        <label for="message" class="block text-neutral-400 mb-2 font-medium">Message</label>
-                        <textarea id="message" rows="4" class="w-full bg-neutral-800/50 border border-neutral-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 resize-none"></textarea>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="interactive-button magnetic text-lg font-semibold inline-flex items-center">
-                            ✉️ Send Message
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- Social Links -->
-                <div class="mt-8 flex justify-center space-x-6">
-                    <button class="interactive-button magnetic w-12 h-12 rounded-full flex items-center justify-center text-lg">
-                        📷
-                    </button>
-                    <button class="interactive-button magnetic w-12 h-12 rounded-full flex items-center justify-center text-lg">
-                        🐦
-                    </button>
-                    <button class="interactive-button magnetic w-12 h-12 rounded-full flex items-center justify-center text-lg">
-                        💼
-                    </button>
-                    <button class="interactive-button magnetic w-12 h-12 rounded-full flex items-center justify-center text-lg">
-                        🎨
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="text-center text-neutral-500 mt-16 relative z-10">&copy; 2024 Your Name Here. All Rights Reserved.</div>
+        <div class="text-center text-neutral-600 mt-16 text-sm">&copy; 2024 Your Name Here. All Rights Reserved.</div>
     </footer>
 
+    <!-- JS Libraries (Local) -->
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/tone.min.js"></script>
 
-    <!-- GSAP (Animation Library) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
+        // Main Application Logic
         document.addEventListener('DOMContentLoaded', () => {
-
-            // Register the GSAP plugin
             gsap.registerPlugin(ScrollTrigger);
+            
+            // --- NEW MEDITATIVE SOUND DESIGN ---
+            const reverb = new Tone.Reverb({ decay: 20, wet: 0.7 }).toDestination();
+            const filter = new Tone.Filter(600, "lowpass").connect(reverb);
+            const lfo = new Tone.LFO("0.1Hz", 400, 1000).start();
+            lfo.connect(filter.frequency);
+            const drone1 = new Tone.Oscillator({ type: 'sine', frequency: 'A1', volume: -18 }).connect(filter);
+            const drone2 = new Tone.Oscillator({ type: 'triangle', frequency: 'A2', detune: 4, volume: -26 }).connect(filter);
 
-            // --- CUSTOM CURSOR FUNCTIONALITY ---
-            const cursor = document.querySelector('.custom-cursor');
-            let mouseX = 0, mouseY = 0;
-            let cursorX = 0, cursorY = 0;
+            // --- INTRO SEQUENCE ---
+            function runCosmicJourney() {
+                const masterTimeline = gsap.timeline();
+                const heroH1 = document.querySelector('header h1');
+                const heroP = document.querySelector('header p');
 
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
+                masterTimeline.to(camera.position, { z: 150, duration: 4, ease: 'power3.inOut' }, 0);
+                masterTimeline.to(galaxy.rotation, { z: 2, duration: 4, ease: 'power1.inOut' }, 0);
+                masterTimeline.to(galaxy.material.opacity, { value: 0, duration: 2, ease: 'power2.in' }, "-=1.5");
+                masterTimeline.to(cosmicDust.material.opacity, { value: 0.7, duration: 3, ease: 'power2.out' }, "-=1");
+                masterTimeline.to(camera.position, { z: 5, duration: 3, ease: 'power2.inOut' }, ">-1");
 
-            // Smooth cursor follow animation
-            const animateCursor = () => {
-                const dx = mouseX - cursorX;
-                const dy = mouseY - cursorY;
-                cursorX += dx * 0.1;
-                cursorY += dy * 0.1;
-                cursor.style.left = cursorX + 'px';
-                cursor.style.top = cursorY + 'px';
-                requestAnimationFrame(animateCursor);
-            };
-            animateCursor();
-
-            // Cursor hover effects
-            const interactiveElements = document.querySelectorAll('.interactive-button, .magnetic, .gallery-item');
-            interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-            });
-
-            // --- SCROLL PROGRESS INDICATOR ---
-            const progressBar = document.querySelector('.scroll-progress-bar');
-            window.addEventListener('scroll', () => {
-                const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-                progressBar.style.width = Math.min(scrollProgress, 100) + '%';
-            });
-
-            // --- FLOATING PARTICLES SYSTEM ---
-            const particlesContainer = document.querySelector('.particles-container');
-            const createParticle = () => {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.animationDelay = Math.random() * 2 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                gsap.utils.toArray('.hero-line').forEach(line => {
+                    const chars = line.textContent.split('').map(char => `<span class="split-char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+                    line.innerHTML = chars;
+                });
                 
-                const tl = gsap.timeline();
-                tl.to(particle, {
-                    y: -window.innerHeight,
+                masterTimeline
+                    .to(heroH1, { opacity: 1 }, "-=1.5")
+                    .from('.hero-line .split-char', { yPercent: 120, opacity: 0, stagger: 0.02, duration: 1.2, ease: 'power4.out' }, "<")
+                    .to(heroP, { opacity: 1 }, "-=0.5")
+                    .from(heroP, { y: 20, duration: 1, ease: 'power2.out' }, "<")
+                    .add(() => {
+                        document.body.style.overflow = 'auto';
+                        initializeScrollAnimations();
+                    });
+            }
+            
+            // --- ENTER EXPERIENCE ---
+            const enterButton = document.getElementById('enter-button');
+            enterButton.addEventListener('click', async () => {
+                await Tone.start();
+                drone1.start();
+                drone2.start();
+                
+                gsap.to('#enter-screen', {
                     opacity: 0,
-                    duration: Math.random() * 5 + 3,
+                    duration: 1.5,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        document.getElementById('enter-screen').style.display = 'none';
+                        if(enterAnimationId) cancelAnimationFrame(enterAnimationId);
+                        runCosmicJourney();
+                    }
+                });
+            });
+
+            // --- WEBGL SCENE (for Enter Screen) ---
+            let enterAnimationId;
+            const enterScene = new THREE.Scene();
+            const enterCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const enterRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('enter-canvas'), alpha: true });
+            enterRenderer.setSize(window.innerWidth, window.innerHeight);
+            enterCamera.position.z = 5;
+
+            const enterParticlesGeometry = new THREE.BufferGeometry();
+            const enterParticlesCount = 5000;
+            const enterPosArray = new Float32Array(enterParticlesCount * 3);
+            for (let i = 0; i < enterParticlesCount * 3; i++) {
+                enterPosArray[i] = (Math.random() - 0.5) * 15;
+            }
+            enterParticlesGeometry.setAttribute('position', new THREE.BufferAttribute(enterPosArray, 3));
+            const enterParticlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0xE0E0FF, transparent: true, opacity: 0.5 });
+            const enterParticles = new THREE.Points(enterParticlesGeometry, enterParticlesMaterial);
+            enterScene.add(enterParticles);
+
+            const enterClock = new THREE.Clock();
+            function animateEnterScreen() {
+                const elapsedTime = enterClock.getElapsedTime();
+                enterParticles.rotation.y = elapsedTime * 0.1;
+                enterParticles.position.x = Math.sin(elapsedTime * 2) * 0.02;
+                enterParticles.position.y = Math.cos(elapsedTime * 1.5) * 0.02;
+                enterRenderer.render(enterScene, enterCamera);
+                enterAnimationId = requestAnimationFrame(animateEnterScreen);
+            }
+            animateEnterScreen();
+
+            // --- WEBGL SCENE (for Hero) ---
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const galaxyGeometry = new THREE.BufferGeometry();
+            const galaxyCount = 30000;
+            const galPositions = new Float32Array(galaxyCount * 3);
+            const numArms = 5;
+            const armSeparation = 2 * Math.PI / numArms;
+
+            for(let i = 0; i < galaxyCount; i++) {
+                let i3 = i * 3;
+                let radius = Math.random() * 20;
+                let armIndex = i % numArms;
+                let angle = armIndex * armSeparation + radius * 0.3 + (Math.random() - 0.5) * 0.5;
+                galPositions[i3] = Math.cos(angle) * radius;
+                galPositions[i3+1] = Math.sin(angle) * radius;
+                galPositions[i3+2] = (Math.random() - 0.5) * 0.5;
+            }
+            galaxyGeometry.setAttribute('position', new THREE.BufferAttribute(galPositions, 3));
+            const galaxyMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xFFD700, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+            const galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
+            scene.add(galaxy);
+
+            const dustGeometry = new THREE.BufferGeometry();
+            const dustCount = 10000;
+            const dustPositions = new Float32Array(dustCount * 3);
+            for(let i=0; i<dustCount*3; i++) {
+                dustPositions[i] = (Math.random() - 0.5) * 100;
+            }
+            dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+            const dustMaterial = new THREE.PointsMaterial({ size: 0.03, color: 0xFFD700, transparent: true, opacity: 0, blending: THREE.AdditiveBlending });
+            const cosmicDust = new THREE.Points(dustGeometry, dustMaterial);
+            scene.add(cosmicDust);
+
+            camera.position.z = 2;
+
+            const clock = new THREE.Clock();
+            function animate() {
+                const elapsedTime = clock.getElapsedTime();
+                galaxy.rotation.z = -elapsedTime * 0.05;
+                cosmicDust.rotation.y = elapsedTime * 0.02;
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            // --- Custom Cursor Logic ---
+            const cursor = document.getElementById('cursor');
+            const cursorFollower = document.getElementById('cursor-follower');
+            gsap.set([cursor, cursorFollower], { xPercent: -50, yPercent: -50 });
+            window.addEventListener('mousemove', e => {
+                gsap.to(cursor, 0.1, { x: e.clientX, y: e.clientY });
+                gsap.to(cursorFollower, 0.5, { x: e.clientX, y: e.clientY, ease: 'power2.out' });
+            });
+            document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+
+
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+
+                enterRenderer.setSize(window.innerWidth, window.innerHeight);
+                enterCamera.aspect = window.innerWidth / window.innerHeight;
+                enterCamera.updateProjectionMatrix();
+            });
+            
+            function initializeScrollAnimations() {
+                ScrollTrigger.create({
+                    start: 'top -100px',
+                    end: 99999,
+                    onUpdate: self => {
+                        const nav = document.getElementById('main-nav');
+                        self.direction === -1 ? nav.classList.add('is-visible') : nav.classList.remove('is-visible');
+                    }
+                });
+
+                let currentArtIndex = 0;
+                const slides = gsap.utils.toArray('.art-slide');
+                gsap.set(slides.slice(1), { autoAlpha: 0 });
+                gsap.from(slides[0].querySelector('.art-image'), { autoAlpha: 0, duration: 1.5, ease: 'power3.out' });
+                
+                const slideTimeline = gsap.timeline({ repeat: -1 });
+                slides.forEach((slide, index) => {
+                    const nextIndex = (index + 1) % slides.length;
+                    slideTimeline
+                        .to(slide, { autoAlpha: 0, duration: 1.5, ease: 'power3.in', delay: 4, onStart: () => { currentArtIndex = nextIndex; }})
+                        .to(slides[nextIndex], { autoAlpha: 1, duration: 1.5, ease: 'power3.out' }, `-=1.5`);
+                });
+
+                const gallery = document.querySelector('.gallery-container');
+                gsap.to(gallery, {
+                    x: () => -(gallery.scrollWidth - window.innerWidth),
                     ease: "none",
-                    onComplete: () => particle.remove()
+                    scrollTrigger: {
+                        trigger: "#gallery-section",
+                        start: "top top",
+                        end: () => `+=${gallery.scrollWidth - window.innerWidth}`,
+                        scrub: true, pin: true, invalidateOnRefresh: true
+                    }
                 });
-                
-                particlesContainer.appendChild(particle);
-            };
 
-            // Create particles periodically
-            setInterval(createParticle, 2000);
-            
-            // Initial particles
-            for (let i = 0; i < 10; i++) {
-                setTimeout(createParticle, i * 200);
-            }
+                // --- OFFLINE "GEMINI" SIMULATION ---
+                const visionBtn = document.getElementById('gemini-vision-button');
+                const visionDesc = document.getElementById('dynamic-description');
+                const visionLoader = document.getElementById('vision-loader');
+                let descIndex = 0;
+                const placeholderDescriptions = {
+                    "Digital Dreamscape": "Exploring the boundaries between reality and digital imagination.",
+                    "Neon Visions": "Where electric dreams meet artistic expression in vivid color.",
+                    "Abstract Flow": "A fluid journey through form, color, and digital emotion."
+                };
 
-            // --- MAGNETIC EFFECT FOR BUTTONS ---
-            const magneticElements = document.querySelectorAll('.magnetic');
-            magneticElements.forEach(el => {
-                el.addEventListener('mousemove', (e) => {
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    const distance = Math.sqrt(x * x + y * y);
-                    const maxDistance = 100;
+                visionBtn.addEventListener('click', () => {
+                    const artworkTitle = slides[currentArtIndex].querySelector('.artwork-title').textContent.trim();
+                    const newDesc = placeholderDescriptions[artworkTitle] || "A new story is waiting to be written.";
                     
-                    if (distance < maxDistance) {
-                        const strength = (maxDistance - distance) / maxDistance;
-                        gsap.to(el, {
-                            x: x * strength * 0.3,
-                            y: y * strength * 0.3,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                    }
-                });
-                
-                el.addEventListener('mouseleave', () => {
-                    gsap.to(el, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.5,
-                        ease: "elastic.out(1, 0.3)"
-                    });
-                });
-            });
-
-            // --- 3D TILT EFFECT FOR PANELS ---
-            const tiltPanels = document.querySelectorAll('.tilt-panel');
-            tiltPanels.forEach(panel => {
-                panel.addEventListener('mousemove', (e) => {
-                    const rect = panel.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / centerY * -10;
-                    const rotateY = (x - centerX) / centerX * 10;
-                    
-                    gsap.to(panel, {
-                        rotationX: rotateX,
-                        rotationY: rotateY,
-                        duration: 0.3,
-                        transformPerspective: 1000,
-                        ease: "power2.out"
-                    });
-                });
-                
-                panel.addEventListener('mouseleave', () => {
-                    gsap.to(panel, {
-                        rotationX: 0,
-                        rotationY: 0,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                });
-            });
-
-            // --- HERO SECTION ANIMATION ---
-            const heroTitle = document.querySelector('.hero-title');
-            const heroSubtitle = document.querySelector('.hero-subtitle');
-            if (heroTitle && heroSubtitle) {
-                heroTitle.innerHTML = heroTitle.textContent.split(' ').map(word => `<span>${word}</span>`).join(' ');
-                heroSubtitle.innerHTML = heroSubtitle.textContent.split(' ').map(word => `<span>${word}</span>`).join(' ');
-
-                const tl = gsap.timeline();
-                tl.from(".hero-title span", {
-                    y: 100,
-                    opacity: 0,
-                    stagger: 0.1,
-                    ease: "power3.out",
-                    duration: 1
-                })
-                .from(".hero-subtitle span", {
-                    y: 50,
-                    opacity: 0,
-                    stagger: 0.05,
-                    ease: "power3.out",
-                    duration: 0.8
-                }, "-=0.8")
-                .from(".scroll-indicator", {
-                    opacity: 0,
-                    duration: 1
-                })
-                .from(".hero-title .interactive-button", {
-                    scale: 0,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "back.out(1.7)"
-                }, "-=0.5");
-            }
-            
-            // Fade out scroll indicator on first scroll
-            gsap.to(".scroll-indicator", {
-                opacity: 0,
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom center",
-                    scrub: true,
-                }
-            });
-
-            // --- ENHANCED SCROLL-BASED ANIMATIONS ---
-            const panels = gsap.utils.toArray(".panel");
-            
-            panels.forEach((panel, i) => {
-                if (i === 0) return; // Skip hero panel
-
-                const bg = panel.querySelector(".panel-bg");
-                const textContent = panel.querySelector(".enhanced-text-content, .text-content");
-
-                // Enhanced parallax effect
-                if (bg) {
-                    gsap.fromTo(bg, 
-                        { 
-                            scale: 1.3,
-                            y: "-20%"
-                        }, 
-                        {
-                            scale: 1,
-                            y: "20%",
-                            ease: "none",
-                            scrollTrigger: { 
-                                trigger: panel, 
-                                start: "top bottom", 
-                                end: "bottom top", 
-                                scrub: 1
-                            }
-                        }
-                    );
-                }
-                
-                // Enhanced text animations
-                if (textContent) {
-                    const title = textContent.querySelector('.artwork-title, h2');
-                    const description = textContent.querySelector('.artwork-description, p');
-                    const buttons = textContent.querySelectorAll('.interactive-button');
-                    
-                    const tl = gsap.timeline({
-                        scrollTrigger: { 
-                            trigger: panel, 
-                            start: "top 70%", 
-                            end: "bottom 30%",
-                            toggleActions: "play none none reverse" 
-                        }
-                    });
-                    
-                    tl.from(textContent, {
-                        opacity: 0,
-                        y: 50,
-                        duration: 1,
-                        ease: "power3.out"
-                    })
-                    .from(title, {
-                        y: 30,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out"
-                    }, "-=0.7")
-                    .from(description, {
-                        y: 20,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out"
-                    }, "-=0.5")
-                    .from(buttons, {
-                        scale: 0,
-                        opacity: 0,
-                        stagger: 0.1,
-                        duration: 0.6,
-                        ease: "back.out(1.7)"
-                    }, "-=0.3");
-                }
-            });
-
-            // --- TEXT REVEAL ANIMATION ---
-            const textReveals = document.querySelectorAll('.text-reveal');
-            
-            const observerReveal = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        observerReveal.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.5,
-                rootMargin: '0px 0px -20% 0px'
-            });
-
-            textReveals.forEach(el => {
-                observerReveal.observe(el);
-            });
-
-            // --- GALLERY ENHANCED ANIMATIONS ---
-            const galleryItems = gsap.utils.toArray(".gallery-item");
-            
-            // Staggered entrance animation
-            gsap.fromTo(galleryItems, 
-                {
-                    opacity: 0,
-                    y: 100,
-                    scale: 0.8,
-                    rotation: -10
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    rotation: 0,
-                    stagger: {
-                        amount: 1.2,
-                        from: "random"
-                    },
-                    duration: 0.8,
-                    ease: "back.out(1.7)",
-                    scrollTrigger: { 
-                        trigger: "#gallery", 
-                        start: "top 80%" 
-                    }
-                }
-            );
-
-            // Individual item hover effects
-            galleryItems.forEach(item => {
-                const img = item.querySelector('img');
-                const overlay = item.querySelector('.absolute');
-                
-                item.addEventListener('mouseenter', () => {
-                    gsap.to(img, {
-                        scale: 1.1,
-                        rotation: 2,
-                        duration: 0.4,
-                        ease: "power2.out"
-                    });
-                    if (overlay) {
-                        gsap.to(overlay, {
-                            opacity: 1,
-                            duration: 0.3
-                        });
-                    }
-                });
-                
-                item.addEventListener('mouseleave', () => {
-                    gsap.to(img, {
-                        scale: 1,
-                        rotation: 0,
-                        duration: 0.4,
-                        ease: "power2.out"
-                    });
-                    if (overlay) {
-                        gsap.to(overlay, {
-                            opacity: 0,
-                            duration: 0.3
-                        });
-                    }
-                });
-            });
-            
-            // --- FOOTER ANIMATION ---
-            // Stable headings animation (simple fade-in)
-            const stableHeadings = document.querySelectorAll('.stable-heading');
-            const stableObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                        stableObserver.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.3,
-                rootMargin: '0px 0px -10% 0px'
-            });
-
-            stableHeadings.forEach(heading => {
-                stableObserver.observe(heading);
-            });
-
-            // Footer content cards animation
-            gsap.from("footer .bg-neutral-900\\/50", {
-                opacity: 0, 
-                y: 30, 
-                stagger: 0.2,
-                duration: 1, 
-                ease: "power2.out",
-                scrollTrigger: { 
-                    trigger: "footer", 
-                    start: "top 80%" 
-                }
-            });
-
-            // --- ADVANCED IMAGE SLIDER FUNCTIONALITY ---
-            let currentSlideIndex = 0;
-            const totalSlides = 5;
-            
-            const sliderTrack = document.getElementById('sliderTrack');
-            const sliderPrev = document.getElementById('sliderPrev');
-            const sliderNext = document.getElementById('sliderNext');
-            const sliderIndicators = document.querySelectorAll('.slider-indicator');
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            const currentSlideElement = document.getElementById('currentSlide');
-            const sliderInfoTitle = document.getElementById('sliderInfoTitle');
-            const sliderInfoDesc = document.getElementById('sliderInfoDesc');
-            const sliderProgressBar = document.querySelector('.slider-progress-bar');
-
-            const sliderData = [
-                {
-                    title: "Celestial Echo",
-                    description: "A journey through nebulae and forgotten starlight..."
-                },
-                {
-                    title: "Urban Serenity", 
-                    description: "Finding peace in the chaos of the city..."
-                },
-                {
-                    title: "Forgotten Melody",
-                    description: "An abstract representation of a song half-remembered..."
-                },
-                {
-                    title: "Ethereal Visions",
-                    description: "Dreamlike forms emerge from the digital ether..."
-                },
-                {
-                    title: "Digital Landscapes",
-                    description: "Nature reimagined through the lens of technology..."
-                }
-            ];
-
-            // Function to update slider
-            const updateSlider = (index) => {
-                // Update track position
-                const translateX = -index * 20; // 20% per slide
-                if (sliderTrack) {
-                    sliderTrack.style.transform = `translateX(${translateX}%)`;
-                }
-
-                // Update active states
-                document.querySelectorAll('.slider-slide').forEach((slide, i) => {
-                    slide.classList.toggle('active', i === index);
-                });
-
-                // Update indicators
-                sliderIndicators.forEach((indicator, i) => {
-                    indicator.classList.toggle('active', i === index);
-                });
-
-                // Update thumbnails
-                thumbnails.forEach((thumb, i) => {
-                    thumb.classList.toggle('active', i === index);
-                });
-
-                // Update info panel
-                if (currentSlideElement) currentSlideElement.textContent = index + 1;
-                if (sliderInfoTitle) sliderInfoTitle.textContent = sliderData[index].title;
-                if (sliderInfoDesc) sliderInfoDesc.textContent = sliderData[index].description;
-
-                // Update progress bar
-                if (sliderProgressBar) {
-                    sliderProgressBar.style.width = `${((index + 1) / totalSlides) * 100}%`;
-                }
-
-                currentSlideIndex = index;
-            };
-
-            // Navigation functions
-            const nextSlide = () => {
-                const nextIndex = (currentSlideIndex + 1) % totalSlides;
-                updateSlider(nextIndex);
-            };
-
-            const prevSlide = () => {
-                const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
-                updateSlider(prevIndex);
-            };
-
-            const goToSlide = (index) => {
-                updateSlider(index);
-            };
-
-            // Event listeners
-            if (sliderNext) sliderNext.addEventListener('click', nextSlide);
-            if (sliderPrev) sliderPrev.addEventListener('click', prevSlide);
-
-            // Indicator clicks
-            sliderIndicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => goToSlide(index));
-            });
-
-            // Thumbnail clicks
-            thumbnails.forEach((thumb, index) => {
-                thumb.addEventListener('click', () => goToSlide(index));
-            });
-
-            // Keyboard navigation for slider
-            document.addEventListener('keydown', (e) => {
-                if (!artViewer.classList.contains('active')) { // Only if fullscreen viewer is not open
-                    switch(e.key) {
-                        case 'ArrowLeft':
-                            prevSlide();
-                            break;
-                        case 'ArrowRight':
-                            nextSlide();
-                            break;
-                    }
-                }
-            });
-
-            // Auto-play slider (optional)
-            let autoPlayInterval;
-            const startAutoPlay = () => {
-                autoPlayInterval = setInterval(nextSlide, 5000); // 5 seconds
-            };
-
-            const stopAutoPlay = () => {
-                clearInterval(autoPlayInterval);
-            };
-
-            // Auto-play controls
-            const sliderContainer = document.querySelector('.artwork-slider');
-            if (sliderContainer) {
-                sliderContainer.addEventListener('mouseenter', stopAutoPlay);
-                sliderContainer.addEventListener('mouseleave', startAutoPlay);
-                
-                // Start auto-play
-                startAutoPlay();
-            }
-
-            // Touch/swipe support for mobile
-            let startX = 0;
-            let startY = 0;
-            let distX = 0;
-            let distY = 0;
-
-            if (sliderContainer) {
-                sliderContainer.addEventListener('touchstart', (e) => {
-                    startX = e.touches[0].clientX;
-                    startY = e.touches[0].clientY;
-                });
-
-                sliderContainer.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                });
-
-                sliderContainer.addEventListener('touchend', (e) => {
-                    distX = e.changedTouches[0].clientX - startX;
-                    distY = e.changedTouches[0].clientY - startY;
-
-                    if (Math.abs(distX) > Math.abs(distY) && Math.abs(distX) > 50) {
-                        if (distX > 0) {
-                            prevSlide();
-                        } else {
-                            nextSlide();
-                        }
-                    }
-                });
-            }
-
-            // Initialize slider
-            updateSlider(0);
-            const interactiveButtons = document.querySelectorAll('.interactive-button');
-            interactiveButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Create ripple effect
-                    const ripple = document.createElement('span');
-                    const rect = button.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.style.position = 'absolute';
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.background = 'rgba(255, 255, 255, 0.3)';
-                    ripple.style.pointerEvents = 'none';
-                    ripple.style.transform = 'scale(0)';
-                    
-                    button.style.position = 'relative';
-                    button.style.overflow = 'hidden';
-                    button.appendChild(ripple);
-                    
-                    gsap.to(ripple, {
-                        scale: 2,
-                        opacity: 0,
-                        duration: 0.6,
-                        ease: "power2.out",
-                        onComplete: () => ripple.remove()
-                    });
-                    
-                    // Button feedback animation
-                    gsap.to(button, {
-                        scale: 0.95,
-                        duration: 0.1,
-                        yoyo: true,
-                        repeat: 1,
-                        ease: "power2.inOut"
-                    });
-                    
-                    // Show interaction feedback
-                    const buttonText = button.textContent;
-                    if (buttonText.includes('Explore Gallery')) {
-                        document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
-                    } else if (buttonText.includes('View All Artworks')) {
-                        // Trigger gallery item animation
-                        gsap.to(galleryItems, {
-                            rotation: 360,
-                            duration: 1,
-                            stagger: 0.1,
-                            ease: "power2.inOut"
-                        });
-                    }
-                });
-            });
-
-            // --- FULL-SCREEN ART VIEWER ---
-            const artworks = [
-                {
-                    title: "Celestial Echo",
-                    description: "A journey through nebulae and forgotten starlight, rendered in vibrant acrylics on a digital canvas. This piece explores the infinite vastness of space and the delicate beauty found in cosmic silence.",
-                    image: "https://placehold.co/1920x1080/000000/FFFFFF?text=Celestial+Echo"
-                },
-                {
-                    title: "Urban Serenity",
-                    description: "Finding peace in the chaos of the city. This piece explores the contrast between concrete jungles and inner calm, where moments of tranquility emerge from the urban symphony.",
-                    image: "https://placehold.co/1920x1080/44337A/FFFFFF?text=Urban+Serenity"
-                },
-                {
-                    title: "Forgotten Melody",
-                    description: "An abstract representation of a song half-remembered, blending color and form to evoke nostalgia. The harmonies of memory dance across the canvas in waves of emotion and time.",
-                    image: "https://placehold.co/1920x1080/A95C68/FFFFFF?text=Forgotten+Melody"
-                },
-                {
-                    title: "Ethereal Visions",
-                    description: "Dreamlike forms emerge from the digital ether, creating a portal between reality and imagination. This piece captures the essence of lucid dreaming in visual form.",
-                    image: "https://placehold.co/1920x1080/311D3F/FFFFFF?text=Ethereal+Visions"
-                },
-                {
-                    title: "Digital Landscapes",
-                    description: "Nature reimagined through the lens of technology. These synthetic vistas explore what landscapes might look like in a fully digital world.",
-                    image: "https://placehold.co/1920x1080/004D40/FFFFFF?text=Digital+Landscapes"
-                },
-                {
-                    title: "Abstract Emotions",
-                    description: "Pure feeling translated into form and color. This piece attempts to visualize the invisible language of human emotion through abstract expression.",
-                    image: "https://placehold.co/1920x1080/BF360C/FFFFFF?text=Abstract+Emotions"
-                },
-                {
-                    title: "Neon Dreams",
-                    description: "The electric pulse of city nights captured in luminous hues. This artwork celebrates the vibrant energy of urban nightlife and neon-lit streets.",
-                    image: "https://placehold.co/1920x1080/4E342E/FFFFFF?text=Neon+Dreams"
-                },
-                {
-                    title: "Cosmic Rhythms",
-                    description: "The universe has its own beat, and this piece attempts to visualize the cosmic dance of planets, stars, and galaxies in perpetual motion.",
-                    image: "https://placehold.co/1920x1080/0D47A1/FFFFFF?text=Cosmic+Rhythms"
-                },
-                {
-                    title: "Midnight Reflections",
-                    description: "Contemplative moments captured in the quiet hours of night. This piece explores solitude, introspection, and the beauty found in peaceful darkness.",
-                    image: "https://placehold.co/1920x1080/263238/FFFFFF?text=Midnight+Reflections"
-                }
-            ];
-
-            let currentArtworkIndex = 0;
-            const artViewer = document.getElementById('artViewer');
-            const viewerImage = document.getElementById('viewerImage');
-            const viewerTitle = document.getElementById('viewerTitle');
-            const viewerDescription = document.getElementById('viewerDescription');
-            const closeViewer = document.getElementById('closeViewer');
-            const prevArt = document.getElementById('prevArt');
-            const nextArt = document.getElementById('nextArt');
-
-            // Function to open art viewer
-            const openArtViewer = (index) => {
-                currentArtworkIndex = index;
-                const artwork = artworks[index];
-                
-                viewerImage.src = artwork.image;
-                viewerTitle.textContent = artwork.title;
-                viewerDescription.textContent = artwork.description;
-                
-                artViewer.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                
-                // Animate in
-                gsap.fromTo(artViewer, 
-                    { opacity: 0 }, 
-                    { opacity: 1, duration: 0.3 }
-                );
-                gsap.fromTo('.art-viewer-content', 
-                    { scale: 0.8, opacity: 0 }, 
-                    { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
-                );
-            };
-
-            // Function to close art viewer
-            const closeArtViewer = () => {
-                gsap.to(artViewer, {
-                    opacity: 0,
-                    duration: 0.3,
-                    onComplete: () => {
-                        artViewer.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            };
-
-            // Function to navigate artworks
-            const navigateArt = (direction) => {
-                if (direction === 'next') {
-                    currentArtworkIndex = (currentArtworkIndex + 1) % artworks.length;
-                } else {
-                    currentArtworkIndex = (currentArtworkIndex - 1 + artworks.length) % artworks.length;
-                }
-                
-                const artwork = artworks[currentArtworkIndex];
-                
-                // Animate transition
-                gsap.to(viewerImage, {
-                    opacity: 0,
-                    duration: 0.2,
-                    onComplete: () => {
-                        viewerImage.src = artwork.image;
-                        gsap.to(viewerImage, { opacity: 1, duration: 0.2 });
-                    }
-                });
-                
-                gsap.to([viewerTitle, viewerDescription], {
-                    y: 20,
-                    opacity: 0,
-                    duration: 0.2,
-                    onComplete: () => {
-                        viewerTitle.textContent = artwork.title;
-                        viewerDescription.textContent = artwork.description;
-                        gsap.to([viewerTitle, viewerDescription], {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.2
-                        });
-                    }
-                });
-            };
-
-            // Event listeners for art viewer
-            closeViewer.addEventListener('click', closeArtViewer);
-            prevArt.addEventListener('click', () => navigateArt('prev'));
-            nextArt.addEventListener('click', () => navigateArt('next'));
-
-            // Close on background click
-            artViewer.addEventListener('click', (e) => {
-                if (e.target === artViewer) closeArtViewer();
-            });
-
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (artViewer.classList.contains('active')) {
-                    switch(e.key) {
-                        case 'Escape':
-                            closeArtViewer();
-                            break;
-                        case 'ArrowLeft':
-                            navigateArt('prev');
-                            break;
-                        case 'ArrowRight':
-                            navigateArt('next');
-                            break;
-                    }
-                }
-            });
-
-            // Add click events to artwork panels and gallery items
-            const artworkPanels = document.querySelectorAll('.artwork-panel');
-            const galleryClickItems = document.querySelectorAll('.gallery-item[data-artwork]');
-            const fullscreenButtons = document.querySelectorAll('.view-fullscreen-btn');
-
-            // Artwork panels click
-            artworkPanels.forEach((panel, index) => {
-                panel.addEventListener('click', (e) => {
-                    // Don't open viewer if clicking on buttons
-                    if (!e.target.closest('button')) {
-                        openArtViewer(index);
-                    }
-                });
-            });
-
-            // Gallery items click
-            galleryClickItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const artworkIndex = parseInt(item.dataset.artwork);
-                    openArtViewer(artworkIndex);
-                });
-            });
-
-            // Fullscreen buttons
-            fullscreenButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const panel = button.closest('.artwork-panel');
-                    const artworkIndex = parseInt(panel.dataset.artwork);
-                    openArtViewer(artworkIndex);
-                });
-            });
-
-            // --- GLITCH EFFECT TRIGGER ---
-            const glitchElements = document.querySelectorAll('.glitch');
-            glitchElements.forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    el.style.animation = 'none';
+                    visionBtn.disabled = true; visionLoader.classList.remove('hidden');
                     setTimeout(() => {
-                        el.style.animation = '';
-                    }, 10);
+                         gsap.to(visionDesc, { opacity: 0, duration: 0.4, onComplete: () => {
+                            visionDesc.textContent = newDesc;
+                            gsap.to(visionDesc, { opacity: 1, duration: 0.4 });
+                        }});
+                        visionLoader.classList.add('hidden'); visionBtn.disabled = false;
+                    }, 800);
                 });
-            });
+                
+                const generateStatementBtn = document.getElementById('generate-statement-button');
+                const bioEl = document.getElementById('artist-bio');
+                const statementLoader = document.getElementById('statement-loader-container');
+                let statementIndex = 0;
+                const placeholderStatements = [
+                    "My work is a dialogue between the organic and the artificial, seeking the poetry that emerges when human hands guide the logic of machines.",
+                    "I craft digital canvases that act as windows into speculative futures, exploring themes of memory, identity, and our place in a hyper-connected world.",
+                    "Through code and color, I aim to capture fleeting moments of digital sublime, translating complex algorithms into visual experiences that resonate with emotion."
+                ];
 
-            // --- SMOOTH SCROLLING FOR NAVIGATION ---
-            document.addEventListener('click', (e) => {
-                if (e.target.matches('a[href^="#"]')) {
-                    e.preventDefault();
-                    const target = document.querySelector(e.target.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
-
-            // --- PERFORMANCE OPTIMIZATIONS ---
-            // Throttle scroll events
-            let ticking = false;
-            const handleScroll = () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        // Your scroll handling code here
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            };
-            window.addEventListener('scroll', handleScroll);
-
-            // Intersection Observer for better performance
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    }
+                generateStatementBtn.addEventListener('click', () => {
+                    generateStatementBtn.disabled = true; statementLoader.classList.remove('hidden');
+                     setTimeout(() => {
+                        statementIndex = (statementIndex + 1) % placeholderStatements.length;
+                        const newStatement = placeholderStatements[statementIndex];
+                        gsap.to(bioEl, { opacity: 0, duration: 0.3, onComplete: () => {
+                            bioEl.textContent = newStatement;
+                            gsap.to(bioEl, { opacity: 1, duration: 0.3 });
+                        }});
+                        statementLoader.classList.add('hidden'); generateStatementBtn.disabled = false;
+                    }, 800);
                 });
-            }, observerOptions);
-
-            // Observe all main sections
-            document.querySelectorAll('section, footer').forEach(section => {
-                observer.observe(section);
-            });
+            }
         });
     </script>
 </body>
 </html>
-
