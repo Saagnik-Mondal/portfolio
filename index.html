@@ -262,6 +262,18 @@
             z-index: 100;
         }
 
+        /* Stable headings that don't use text-reveal */
+        .stable-heading {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .stable-heading.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Floating particles */
         .particle {
             position: absolute;
@@ -289,6 +301,22 @@
             background: #0a0a0a;
             transform: translateX(-100%);
             z-index: 2;
+        }
+
+        .text-reveal.animate::after {
+            animation: textRevealSlide 1.5s ease-in-out forwards;
+        }
+
+        @keyframes textRevealSlide {
+            0% { 
+                transform: translateX(-100%); 
+            }
+            50% { 
+                transform: translateX(0%); 
+            }
+            100% { 
+                transform: translateX(100%); 
+            }
         }
 
         /* Advanced interactive buttons */
@@ -572,7 +600,7 @@
                 <div class="morphing-shape" style="width: 300px; height: 300px; bottom: 30%; left: 20%;"></div>
             </div>
             <div class="container mx-auto px-6 relative z-10">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 text-reveal glitch" data-text="The Archive">The Archive</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16 stable-heading glitch" data-text="The Archive">The Archive</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <!-- Gallery Items -->
                     <div class="gallery-item rounded-lg overflow-hidden aspect-square magnetic" data-artwork="3">
@@ -643,7 +671,7 @@
             <div class="morphing-shape" style="width: 200px; height: 200px; bottom: 20%; right: 30%;"></div>
         </div>
         <div class="container mx-auto px-6 max-w-4xl text-center relative z-10">
-            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-reveal glitch" data-text="About the Artist">About the Artist</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 stable-heading glitch" data-text="About the Artist">About the Artist</h2>
             <div class="bg-neutral-900/50 backdrop-blur-sm rounded-2xl p-8 mb-12 border border-neutral-800">
                 <p id="artist-bio" class="text-lg text-neutral-300 leading-relaxed">
                     I am a digital artist exploring the intersection of technology and emotion. My work aims to create immersive visual experiences that challenge perception and evoke a sense of wonder. This portfolio is a curated collection of my journey through color, light, and imagination.
@@ -655,7 +683,7 @@
                 </div>
             </div>
             
-            <h3 class="text-3xl font-bold mb-8 text-reveal">Get In Touch</h3>
+            <h3 class="text-3xl font-bold mb-8 stable-heading">Get In Touch</h3>
             <div class="bg-neutral-900/50 backdrop-blur-sm rounded-2xl p-8 border border-neutral-800">
                 <!-- Enhanced contact form -->
                 <form class="max-w-xl mx-auto text-left">
@@ -929,18 +957,18 @@
                     
                     tl.from(textContent, {
                         opacity: 0,
-                        y: 100,
+                        y: 50,
                         duration: 1,
                         ease: "power3.out"
                     })
                     .from(title, {
-                        y: 50,
+                        y: 30,
                         opacity: 0,
                         duration: 0.8,
                         ease: "power2.out"
                     }, "-=0.7")
                     .from(description, {
-                        y: 30,
+                        y: 20,
                         opacity: 0,
                         duration: 0.8,
                         ease: "power2.out"
@@ -957,20 +985,21 @@
 
             // --- TEXT REVEAL ANIMATION ---
             const textReveals = document.querySelectorAll('.text-reveal');
-            textReveals.forEach(el => {
-                gsap.fromTo(el.querySelector('::after') || el, 
-                    { x: '-100%' },
-                    {
-                        x: '100%',
-                        duration: 1.5,
-                        ease: "power2.inOut",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 80%",
-                            toggleActions: "play none none none"
-                        }
+            
+            const observerReveal = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observerReveal.unobserve(entry.target);
                     }
-                );
+                });
+            }, {
+                threshold: 0.5,
+                rootMargin: '0px 0px -20% 0px'
+            });
+
+            textReveals.forEach(el => {
+                observerReveal.observe(el);
             });
 
             // --- GALLERY ENHANCED ANIMATIONS ---
@@ -1039,15 +1068,34 @@
             });
             
             // --- FOOTER ANIMATION ---
-            gsap.from("footer > div > *", {
+            // Stable headings animation (simple fade-in)
+            const stableHeadings = document.querySelectorAll('.stable-heading');
+            const stableObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        stableObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '0px 0px -10% 0px'
+            });
+
+            stableHeadings.forEach(heading => {
+                stableObserver.observe(heading);
+            });
+
+            // Footer content cards animation
+            gsap.from("footer .bg-neutral-900\\/50", {
                 opacity: 0, 
-                y: 50, 
-                stagger: 0.1,
+                y: 30, 
+                stagger: 0.2,
                 duration: 1, 
                 ease: "power2.out",
                 scrollTrigger: { 
                     trigger: "footer", 
-                    start: "top 85%" 
+                    start: "top 80%" 
                 }
             });
 
