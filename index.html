@@ -1,641 +1,1501 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-scroll-init has-scroll-smooth" data-scroll-direction="vertical">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Artist Portfolio</title>
+    <title>Saagnik Mondal - Creative Developer & Designer</title>
+    <meta name="description" content="Saagnik Mondal creative developer & designer experimental portfolio">
+    <meta name="author" content="Saagnik Mondal">
+    <meta name="keywords" content="Portfolio Saagnik Mondal Developer Designer Digital Artist">
     
-    <style>
-        /* A more creative, unique, and artistic design system */
-        :root {
-            --background-color: #00000a; /* Deep cosmic blue */
-            --text-color: #c5c5c5;
-            --heading-color: #ffffff;
-            --accent-color: #FFD700; /* Divine Gold */
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            cursor: none; /* Hide the default cursor */
-            overflow: hidden; /* Disable scroll initially */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        body::-webkit-scrollbar { display: none; }
-
-        h1, h2, h3 {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            color: var(--heading-color);
-            text-transform: uppercase;
-            letter-spacing: -0.04em;
-        }
-
-        /* --- Enter Screen --- */
-        #enter-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 10001;
-            background-color: var(--background-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #enter-button {
-            background: transparent;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            font-family: 'Syne', sans-serif;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            transition: all 0.3s ease;
-            cursor: none;
-        }
-        #enter-button:hover {
-            background-color: var(--accent-color);
-            color: var(--background-color);
-            box-shadow: 0 0 20px var(--accent-color);
-        }
-
-        /* --- Custom Cursor --- */
-        #cursor, #cursor-follower {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            border-radius: 50%;
-            z-index: 10002; /* Increased z-index to be above the enter screen */
-            transition: transform 0.2s ease-out, opacity 0.3s ease-in-out;
-        }
-        #cursor {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-        }
-        #cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--accent-color);
-            opacity: 0.5;
-        }
-        .cursor-active #cursor-follower, .cursor-hover #cursor-follower {
-            transform: scale(1.5);
-        }
-        .cursor-active #cursor, .cursor-hover #cursor {
-            opacity: 0;
-        }
-
-        /* --- WebGL Canvas Background --- */
-        #hero-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 0;
-        }
-        
-        /* --- Navigation --- */
-        #main-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(0, 0, 10, 0.8), transparent);
-            transform: translateY(-100%);
-            transition: transform 0.5s ease-in-out;
-        }
-        #main-nav.is-visible {
-            transform: translateY(0);
-        }
-        .nav-link {
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
-
-        /* --- Art Journey Section --- */
-        .art-slide {
-            mix-blend-mode: lighten;
-        }
-        .art-image {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            scale: 1.1;
-        }
-        .art-info {
-            position: relative;
-            z-index: 10;
-            mix-blend-mode: difference; /* Creative text effect over images */
-            color: white;
-            padding: 5vw;
-        }
-
-        /* --- Horizontal Gallery --- */
-        #gallery-section {
-            padding: 10vh 0;
-            overflow: hidden;
-            background-color: #111;
-        }
-        .gallery-container {
-            display: flex;
-            gap: 4vw;
-            padding: 0 5vw;
-        }
-        .gallery-item {
-            flex-shrink: 0;
-            width: 40vw; /* Wider items */
-            height: 60vh;
-            border-radius: 0.5rem;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-        
-        /* --- Unique Gemini Button --- */
-        .gemini-button {
-            background-color: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--heading-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        .gemini-button:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        /* --- Loader --- */
-        .loader {
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .split-char { display: inline-block; }
-
-        /* Manually Added Utility Classes (Replacement for Tailwind CDN) */
-        .absolute { position: absolute; }
-        .relative { position: relative; }
-        .fixed { position: fixed; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .z-0 { z-index: 0; }
-        .z-10 { z-index: 10; }
-        .z-100 { z-index: 100; }
-        .h-screen { height: 100vh; }
-        .w-full { width: 100%; }
-        .w-1\/2 { width: 50%; }
-        .container { width: 100%; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .max-w-2xl { max-width: 42rem; }
-        .max-w-4xl { max-width: 56rem; }
-        .flex { display: flex; }
-        .inline-flex { display: inline-flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-end { justify-content: flex-end; }
-        .gap-8 { gap: 2rem; }
-        .p-4 { padding: 1rem; }
-        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mt-6 { margin-top: 1.5rem; }
-        .mt-8 { margin-top: 2rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mb-12 { margin-bottom: 3rem; }
-        .mb-16 { margin-bottom: 4rem; }
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .text-base { font-size: 1rem; line-height: 1.5rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-        .text-5xl { font-size: 3rem; line-height: 1; }
-        .text-6xl { font-size: 3.75rem; line-height: 1; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-medium { font-weight: 500; }
-        .uppercase { text-transform: uppercase; }
-        .tracking-wider { letter-spacing: 0.05em; }
-        .text-neutral-300 { color: rgb(212 212 212); }
-        .text-neutral-400 { color: rgb(163 163 163); }
-        .text-neutral-600 { color: rgb(82 82 82); }
-        .leading-relaxed { line-height: 1.625; }
-        .rounded-full { border-radius: 9999px; }
-        .bg-black { background-color: #000; }
-        .opacity-0 { opacity: 0; }
-        .overflow-hidden { overflow: hidden; }
-        .hidden { display: none; }
-        .hover\:underline:hover { text-decoration-line: underline; }
-        @media (min-width: 768px) {
-            .md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-            .md\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-            .md\:text-5xl { font-size: 3rem; line-height: 1; }
-            .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
-            .md\:text-8xl { font-size: 6rem; line-height: 1; }
-            .md\:text-9xl { font-size: 8rem; line-height: 1; }
-            .md\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
-        }
-    </style>
-</head>
-<body class="overscroll-none">
-    
-    <!-- Enter Screen -->
-    <div id="enter-screen">
-        <!-- New canvas for the "chaotic" particle background -->
-        <canvas id="enter-canvas" class="absolute inset-0 z-0"></canvas>
-        <button id="enter-button" class="relative z-10">Enter the Realm</button>
-    </div>
-
-    <!-- Custom Cursor Elements -->
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
-
-    <!-- Animated Hero Background -->
-    <canvas id="hero-canvas"></canvas>
-
-    <!-- Navigation Header -->
-    <nav id="main-nav">
-        <div class="font-bold text-lg tracking-wider">DA</div>
-        <div class="flex gap-8 text-sm font-medium text-neutral-300">
-            <a href="#art-journey" class="nav-link">Work</a>
-            <a href="#gallery-section" class="nav-link">Gallery</a>
-            <a href="#contact" class="nav-link">Contact</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="h-screen w-full flex flex-col items-center justify-center text-center p-4 relative z-10">
-        <h1 class="text-6xl md:text-9xl opacity-0">
-            <span class="hero-line">DIGITAL</span>
-            <span class="hero-line">ARTIST</span>
-        </h1>
-        <p class="hero-subtitle text-lg md:text-xl text-neutral-400 mt-6 max-w-2xl opacity-0">
-            A curated portfolio showcasing the intersection of technology and creativity through immersive digital art experiences.
-        </p>
-    </header>
-
-    <main>
-        <!-- Pinned Scrolling Section for Featured Art -->
-        <div id="art-journey" class="relative h-screen w-full overflow-hidden">
-            <!-- All slides are positioned absolutely on top of each other -->
-            
-            <!-- Slide 1 -->
-            <div class="art-slide absolute inset-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #000000, #333333);"></div>
-                <div class="art-info flex items-center w-full h-full">
-                    <div class="w-1/2">
-                         <h2 class="artwork-title text-6xl md:text-8xl">Digital Dreamscape</h2>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 2 -->
-            <div class="art-slide absolute inset-0 opacity-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #44337A, #6C63FF);"></div>
-                 <div class="art-info flex items-center justify-end w-full h-full">
-                    <div class="w-1/2 text-right">
-                        <h2 class="artwork-title text-6xl md:text-8xl">Neon Visions</h2>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="art-slide absolute inset-0 opacity-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #A95C68, #FFB6C1);"></div>
-                 <div class="art-info flex items-center w-full h-full">
-                    <div class="w-1/2">
-                        <h2 class="artwork-title text-6xl md:text-8xl">Abstract Flow</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Interactive Description Section -->
-        <section class="py-20 md:py-32 bg-black flex flex-col items-center justify-center text-center">
-            <h3 class="text-2xl md:text-3xl text-neutral-400 mb-4">A Deeper Look</h3>
-            <p id="dynamic-description" class="text-4xl md:text-6xl font-bold max-w-4xl h-48 flex items-center justify-center">Where creativity meets technology in digital form.</p>
-            <div class="mt-8">
-                <button id="gemini-vision-button" class="gemini-button text-base font-semibold py-3 px-6 rounded-full inline-flex items-center">
-                    <span>✨ Shift Perspective</span>
-                </button>
-                <div id="vision-loader" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
-            </div>
-        </section>
-
-
-        <!-- Horizontal Gallery Section -->
-        <section id="gallery-section">
-            <div class="gallery-container">
-                <div class="gallery-item" style="background: linear-gradient(135deg, #311D3F, #8E44AD);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #004D40, #26A69A);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #BF360C, #FF7043);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #4E342E, #8D6E63);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #0D47A1, #42A5F5);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #263238, #607D8B);"></div>
-            </div>
-        </section>
-
-    </main>
-    
-    <footer id="contact" class="py-20 md:py-32 bg-black">
-         <div class="container mx-auto px-6 max-w-4xl text-center">
-            <h2 class="text-4xl md:text-5xl mb-8">About the Artist</h2>
-            <p id="artist-bio" class="text-lg text-neutral-300 mb-12 leading-relaxed">I am a digital artist exploring the intersection of technology and emotion. My work aims to create immersive visual experiences that challenge perception and evoke a sense of wonder.</p>
-             <div class="mb-16">
-                <button id="generate-statement-button" class="gemini-button text-sm font-semibold py-2 px-5 rounded-full inline-flex items-center">✨ Regenerate Statement</button>
-                <div id="statement-loader-container" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
-            </div>
-            <h3 class="text-3xl mb-8">Get In Touch</h3>
-            <p class="text-neutral-400">For inquiries & commissions:</p>
-            <a href="mailto:hello@example.com" class="text-lg hover:underline" style="color: var(--accent-color);">hello@example.com</a>
-        </div>
-        <div class="text-center text-neutral-600 mt-16 text-sm">&copy; 2024 Your Name Here. All Rights Reserved.</div>
-    </footer>
-
-    <!-- JS Libraries (Local) -->
     <script src="js/gsap.min.js"></script>
     <script src="js/ScrollTrigger.min.js"></script>
     <script src="js/three.min.js"></script>
     <script src="js/tone.min.js"></script>
+    
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary-color: #0a0e1a;
+            --secondary-color: #e8f4fd;
+            --accent-color: #4a9eff;
+            --text-color: #c7d2fe;
+            --bg-color: linear-gradient(135deg, #0a0e1a 0%, #1e1b3c 50%, #2d1b69 100%);
+            --glow-color: rgba(74, 158, 255, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            cursor: none;
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-attachment: fixed;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(74, 158, 255, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating Orbs */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            background: var(--glow-color);
+            filter: blur(40px);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .floating-orb:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-orb:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .floating-orb:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 60%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: screen;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .cursor.hovering {
+            transform: scale(2.5);
+            background: var(--secondary-color);
+            box-shadow: 0 0 30px var(--accent-color);
+        }
+
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .audio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(74, 158, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .audio-btn:hover {
+            background: var(--glow-color);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .audio-btn.active {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Loading Screen - Portal Entry */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            overflow: hidden;
+        }
+
+        /* Chaotic Real World Background */
+        .chaos-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, #ff0000, #ff8800),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23fff"/><g fill="%23000" opacity="0.1"><circle cx="20" cy="20" r="2"/><circle cx="80" cy="20" r="3"/><circle cx="50" cy="50" r="1"/><circle cx="30" cy="80" r="2"/><circle cx="70" cy="70" r="1.5"/></g></svg>');
+            animation: chaos-swirl 3s ease-in-out forwards;
+        }
+
+        @keyframes chaos-swirl {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                filter: blur(0px) brightness(1);
+                opacity: 1;
+            }
+            60% { 
+                transform: scale(1.2) rotate(180deg);
+                filter: blur(10px) brightness(1.5);
+                opacity: 0.8;
+            }
+            100% { 
+                transform: scale(20) rotate(360deg);
+                filter: blur(50px) brightness(0);
+                opacity: 0;
+            }
+        }
+
+        /* Portal Animation */
+        .portal {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, 
+                transparent 30%, 
+                rgba(74, 158, 255, 0.1) 35%,
+                rgba(74, 158, 255, 0.3) 40%,
+                rgba(74, 158, 255, 0.6) 45%,
+                rgba(74, 158, 255, 0.9) 50%,
+                rgba(10, 14, 26, 1) 55%
+            );
+            animation: portal-expand 4s ease-in-out forwards;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        @keyframes portal-expand {
+            0% { 
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+                box-shadow: 0 0 0px rgba(74, 158, 255, 0);
+            }
+            30% { 
+                opacity: 1;
+                transform: scale(0.3) rotate(90deg);
+                box-shadow: 0 0 50px rgba(74, 158, 255, 0.5);
+            }
+            60% { 
+                transform: scale(0.8) rotate(180deg);
+                box-shadow: 0 0 100px rgba(74, 158, 255, 0.8);
+            }
+            80% { 
+                transform: scale(1) rotate(270deg);
+                box-shadow: 0 0 150px rgba(74, 158, 255, 1);
+            }
+            100% { 
+                transform: scale(100) rotate(360deg);
+                box-shadow: 0 0 200px rgba(74, 158, 255, 1);
+            }
+        }
+
+        /* Portal Rings */
+        .portal::before,
+        .portal::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(74, 158, 255, 0.6);
+            animation: portal-rings 4s ease-in-out infinite;
+        }
+
+        .portal::before {
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            animation-delay: 0s;
+        }
+
+        .portal::after {
+            top: -40px;
+            left: -40px;
+            right: -40px;
+            bottom: -40px;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes portal-rings {
+            0% { 
+                transform: scale(0.8) rotate(0deg);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.5;
+            }
+            100% { 
+                transform: scale(0.8) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        /* Dimension Text */
+        .dimension-text {
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: #333;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: dimension-fade 5s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes dimension-fade {
+            0% { 
+                opacity: 0;
+                transform: translateX(-50%) translateY(50px);
+                color: #333;
+            }
+            20% { 
+                opacity: 1;
+                transform: translateX(-50%) translateY(0px);
+                color: #333;
+            }
+            40% { 
+                color: #666;
+            }
+            60% { 
+                color: #999;
+            }
+            80% { 
+                color: #4a9eff;
+                text-shadow: 0 0 20px rgba(74, 158, 255, 0.8);
+            }
+            100% { 
+                opacity: 0;
+                color: #4a9eff;
+                text-shadow: 0 0 30px rgba(74, 158, 255, 1);
+            }
+        }
+
+        /* Particles escaping from chaos */
+        .escape-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #4a9eff;
+            border-radius: 50%;
+            animation: escape-to-portal 3s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes escape-to-portal {
+            0% { 
+                opacity: 1;
+                transform: scale(0);
+                box-shadow: 0 0 0px #4a9eff;
+            }
+            30% { 
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 10px #4a9eff;
+            }
+            70% { 
+                opacity: 0.8;
+                transform: scale(0.8) translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7));
+                box-shadow: 0 0 20px #4a9eff;
+            }
+            100% { 
+                opacity: 0;
+                transform: scale(0) translate(var(--dx), var(--dy));
+                box-shadow: 0 0 30px #4a9eff;
+            }
+        }
+
+        /* Additional magical effects */
+        .portal-spark {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: portal-sparks 2s ease-out infinite;
+        }
+
+        @keyframes portal-sparks {
+            0% { 
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+                box-shadow: 0 0 10px #ffffff;
+            }
+            100% { 
+                opacity: 0;
+                transform: scale(0) rotate(360deg) translateY(-100px);
+            }
+        }
+
+        .loader__content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .loader__text {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0;
+            color: #4a9eff;
+            animation: welcome-text 6s ease-in-out forwards;
+            animation-delay: 4s;
+        }
+
+        @keyframes welcome-text {
+            0% { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            30% { 
+                opacity: 1;
+                transform: translateY(0px);
+            }
+            70% { 
+                opacity: 1;
+                transform: translateY(0px);
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        .loader__progress {
+            width: 200px;
+            height: 2px;
+            background: rgba(74, 158, 255, 0.2);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: progress-appear 2s ease-in-out forwards;
+            animation-delay: 5s;
+        }
+
+        @keyframes progress-appear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .loader__bar {
+            position: absolute;
+            left: -100%;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #4a9eff, transparent);
+            animation: realm-loading 2s ease-in-out forwards;
+            animation-delay: 5s;
+        }
+
+        @keyframes realm-loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(74, 158, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero__content {
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero__title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .hero__subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 3rem;
+        }
+
+        .hero__cta {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero__cta:hover {
+            color: var(--bg-color);
+        }
+
+        .hero__cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .hero__cta:hover::before {
+            left: 0;
+        }
+
+        /* Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section__title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* About Section */
+        .about {
+            background: rgba(74, 158, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(74, 158, 255, 0.1);
+            border-radius: 30px;
+            margin: 2rem;
+        }
+
+        .about__content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about__text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .about__text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .about__image {
+            position: relative;
+            aspect-ratio: 1;
+            background: radial-gradient(circle, var(--accent-color), var(--glow-color));
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 50px var(--glow-color);
+            animation: glow-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 30px var(--glow-color); }
+            50% { box-shadow: 0 0 80px var(--glow-color), 0 0 120px rgba(74, 158, 255, 0.1); }
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 10rem 2rem;
+        }
+
+        .projects__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+        }
+
+        .project-card {
+            background: rgba(74, 158, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            border: 1px solid rgba(74, 158, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            background: rgba(74, 158, 255, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(74, 158, 255, 0.2);
+        }
+
+        .project-card__image {
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(ellipse at center, var(--accent-color), var(--glow-color));
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .project-card__title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-card__description {
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+
+        .project-card__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .project-card__tag {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: rgba(74, 158, 255, 0.03);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            border: 1px solid rgba(74, 158, 255, 0.1);
+            border-radius: 30px;
+            margin: 2rem;
+        }
+
+        .contact__content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact__title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+        }
+
+        .contact__text {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+
+        .contact__email {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact__email:hover {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .contact__social {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact__social a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .contact__social a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer__content {
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .about__content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .projects__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact__social {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 9999;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Ambient Background -->
+    <div class="ambient-bg"></div>
+    <div class="floating-orb"></div>
+    <div class="floating-orb"></div>
+    <div class="floating-orb"></div>
+
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button class="audio-btn" id="ambientBtn" data-cursor-hover title="Ambient Sounds">♪</button>
+        <button class="audio-btn" id="muteBtn" data-cursor-hover title="Mute/Unmute">🔊</button>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <!-- Chaotic Real World Background -->
+        <div class="chaos-bg"></div>
+        
+        <!-- Escape Particles -->
+        <div class="escape-particle" style="--dx: 200px; --dy: -150px; top: 20%; left: 10%; animation-delay: 1s;"></div>
+        <div class="escape-particle" style="--dx: -180px; --dy: -120px; top: 60%; right: 15%; animation-delay: 1.2s;"></div>
+        <div class="escape-particle" style="--dx: 150px; --dy: -200px; bottom: 30%; left: 20%; animation-delay: 1.5s;"></div>
+        <div class="escape-particle" style="--dx: -120px; --dy: -180px; top: 40%; right: 30%; animation-delay: 1.8s;"></div>
+        <div class="escape-particle" style="--dx: 100px; --dy: -160px; bottom: 50%; left: 60%; animation-delay: 2s;"></div>
+        
+        <!-- Portal -->
+        <div class="portal">
+            <!-- Magical sparks around portal -->
+            <div class="portal-spark" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+            <div class="portal-spark" style="top: 20%; right: 15%; animation-delay: 0.3s;"></div>
+            <div class="portal-spark" style="bottom: 15%; left: 20%; animation-delay: 0.6s;"></div>
+            <div class="portal-spark" style="bottom: 25%; right: 10%; animation-delay: 0.9s;"></div>
+            <div class="portal-spark" style="top: 50%; left: 5%; animation-delay: 1.2s;"></div>
+            <div class="portal-spark" style="top: 40%; right: 5%; animation-delay: 1.5s;"></div>
+        </div>
+        
+        <!-- Dimension Transition Text -->
+        <div class="dimension-text">Leaving Reality Behind</div>
+        
+        <div class="loader__content">
+            <div class="loader__text">Welcome to the Digital Realm</div>
+            <div class="loader__progress">
+                <div class="loader__bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">SM</div>
+            <ul class="nav-links">
+                <li><a href="#home" data-cursor-hover>Home</a></li>
+                <li><a href="#about" data-cursor-hover>About</a></li>
+                <li><a href="#projects" data-cursor-hover>Work</a></li>
+                <li><a href="#contact" data-cursor-hover>Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero__content">
+                <h1 class="hero__title fade-in">SAAGNIK MONDAL</h1>
+                <p class="hero__subtitle fade-in">DIGITAL ARTIST & CREATIVE SOUL</p>
+                <button class="hero__cta fade-in" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
+                    EXPLORE MY UNIVERSE
+                </button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about">
+            <div class="container">
+                <h2 class="section__title fade-in">ABOUT THE ARTIST</h2>
+                <div class="about__content">
+                    <div class="about__text slide-in-left">
+                        <h3>Creative Vision</h3>
+                        <p>
+                            Welcome to my digital sanctuary. I'm a passionate artist who believes in the healing power of creative expression. 
+                            My work is designed to transport you to peaceful dimensions where technology meets tranquility.
+                        </p>
+                        <br>
+                        <p>
+                            Each piece is crafted with intention - to soothe the mind, inspire the soul, and create moments of pure serenity. 
+                            Through gentle animations, calming colors, and immersive experiences, I invite you to pause, breathe, and 
+                            discover beauty in the digital realm.
+                        </p>
+                    </div>
+                    <div class="about__image slide-in-right">
+                        <!-- Abstract representation -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects">
+            <div class="container">
+                <h2 class="section__title fade-in">MINDFUL CREATIONS</h2>
+                <div class="projects__grid">
+                    <div class="project-card scale-in" data-cursor-hover>
+                        <div class="project-card__image"></div>
+                        <h3 class="project-card__title">Tranquil Canvas</h3>
+                        <p class="project-card__description">
+                            A meditative digital painting space where gentle brushstrokes create flowing watercolor patterns that evolve and breathe with your movements.
+                        </p>
+                        <div class="project-card__tags">
+                            <span class="project-card__tag">Meditation</span>
+                            <span class="project-card__tag">Flow</span>
+                            <span class="project-card__tag">Zen</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card scale-in" data-cursor-hover>
+                        <div class="project-card__image"></div>
+                        <h3 class="project-card__title">Serene Geometries</h3>
+                        <p class="project-card__description">
+                            Harmonious mathematical patterns that slowly morph and dance, creating a hypnotic visual symphony perfect for contemplation and relaxation.
+                        </p>
+                        <div class="project-card__tags">
+                            <span class="project-card__tag">Harmony</span>
+                            <span class="project-card__tag">Sacred</span>
+                            <span class="project-card__tag">Peace</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card scale-in" data-cursor-hover>
+                        <div class="project-card__image"></div>
+                        <h3 class="project-card__title">Gentle Waves</h3>
+                        <p class="project-card__description">
+                            Soft, flowing animations inspired by ocean waves and cloud movements, designed to calm the mind and ease stress.
+                        </p>
+                        <div class="project-card__tags">
+                            <span class="project-card__tag">Nature</span>
+                            <span class="project-card__tag">Calm</span>
+                            <span class="project-card__tag">Healing</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card scale-in" data-cursor-hover>
+                        <div class="project-card__image"></div>
+                        <h3 class="project-card__title">Ambient Visualizer</h3>
+                        <p class="project-card__description">
+                            Ethereal soundscapes transformed into gentle visual flows that respond to ambient music and natural sounds for deep relaxation.
+                        </p>
+                        <div class="project-card__tags">
+                            <span class="project-card__tag">Sound</span>
+                            <span class="project-card__tag">Ambient</span>
+                            <span class="project-card__tag">Mindful</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact">
+            <div class="container">
+                <div class="contact__content">
+                    <h2 class="contact__title fade-in">CONNECT & CREATE</h2>
+                    <p class="contact__text fade-in">
+                        Let's create something beautiful together. Whether you seek collaborative art, peaceful digital experiences, 
+                        or simply want to share creative energy, I'd love to connect with kindred spirits.
+                    </p>
+                    <a href="mailto:hello@saagnikmondal.com" class="contact__email fade-in" data-cursor-hover>
+                        hello@saagnikmondal.com
+                    </a>
+                    <div class="contact__social fade-in">
+                        <a href="#" data-cursor-hover>Instagram</a>
+                        <a href="#" data-cursor-hover>LinkedIn</a>
+                        <a href="#" data-cursor-hover>GitHub</a>
+                        <a href="#" data-cursor-hover>Behance</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__content">
+            <p>&copy; 2024 Saagnik Mondal. All rights reserved.</p>
+            <p>Designed & developed with passion</p>
+        </div>
+    </footer>
 
     <script>
-        // Main Application Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            gsap.registerPlugin(ScrollTrigger);
-            
-            // --- NEW MEDITATIVE SOUND DESIGN ---
-            const reverb = new Tone.Reverb({ decay: 20, wet: 0.7 }).toDestination();
-            const filter = new Tone.Filter(600, "lowpass").connect(reverb);
-            const lfo = new Tone.LFO("0.1Hz", 400, 1000).start();
-            lfo.connect(filter.frequency);
-            const drone1 = new Tone.Oscillator({ type: 'sine', frequency: 'A1', volume: -18 }).connect(filter);
-            const drone2 = new Tone.Oscillator({ type: 'triangle', frequency: 'A2', detune: 4, volume: -26 }).connect(filter);
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
 
-            // --- INTRO SEQUENCE ---
-            function runCosmicJourney() {
-                const masterTimeline = gsap.timeline();
-                const heroH1 = document.querySelector('header h1');
-                const heroP = document.querySelector('header p');
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const hoverable = document.querySelectorAll('[data-cursor-hover]');
 
-                masterTimeline.to(camera.position, { z: 150, duration: 4, ease: 'power3.inOut' }, 0);
-                masterTimeline.to(galaxy.rotation, { z: 2, duration: 4, ease: 'power1.inOut' }, 0);
-                masterTimeline.to(galaxy.material.opacity, { value: 0, duration: 2, ease: 'power2.in' }, "-=1.5");
-                masterTimeline.to(cosmicDust.material.opacity, { value: 0.7, duration: 3, ease: 'power2.out' }, "-=1");
-                masterTimeline.to(camera.position, { z: 5, duration: 3, ease: 'power2.inOut' }, ">-1");
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-                gsap.utils.toArray('.hero-line').forEach(line => {
-                    const chars = line.textContent.split('').map(char => `<span class="split-char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-                    line.innerHTML = chars;
-                });
-                
-                masterTimeline
-                    .to(heroH1, { opacity: 1 }, "-=1.5")
-                    .from('.hero-line .split-char', { yPercent: 120, opacity: 0, stagger: 0.02, duration: 1.2, ease: 'power4.out' }, "<")
-                    .to(heroP, { opacity: 1 }, "-=0.5")
-                    .from(heroP, { y: 20, duration: 1, ease: 'power2.out' }, "<")
-                    .add(() => {
-                        document.body.style.overflow = 'auto';
-                        initializeScrollAnimations();
-                    });
-            }
-            
-            // --- ENTER EXPERIENCE ---
-            const enterButton = document.getElementById('enter-button');
-            enterButton.addEventListener('click', async () => {
-                await Tone.start();
-                drone1.start();
-                drone2.start();
-                
-                gsap.to('#enter-screen', {
+        hoverable.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        // Epic Loading Animation Sequence
+        window.addEventListener('load', () => {
+            // Total animation sequence: 7 seconds
+            setTimeout(() => {
+                // Fade out the entire loader with a portal effect
+                gsap.to('#loader', {
                     opacity: 0,
-                    duration: 1.5,
-                    ease: 'power2.out',
+                    scale: 0,
+                    duration: 2,
+                    ease: 'power4.in',
+                    transformOrigin: 'center center',
                     onComplete: () => {
-                        document.getElementById('enter-screen').style.display = 'none';
-                        if(enterAnimationId) cancelAnimationFrame(enterAnimationId);
-                        runCosmicJourney();
+                        document.getElementById('loader').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        initAnimations();
+                        
+                        // Add entrance effect to the main content
+                        gsap.fromTo('body', 
+                            { 
+                                filter: 'blur(20px) brightness(0)',
+                                scale: 1.2 
+                            },
+                            { 
+                                filter: 'blur(0px) brightness(1)',
+                                scale: 1,
+                                duration: 3,
+                                ease: 'power3.out'
+                            }
+                        );
+                        
+                        // Animate ambient orbs into existence
+                        gsap.fromTo('.floating-orb', 
+                            { 
+                                opacity: 0,
+                                scale: 0 
+                            },
+                            { 
+                                opacity: 1,
+                                scale: 1,
+                                duration: 2,
+                                stagger: 0.5,
+                                ease: 'elastic.out(1, 0.3)'
+                            }
+                        );
                     }
                 });
-            });
+            }, 7000); // 7 seconds total
+        });
 
-            // --- WEBGL SCENE (for Enter Screen) ---
-            let enterAnimationId;
-            const enterScene = new THREE.Scene();
-            const enterCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const enterRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('enter-canvas'), alpha: true });
-            enterRenderer.setSize(window.innerWidth, window.innerHeight);
-            enterCamera.position.z = 5;
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.scroll-progress').style.width = scrolled + '%';
+        });
 
-            const enterParticlesGeometry = new THREE.BufferGeometry();
-            const enterParticlesCount = 5000;
-            const enterPosArray = new Float32Array(enterParticlesCount * 3);
-            for (let i = 0; i < enterParticlesCount * 3; i++) {
-                enterPosArray[i] = (Math.random() - 0.5) * 15;
-            }
-            enterParticlesGeometry.setAttribute('position', new THREE.BufferAttribute(enterPosArray, 3));
-            const enterParticlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0xE0E0FF, transparent: true, opacity: 0.5 });
-            const enterParticles = new THREE.Points(enterParticlesGeometry, enterParticlesMaterial);
-            enterScene.add(enterParticles);
-
-            const enterClock = new THREE.Clock();
-            function animateEnterScreen() {
-                const elapsedTime = enterClock.getElapsedTime();
-                enterParticles.rotation.y = elapsedTime * 0.1;
-                enterParticles.position.x = Math.sin(elapsedTime * 2) * 0.02;
-                enterParticles.position.y = Math.cos(elapsedTime * 1.5) * 0.02;
-                enterRenderer.render(enterScene, enterCamera);
-                enterAnimationId = requestAnimationFrame(animateEnterScreen);
-            }
-            animateEnterScreen();
-
-            // --- WEBGL SCENE (for Hero) ---
+        // Background Animation with Three.js
+        function initBackground() {
+            const canvas = document.getElementById('bg-canvas');
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            const galaxyGeometry = new THREE.BufferGeometry();
-            const galaxyCount = 30000;
-            const galPositions = new Float32Array(galaxyCount * 3);
-            const numArms = 5;
-            const armSeparation = 2 * Math.PI / numArms;
-
-            for(let i = 0; i < galaxyCount; i++) {
-                let i3 = i * 3;
-                let radius = Math.random() * 20;
-                let armIndex = i % numArms;
-                let angle = armIndex * armSeparation + radius * 0.3 + (Math.random() - 0.5) * 0.5;
-                galPositions[i3] = Math.cos(angle) * radius;
-                galPositions[i3+1] = Math.sin(angle) * radius;
-                galPositions[i3+2] = (Math.random() - 0.5) * 0.5;
-            }
-            galaxyGeometry.setAttribute('position', new THREE.BufferAttribute(galPositions, 3));
-            const galaxyMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xFFD700, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
-            const galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
-            scene.add(galaxy);
-
-            const dustGeometry = new THREE.BufferGeometry();
-            const dustCount = 10000;
-            const dustPositions = new Float32Array(dustCount * 3);
-            for(let i=0; i<dustCount*3; i++) {
-                dustPositions[i] = (Math.random() - 0.5) * 100;
-            }
-            dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-            const dustMaterial = new THREE.PointsMaterial({ size: 0.03, color: 0xFFD700, transparent: true, opacity: 0, blending: THREE.AdditiveBlending });
-            const cosmicDust = new THREE.Points(dustGeometry, dustMaterial);
-            scene.add(cosmicDust);
-
-            camera.position.z = 2;
-
-            const clock = new THREE.Clock();
-            function animate() {
-                const elapsedTime = clock.getElapsedTime();
-                galaxy.rotation.z = -elapsedTime * 0.05;
-                cosmicDust.rotation.y = elapsedTime * 0.02;
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-            animate();
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
             
-            // --- Custom Cursor Logic ---
-            const cursor = document.getElementById('cursor');
-            const cursorFollower = document.getElementById('cursor-follower');
-            gsap.set([cursor, cursorFollower], { xPercent: -50, yPercent: -50 });
-            window.addEventListener('mousemove', e => {
-                gsap.to(cursor, 0.1, { x: e.clientX, y: e.clientY });
-                gsap.to(cursorFollower, 0.5, { x: e.clientX, y: e.clientY, ease: 'power2.out' });
-            });
-            document.querySelectorAll('a, button, .gallery-item').forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create gentle floating particles
+            const particlesCount = 500;
+            const positions = new Float32Array(particlesCount * 3);
+            const colors = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount; i++) {
+                // Positions
+                positions[i * 3] = (Math.random() - 0.5) * 15;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+                
+                // Colors (soft blues and purples)
+                colors[i * 3] = 0.3 + Math.random() * 0.4;     // R
+                colors[i * 3 + 1] = 0.6 + Math.random() * 0.4; // G
+                colors[i * 3 + 2] = 0.9 + Math.random() * 0.1; // B
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.03,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6
             });
 
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
 
+            camera.position.z = 5;
+
+            let time = 0;
+
+            // Animation loop with gentle movement
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                time += 0.005;
+                
+                // Gentle rotation and floating
+                particles.rotation.x = Math.sin(time) * 0.1;
+                particles.rotation.y = Math.cos(time) * 0.1;
+                
+                // Update particle positions for gentle floating
+                const positions = particles.geometry.attributes.position.array;
+                for (let i = 0; i < particlesCount; i++) {
+                    positions[i * 3 + 1] += Math.sin(time + i * 0.1) * 0.001;
+                }
+                particles.geometry.attributes.position.needsUpdate = true;
+                
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle resize
             window.addEventListener('resize', () => {
-                renderer.setSize(window.innerWidth, window.innerHeight);
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
-
-                enterRenderer.setSize(window.innerWidth, window.innerHeight);
-                enterCamera.aspect = window.innerWidth / window.innerHeight;
-                enterCamera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
             });
-            
-            function initializeScrollAnimations() {
-                ScrollTrigger.create({
-                    start: 'top -100px',
-                    end: 99999,
-                    onUpdate: self => {
-                        const nav = document.getElementById('main-nav');
-                        self.direction === -1 ? nav.classList.add('is-visible') : nav.classList.remove('is-visible');
-                    }
-                });
+        }
 
-                let currentArtIndex = 0;
-                const slides = gsap.utils.toArray('.art-slide');
-                gsap.set(slides.slice(1), { autoAlpha: 0 });
-                gsap.from(slides[0].querySelector('.art-image'), { autoAlpha: 0, duration: 1.5, ease: 'power3.out' });
+        // Ambient Sound System with Portal Effects
+        let ambientSound = null;
+        let portalSound = null;
+        let isMuted = false;
+
+        function initPortalSound() {
+            // Create portal entrance sound effects
+            if (typeof Tone !== 'undefined') {
+                const portalReverb = new Tone.Reverb(12).toDestination();
+                const portalFilter = new Tone.Filter(2000, "lowpass").connect(portalReverb);
                 
-                const slideTimeline = gsap.timeline({ repeat: -1 });
-                slides.forEach((slide, index) => {
-                    const nextIndex = (index + 1) % slides.length;
-                    slideTimeline
-                        .to(slide, { autoAlpha: 0, duration: 1.5, ease: 'power3.in', delay: 4, onStart: () => { currentArtIndex = nextIndex; }})
-                        .to(slides[nextIndex], { autoAlpha: 1, duration: 1.5, ease: 'power3.out' }, `-=1.5`);
-                });
-
-                const gallery = document.querySelector('.gallery-container');
-                gsap.to(gallery, {
-                    x: () => -(gallery.scrollWidth - window.innerWidth),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#gallery-section",
-                        start: "top top",
-                        end: () => `+=${gallery.scrollWidth - window.innerWidth}`,
-                        scrub: true, pin: true, invalidateOnRefresh: true
+                // Deep portal opening sound
+                const portalOsc = new Tone.Oscillator(55, "sawtooth").connect(portalFilter);
+                portalOsc.volume.value = -15;
+                
+                // Magical shimmer
+                const shimmerOsc = new Tone.Oscillator(880, "sine").connect(portalFilter);
+                shimmerOsc.volume.value = -20;
+                
+                portalSound = {
+                    start: () => {
+                        Tone.start().then(() => {
+                            // Portal opening sequence
+                            portalOsc.start();
+                            portalOsc.frequency.exponentialRampTo(110, 3);
+                            
+                            setTimeout(() => {
+                                shimmerOsc.start();
+                                shimmerOsc.frequency.exponentialRampTo(1760, 2);
+                            }, 1000);
+                            
+                            setTimeout(() => {
+                                portalOsc.stop();
+                                shimmerOsc.stop();
+                            }, 4000);
+                        });
                     }
-                });
-
-                // --- OFFLINE "GEMINI" SIMULATION ---
-                const visionBtn = document.getElementById('gemini-vision-button');
-                const visionDesc = document.getElementById('dynamic-description');
-                const visionLoader = document.getElementById('vision-loader');
-                let descIndex = 0;
-                const placeholderDescriptions = {
-                    "Digital Dreamscape": "Exploring the boundaries between reality and digital imagination.",
-                    "Neon Visions": "Where electric dreams meet artistic expression in vivid color.",
-                    "Abstract Flow": "A fluid journey through form, color, and digital emotion."
                 };
-
-                visionBtn.addEventListener('click', () => {
-                    const artworkTitle = slides[currentArtIndex].querySelector('.artwork-title').textContent.trim();
-                    const newDesc = placeholderDescriptions[artworkTitle] || "A new story is waiting to be written.";
-                    
-                    visionBtn.disabled = true; visionLoader.classList.remove('hidden');
-                    setTimeout(() => {
-                         gsap.to(visionDesc, { opacity: 0, duration: 0.4, onComplete: () => {
-                            visionDesc.textContent = newDesc;
-                            gsap.to(visionDesc, { opacity: 1, duration: 0.4 });
-                        }});
-                        visionLoader.classList.add('hidden'); visionBtn.disabled = false;
-                    }, 800);
-                });
                 
-                const generateStatementBtn = document.getElementById('generate-statement-button');
-                const bioEl = document.getElementById('artist-bio');
-                const statementLoader = document.getElementById('statement-loader-container');
-                let statementIndex = 0;
-                const placeholderStatements = [
-                    "My work is a dialogue between the organic and the artificial, seeking the poetry that emerges when human hands guide the logic of machines.",
-                    "I craft digital canvases that act as windows into speculative futures, exploring themes of memory, identity, and our place in a hyper-connected world.",
-                    "Through code and color, I aim to capture fleeting moments of digital sublime, translating complex algorithms into visual experiences that resonate with emotion."
-                ];
+                // Auto-play portal sound on load
+                setTimeout(() => {
+                    if (!isMuted) {
+                        portalSound.start();
+                    }
+                }, 1500);
+            }
+        }
 
-                generateStatementBtn.addEventListener('click', () => {
-                    generateStatementBtn.disabled = true; statementLoader.classList.remove('hidden');
-                     setTimeout(() => {
-                        statementIndex = (statementIndex + 1) % placeholderStatements.length;
-                        const newStatement = placeholderStatements[statementIndex];
-                        gsap.to(bioEl, { opacity: 0, duration: 0.3, onComplete: () => {
-                            bioEl.textContent = newStatement;
-                            gsap.to(bioEl, { opacity: 1, duration: 0.3 });
-                        }});
-                        statementLoader.classList.add('hidden'); generateStatementBtn.disabled = false;
-                    }, 800);
+        function initAmbientSound() {
+            // Create ambient tones using Tone.js
+            if (typeof Tone !== 'undefined') {
+                // Create gentle ambient pad
+                const reverb = new Tone.Reverb(8).toDestination();
+                const filter = new Tone.Filter(800, "lowpass").connect(reverb);
+                
+                const oscillator1 = new Tone.Oscillator(110, "sine").connect(filter);
+                const oscillator2 = new Tone.Oscillator(165, "sine").connect(filter);
+                const oscillator3 = new Tone.Oscillator(220, "triangle").connect(filter);
+                
+                oscillator1.volume.value = -20;
+                oscillator2.volume.value = -22;
+                oscillator3.volume.value = -25;
+                
+                ambientSound = {
+                    start: () => {
+                        Tone.start().then(() => {
+                            oscillator1.start();
+                            oscillator2.start();
+                            oscillator3.start();
+                        });
+                    },
+                    stop: () => {
+                        oscillator1.stop();
+                        oscillator2.stop();
+                        oscillator3.stop();
+                    }
+                };
+            }
+        }
+
+        // Initialize portal sound immediately
+        initPortalSound();        // Audio controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const ambientBtn = document.getElementById('ambientBtn');
+            const muteBtn = document.getElementById('muteBtn');
+            
+            if (ambientBtn) {
+                ambientBtn.addEventListener('click', () => {
+                    if (ambientSound) {
+                        if (ambientBtn.classList.contains('active')) {
+                            ambientSound.stop();
+                            ambientBtn.classList.remove('active');
+                        } else {
+                            initAmbientSound();
+                            ambientSound.start();
+                            ambientBtn.classList.add('active');
+                        }
+                    } else {
+                        initAmbientSound();
+                        if (ambientSound) {
+                            ambientSound.start();
+                            ambientBtn.classList.add('active');
+                        }
+                    }
+                });
+            }
+            
+            if (muteBtn) {
+                muteBtn.addEventListener('click', () => {
+                    isMuted = !isMuted;
+                    if (typeof Tone !== 'undefined') {
+                        Tone.Master.mute = isMuted;
+                        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+                        muteBtn.classList.toggle('active', isMuted);
+                    }
                 });
             }
         });
+
+        // GSAP Animations
+        function initAnimations() {
+            // Hero animations
+            gsap.timeline()
+                .from('.hero__title', { opacity: 0, y: 100, duration: 1, ease: 'power3.out' })
+                .from('.hero__subtitle', { opacity: 0, y: 50, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+                .from('.hero__cta', { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+
+            // Scroll-triggered animations
+            gsap.utils.toArray('.fade-in').forEach(el => {
+                gsap.from(el, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.slide-in-left').forEach(el => {
+                gsap.from(el, {
+                    opacity: 0,
+                    x: -100,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.slide-in-right').forEach(el => {
+                gsap.from(el, {
+                    opacity: 0,
+                    x: 100,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.scale-in').forEach(el => {
+                gsap.from(el, {
+                    opacity: 0,
+                    scale: 0.8,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Project cards hover animations
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, { 
+                        y: -10, 
+                        duration: 0.3, 
+                        ease: 'power2.out' 
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, { 
+                        y: 0, 
+                        duration: 0.3, 
+                        ease: 'power2.out' 
+                    });
+                });
+            });
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize background
+        initBackground();
+
+        // Add some interactive elements
+        document.addEventListener('click', (e) => {
+            // Create click ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.background = 'rgba(255, 0, 64, 0.5)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '9998';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(ripple);
+
+            gsap.to(ripple, {
+                scale: 20,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out',
+                onComplete: () => ripple.remove()
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            const speed = scrolled * 0.5;
+            
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+        console.log('🎨 Portfolio loaded successfully!');
     </script>
 </body>
 </html>
