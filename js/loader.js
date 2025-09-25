@@ -3,13 +3,7 @@
 // ===========================================
 
 function initLoaderAnimation() {
-    console.log('Digital Canvas Awakening - Initializing...');
-    
-    // Performance monitoring
-    const startTime = performance.now();
-    let frameCount = 0;
-    let fps = 60;
-    let lastFPSUpdate = startTime;
+    console.log('Premium Loader - Initializing Modern Experience...');
     
     const loader = document.getElementById('loader');
     const percentageElement = document.querySelector('.loading-percentage');
@@ -18,50 +12,33 @@ function initLoaderAnimation() {
     const messages = document.querySelectorAll('.message');
     const skipLoader = document.getElementById('skip-loader');
     
-    // Create unique digital canvas background
+    // Ensure loader visibility
     if (loader) {
-        loader.style.cssText = `
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: #0a0a0a !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            z-index: 99999 !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            overflow: hidden !important;
-        `;
+        loader.style.display = 'flex';
+        loader.classList.add('active');
     } else {
         console.error('Loader element not found!');
         return;
     }
     
     let progress = 0;
-    let animationId;
     let currentMessageIndex = 0;
-    let laserFlow = null;
-    let lastMilestone = -1; // Track milestone achievements
+    let animationId;
 
-    // Immediately show percentage updating for testing
+    // Modern loading messages
+    const loadingMessages = [
+        "Initializing experience...",
+        "Loading creative assets...", 
+        "Preparing portfolio...",
+        "Optimizing performance...",
+        "Almost ready...",
+        "Welcome! ✨"
+    ];
+
+    // Initialize progress display
     if (percentageElement) {
         percentageElement.textContent = '0%';
-        console.log('Initial percentage set to 0%');
     }
-
-    // Unique Digital Canvas Awakening Messages
-    const canvasMessages = [
-        "Stretching digital canvas...",
-        "Mixing color palettes...", 
-        "Loading creative brushes...",
-        "Awakening artistic soul...",
-        "Blending imagination layers...",
-        "Finalizing masterpiece setup...",
-        "Canvas ready for creation! ✨"
-    ];
 
     // Initialize Digital Canvas Awakening Effect
     if (canvas) {

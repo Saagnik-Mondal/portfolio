@@ -1,0 +1,552 @@
+/* ===========================================
+   PREMIUM LOADING SCREEN - MODERN DESIGN
+   =========================================== */
+
+/* Prevent scrolling during loading */
+body:not(.loaded) {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+body:not(.loaded) #header,
+body:not(.loaded) .hero,
+body:not(.loaded) .section {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Main loader container */
+.loader {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1), transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(236, 72, 153, 0.1), transparent 50%),
+        linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    overflow: hidden;
+}
+
+.loader.active {
+    display: flex !important;
+}
+
+/* Advanced particle system */
+.loader::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #8b5cf6, transparent),
+        radial-gradient(2px 2px at 40px 70px, #ec4899, transparent),
+        radial-gradient(1px 1px at 90px 40px, #06b6d4, transparent),
+        radial-gradient(1px 1px at 130px 80px, #10b981, transparent),
+        radial-gradient(3px 3px at 160px 20px, #f59e0b, transparent),
+        radial-gradient(1px 1px at 200px 90px, #ef4444, transparent);
+    background-repeat: repeat;
+    background-size: 300px 300px;
+    animation: particle-float 25s linear infinite;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 50px 50px, rgba(139, 92, 246, 0.8), transparent),
+        radial-gradient(2px 2px at 150px 150px, rgba(236, 72, 153, 0.6), transparent),
+        radial-gradient(1px 1px at 250px 100px, rgba(6, 182, 212, 0.7), transparent);
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    animation: particle-drift 30s linear infinite reverse;
+    opacity: 0.2;
+    z-index: 2;
+}
+
+@keyframes particle-float {
+    0% { 
+        transform: translateY(0px) translateX(0px) rotate(0deg); 
+        opacity: 0.4;
+    }
+    25% { 
+        transform: translateY(-80px) translateX(120px) rotate(90deg); 
+        opacity: 0.6;
+    }
+    50% { 
+        transform: translateY(-40px) translateX(-80px) rotate(180deg); 
+        opacity: 0.8;
+    }
+    75% { 
+        transform: translateY(-120px) translateX(60px) rotate(270deg); 
+        opacity: 0.5;
+    }
+    100% { 
+        transform: translateY(-200px) translateX(40px) rotate(360deg); 
+        opacity: 0.4;
+    }
+}
+
+@keyframes particle-drift {
+    0% { 
+        transform: translateX(0px) translateY(0px) scale(1); 
+        opacity: 0.2;
+    }
+    50% { 
+        transform: translateX(-150px) translateY(100px) scale(1.2); 
+        opacity: 0.4;
+    }
+    100% { 
+        transform: translateX(-300px) translateY(200px) scale(0.8); 
+        opacity: 0.2;
+    }
+}
+
+/* Welcome screen */
+.welcome-screen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: 
+        radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.15), transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.15), transparent 50%),
+        linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity 0.8s ease-out;
+    overflow: hidden;
+}
+
+.welcome-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.welcome-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #06b6d4 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    opacity: 0;
+    animation: welcome-entrance 2s ease-out forwards;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.welcome-text::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    background: 
+        conic-gradient(from 0deg, 
+            transparent, 
+            rgba(139, 92, 246, 0.2) 90deg,
+            transparent 180deg,
+            rgba(236, 72, 153, 0.2) 270deg,
+            transparent
+        );
+    border-radius: 50%;
+    animation: welcome-halo 4s linear infinite;
+    z-index: -1;
+    filter: blur(20px);
+}
+
+@keyframes welcome-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes welcome-halo {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.realm-subtitle {
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    opacity: 0;
+    animation: subtitle-entrance 2s ease-out 0.5s forwards;
+    letter-spacing: 0.1em;
+}
+
+@keyframes subtitle-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+/* Main loader content with entrance animation */
+.loader-content {
+    position: relative;
+    z-index: 100;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 4rem 2rem;
+    background: 
+        linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.1) 0%, 
+            rgba(255, 255, 255, 0.05) 100%
+        );
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: loader-entrance 1s ease-out 0.5s forwards;
+}
+
+@keyframes loader-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Loading text and percentage */
+.loading-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.loading-label {
+    color: #ffffff;
+    opacity: 0;
+    animation: label-fade-in 1s ease-out 0.5s forwards;
+}
+
+.loading-dash {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: dash-fade-in 1s ease-out 0.7s forwards;
+}
+
+.loading-percentage {
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    min-width: 5rem;
+    text-align: left;
+    font-size: 2.5rem;
+    font-weight: 800;
+    opacity: 0;
+    animation: percentage-fade-in 1s ease-out 0.9s forwards;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes label-fade-in {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dash-fade-in {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 0.5; transform: scale(1); }
+}
+
+@keyframes percentage-fade-in {
+    0% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Progress bar */
+.loader-progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6 0%, #ec4899 50%, #06b6d4 100%);
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 
+        0 0 20px rgba(139, 92, 246, 0.5),
+        0 0 40px rgba(236, 72, 153, 0.3);
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8));
+    animation: progress-shine 2s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-20px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(20px); opacity: 0; }
+}
+
+/* Loading messages */
+.loading-messages {
+    margin: 2rem 0;
+    height: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.message {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.05em;
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+    transition: all 0.5s ease;
+    white-space: nowrap;
+}
+
+.message.active {
+    opacity: 1;
+    animation: message-pulse 0.8s ease-out;
+}
+
+@keyframes message-pulse {
+    0% { 
+        opacity: 0; 
+        transform: translateX(-50%) translateY(10px) scale(0.95); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateX(-50%) translateY(0) scale(1); 
+    }
+}
+
+/* Loading dots animation */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    animation: dot-bounce 1.4s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+.dot:nth-child(4) { animation-delay: 0.6s; }
+.dot:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes dot-bounce {
+    0%, 80%, 100% { 
+        transform: translateY(0) scale(1); 
+        opacity: 0.7;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    }
+    40% { 
+        transform: translateY(-12px) scale(1.3); 
+        opacity: 1;
+        background: linear-gradient(135deg, #06b6d4, #10b981);
+        box-shadow: 
+            0 0 20px rgba(139, 92, 246, 0.8),
+            0 0 40px rgba(6, 182, 212, 0.4);
+    }
+}
+
+/* Pulse effect for the entire loader */
+.loader.active .loader-content {
+    animation: 
+        loader-entrance 1s ease-out 0.5s forwards,
+        subtle-pulse 4s ease-in-out 2s infinite;
+}
+
+@keyframes subtle-pulse {
+    0%, 100% { 
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            0 0 60px rgba(139, 92, 246, 0.1);
+    }
+}
+
+/* Skip buttons */
+.skip-intro, .skip-loader {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: 
+        linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.1) 0%, 
+            rgba(255, 255, 255, 0.05) 100%
+        );
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: skip-fade-in 0.5s ease-out 2s forwards;
+}
+
+.skip-intro:hover, .skip-loader:hover {
+    background: 
+        linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.2) 0%, 
+            rgba(255, 255, 255, 0.1) 100%
+        );
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+@keyframes skip-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .welcome-text {
+        font-size: clamp(2rem, 10vw, 4rem);
+    }
+    
+    .loader-content {
+        max-width: 90%;
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+    
+    .loading-text {
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .loading-percentage {
+        font-size: 2rem;
+    }
+    
+    .skip-intro, .skip-loader {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .message {
+        font-size: 0.9rem;
+    }
+}
+
+/* High performance mode for older devices */
+@media (max-width: 480px) {
+    .loader::before {
+        display: none; /* Disable particles on small screens */
+    }
+    
+    .welcome-text::after {
+        display: none; /* Disable halo effect */
+    }
+    
+    .progress-bar::after {
+        display: none; /* Disable shine effect */
+    }
+    
+    .loader-content {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: none;
+    }
+}
