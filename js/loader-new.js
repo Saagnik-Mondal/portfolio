@@ -201,25 +201,66 @@ class ProgressiveLoader {
             this.loader.classList.add('loaded');
         }
         
-        // Ensure content is fully visible
+        // Move content from loader to body before removing loader
         if (this.contentContainer) {
+            // Make content fully visible and add class to maintain visibility
             this.contentContainer.style.opacity = '1';
             this.contentContainer.style.transform = 'scale(1)';
+            this.contentContainer.style.position = 'relative';
+            this.contentContainer.style.zIndex = '1';
+            this.contentContainer.classList.add('moved-to-body');
+            
+            // Move content to body (before the loader)
+            document.body.insertBefore(this.contentContainer, this.loader);
+            
+            // Ensure content is properly positioned
+            const header = this.contentContainer.querySelector('#header');
+            const hero = this.contentContainer.querySelector('.hero');
+            
+            if (header) {
+                header.style.position = 'fixed';
+                header.style.top = '0';
+                header.style.left = '0';
+                header.style.width = '100%';
+                header.style.zIndex = '1000';
+                header.style.opacity = '1';
+                header.style.visibility = 'visible';
+                header.style.display = 'block';
+            }
+            
+            if (hero) {
+                hero.style.opacity = '1';
+                hero.style.visibility = 'visible';
+                hero.style.height = '100vh';
+                hero.style.minHeight = '100vh';
+                hero.style.marginTop = '0';
+                hero.style.paddingTop = '0';
+                hero.style.display = 'block';
+                hero.style.position = 'relative';
+            }
+            
+            console.log('Content moved to body and positioned correctly');
         }
         
-        // Remove loading overlay
+        // Force scroll to top
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
+        // Remove loading overlay first
         setTimeout(() => {
             if (this.loadingOverlay) {
                 this.loadingOverlay.remove();
             }
-        }, 1000);
+        }, 500);
         
-        // Remove entire loader after transition
+        // Remove entire loader after content is moved
         setTimeout(() => {
             if (this.loader && this.loader.parentNode) {
                 this.loader.remove();
             }
-        }, 2000);
+            console.log('Loader removed - content should now be visible');
+        }, 1000);
     }
     
     preventScroll() {

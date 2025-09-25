@@ -232,6 +232,14 @@ body.loaded .hero {
     transform: scale(1);
 }
 
+/* Ensure content stays visible after loader removal */
+.loading-content-container.moved-to-body {
+    position: relative !important;
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    z-index: 1 !important;
+}
+
 /* Loading Elements (Progressive Appearance) */
 .loading-element {
     opacity: 0;
