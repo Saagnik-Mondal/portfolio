@@ -1,0 +1,133 @@
+/* Simple, Reliable Loading Screen */
+
+/* Loading Screen Container */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+}
+
+/* Loading Content */
+.loader-content {
+  text-align: center;
+}
+
+.loader-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.loader-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 300px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin: 2rem 0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Loading Percentage */
+.loading-percent {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00ffff;
+  margin: 1rem 0;
+}
+
+/* Loading Status */
+.loading-status {
+  font-size: 1rem;
+  color: #ffffff;
+  opacity: 0.7;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  }
+  50% { 
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  }
+}
+
+/* Fade out animation */
+#loading-screen.fade-out {
+  animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* Hide main content while loading */
+body.loading #header,
+body.loading #home,
+body.loading #about,
+body.loading #artwork,
+body.loading #projects,
+body.loading #contact {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Show content after loading */
+body:not(.loading) #header,
+body:not(.loading) #home,
+body:not(.loading) #about,
+body:not(.loading) #artwork,
+body:not(.loading) #projects,
+body:not(.loading) #contact {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .loader-title {
+    font-size: 2.5rem;
+  }
+  
+  .loader-subtitle {
+    font-size: 1rem;
+  }
+  
+  .progress-container {
+    width: 250px;
+  }
+}
