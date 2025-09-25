@@ -265,10 +265,13 @@ class LoadingScreen {
     }
 }
 
-// Initialize loading screen when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Create loading screen
-    const loadingScreen = new LoadingScreen({
+// Initialize loading screen IMMEDIATELY - don't wait for DOM
+let globalLoadingScreen = null;
+
+// Create loading screen as soon as this script loads
+(function() {
+    // Create loading screen immediately
+    globalLoadingScreen = new LoadingScreen({
         duration: 5000,
         onComplete: () => {
             console.log('Loading completed - Portfolio ready!');
@@ -276,20 +279,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Allow users to skip loading by pressing any key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
-            loadingScreen.skip();
-        }
-    });
+    // Set up skip functionality immediately
+    const setupSkipHandlers = () => {
+        // Allow users to skip loading by pressing any key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+                if (globalLoadingScreen) {
+                    globalLoadingScreen.skip();
+                }
+            }
+        });
+        
+        // Allow clicking to skip
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.loading-screen')) {
+                if (globalLoadingScreen) {
+                    globalLoadingScreen.skip();
+                }
+            }
+        });
+    };
     
-    // Allow clicking to skip
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.loading-screen')) {
-            loadingScreen.skip();
-        }
-    });
-});
+    // Setup handlers immediately or when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupSkipHandlers);
+    } else {
+        setupSkipHandlers();
+    }
+})();
 
 // Export for manual usage
 window.LoadingScreen = LoadingScreen;

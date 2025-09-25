@@ -246,14 +246,25 @@ body.loading .artwork-gallery {
   opacity: 0;
 }
 
+/* Hide content by default until loading completes */
+body main,
+body header,
+body section:not(.loading-screen),
+body .artwork-gallery,
+body .hero {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
 /* Content visible after loading */
 body:not(.loading) main,
 body:not(.loading) header,
 body:not(.loading) section:not(.loading-screen),
-body:not(.loading) .artwork-gallery {
+body:not(.loading) .artwork-gallery,
+body:not(.loading) .hero {
   visibility: visible;
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
 }
 
 /* Responsive design */

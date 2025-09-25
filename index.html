@@ -18,11 +18,27 @@
     <link rel="stylesheet" href="css/awwwards-effects.css">
     <link rel="stylesheet" href="css/artwork-gallery.css">
     <link rel="stylesheet" href="css/loading-screen.css">
+    
+    <!-- Loading Screen Scripts - Must load immediately -->
+    <script src="js/DecryptedText.js"></script>
+    <script src="js/loading-screen.js"></script>
 </head>
-<body>
+<body class="loading">
+    <!-- Immediate loading screen initialization -->
+    <script>
+        // Apply loading class immediately
+        document.body.classList.add('loading');
+        document.documentElement.classList.add('loading');
+        
+        // Hide content immediately
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        
+        // Ensure we start at top
+        if (window.scrollTo) window.scrollTo(0, 0);
+    </script>
 
-
-    <!-- Main Content (moved outside loader) -->
+    <!-- Main Content (hidden during loading) -->
     <header id="header">
         <nav>
             <div class="logo">SM</div>
@@ -378,8 +394,6 @@
     </section>
 
     <!-- Load Scripts -->
-    <script src="js/DecryptedText.js"></script>
-    <script src="js/loading-screen.js"></script>
     <script src="js/LaserFlow.js"></script>
     <script src="js/awwwards-effects.js"></script>
     <script>
