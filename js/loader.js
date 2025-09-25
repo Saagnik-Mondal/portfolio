@@ -606,6 +606,9 @@ function startWelcomeSequence() {
             if (realmEntry) {
                 realmEntry.classList.add('active');
                 
+                // Add multiple portal layers for dimensional effect
+                createDimensionalPortal(realmEntry);
+                
                 // Add magical particle effects for realm entry
                 createRealmParticles(realmEntry);
             }
@@ -631,6 +634,68 @@ function startWelcomeSequence() {
         }, 4000);
         
     }, 3000);
+}
+
+// Create multi-layered dimensional portal
+function createDimensionalPortal(container) {
+    const existingPortal = container.querySelector('.portal-effect');
+    
+    // Create additional portal layers for depth
+    for (let i = 0; i < 3; i++) {
+        const portalLayer = document.createElement('div');
+        const scale = 1 - (i * 0.2);
+        const rotation = i * 120;
+        
+        portalLayer.style.cssText = `
+            position: absolute;
+            width: ${400 * scale}px;
+            height: ${400 * scale}px;
+            border-radius: 50%;
+            background: conic-gradient(from ${rotation}deg, 
+                transparent 10%, 
+                rgba(255, 121, 198, ${0.3 - i * 0.1}) 30%, 
+                rgba(139, 92, 246, ${0.4 - i * 0.1}) 50%, 
+                rgba(78, 205, 196, ${0.3 - i * 0.1}) 70%, 
+                transparent 90%
+            );
+            animation: portal-spin ${4 + i}s linear infinite reverse;
+            opacity: ${0.6 - i * 0.15};
+            filter: blur(${2 + i}px);
+            box-shadow: 0 0 ${60 + i * 20}px rgba(255, 121, 198, ${0.4 - i * 0.1});
+            z-index: ${10 - i};
+        `;
+        
+        if (existingPortal) {
+            container.insertBefore(portalLayer, existingPortal);
+        }
+    }
+    
+    // Add swirling energy rings
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const energyRing = document.createElement('div');
+            energyRing.style.cssText = `
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                border: 2px solid rgba(255, 121, 198, 0.8);
+                border-radius: 50%;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                animation: energy-expand 2s ease-out forwards;
+                z-index: 20;
+            `;
+            
+            container.appendChild(energyRing);
+            
+            setTimeout(() => {
+                if (energyRing.parentNode) {
+                    energyRing.parentNode.removeChild(energyRing);
+                }
+            }, 2000);
+        }, i * 400);
+    }
 }
 
 // Create magical particles for realm entry
