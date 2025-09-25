@@ -552,25 +552,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Initialize loading when page loads
+// Initialize the complete welcome sequence when page loads
 window.addEventListener('load', () => {
-    console.log('Page fully loaded - Starting loader animation');
+    console.log('Page fully loaded - Starting welcome sequence');
     
     // Fallback timeout in case something goes wrong
     const fallbackTimeout = setTimeout(() => {
         console.log('Loading fallback triggered');
         completeNeuralLoading();
-    }, 15000); // 15 second maximum
+    }, 20000); // 20 second maximum for full sequence
     
     // Clear fallback if animation completes normally
     window.addEventListener('loaderComplete', () => {
         clearTimeout(fallbackTimeout);
     });
     
-    // Start loader with a small delay to ensure it's visible
+    // Start the complete welcome sequence
     setTimeout(() => {
-        initLoaderAnimation();
-    }, 300);
+        startWelcomeSequence();
+    }, 500);
     
     // Add reload function for debugging
     window.reloadPage = function() {
@@ -578,3 +578,104 @@ window.addEventListener('load', () => {
         location.reload(true); // Force reload from server, not cache
     };
 });
+
+// Complete Welcome Sequence: Welcome → Realm Entry → Digital Canvas
+function startWelcomeSequence() {
+    console.log('Starting Mac-style welcome sequence');
+    
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const realmEntry = document.getElementById('realm-entry');
+    const loader = document.getElementById('loader');
+    
+    // Ensure all elements are properly positioned
+    if (welcomeScreen) welcomeScreen.style.display = 'flex';
+    if (realmEntry) realmEntry.style.display = 'flex';
+    if (loader) loader.style.display = 'flex';
+    
+    // Phase 1: Mac Welcome (3 seconds)
+    console.log('Phase 1: Mac Welcome');
+    
+    setTimeout(() => {
+        // Fade out welcome, show realm entry
+        console.log('Phase 2: Realm Entry');
+        if (welcomeScreen) {
+            welcomeScreen.classList.add('fade-out');
+        }
+        
+        setTimeout(() => {
+            if (realmEntry) {
+                realmEntry.classList.add('active');
+                
+                // Add magical particle effects for realm entry
+                createRealmParticles(realmEntry);
+            }
+        }, 500);
+        
+        // Phase 3: Enter Digital Canvas (after 4 seconds total)
+        setTimeout(() => {
+            console.log('Phase 3: Digital Canvas Awakening');
+            
+            if (realmEntry) {
+                realmEntry.classList.add('fade-out');
+            }
+            
+            setTimeout(() => {
+                // Hide welcome and realm screens completely
+                if (welcomeScreen) welcomeScreen.style.display = 'none';
+                if (realmEntry) realmEntry.style.display = 'none';
+                
+                // Start the Digital Canvas animation
+                initLoaderAnimation();
+            }, 1500);
+            
+        }, 4000);
+        
+    }, 3000);
+}
+
+// Create magical particles for realm entry
+function createRealmParticles(container) {
+    const particleContainer = document.createElement('div');
+    particleContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 10;
+    `;
+    
+    container.appendChild(particleContainer);
+    
+    // Create floating magical particles
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const particle = document.createElement('div');
+            const colors = ['#FF79C6', '#8B5CF6', '#4ECDC4', '#FF6B6B', '#FFEAA7'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 4 + 2}px;
+                height: ${Math.random() * 4 + 2}px;
+                background: ${randomColor};
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                opacity: ${Math.random() * 0.8 + 0.2};
+                animation: realm-particle-float ${Math.random() * 3 + 2}s ease-in-out infinite;
+                box-shadow: 0 0 10px ${randomColor};
+            `;
+            
+            particleContainer.appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 5000);
+        }, i * 50);
+    }
+}

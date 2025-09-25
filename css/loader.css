@@ -9,14 +9,14 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(45deg, #000000, #0a0e1a, #1a0a2e);
-    display: flex !important;
+    display: none;
     align-items: center;
     justify-content: center;
-    z-index: 99999;
+    z-index: 999;
     overflow: hidden;
     font-family: 'Courier New', monospace;
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 1;
+    visibility: visible;
 }
 
 #loader-canvas {
@@ -27,6 +27,258 @@
     height: 100vh;
     z-index: 1;
     pointer-events: none;
+}
+
+/* Mac-style Welcome Animation */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #000000, #1a1a2e, #16213e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 2s ease-out;
+}
+
+.welcome-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.welcome-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 200;
+    color: #ffffff;
+    text-align: center;
+    opacity: 0;
+    animation: welcome-fade-in 3s ease-out forwards;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes welcome-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    85% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Realm Entry Animation */
+.realm-entry {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1), rgba(0, 0, 0, 0.9));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.realm-entry.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.realm-entry.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.realm-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 300;
+    color: #ffffff;
+    text-align: center;
+    opacity: 0;
+    margin-bottom: 2rem;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 40px rgba(255, 121, 198, 0.6);
+    animation: realm-text-enter 2s ease-out forwards;
+}
+
+.realm-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 200;
+    color: #8B5CF6;
+    text-align: center;
+    opacity: 0;
+    letter-spacing: 0.1em;
+    animation: realm-text-enter 2s ease-out 0.5s forwards;
+}
+
+@keyframes realm-text-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+        filter: blur(10px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(-5px) scale(1.02);
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Enhanced Portal Effect for Realm Entry */
+.portal-effect {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, 
+        transparent, 
+        #FF79C6, 
+        #8B5CF6, 
+        #4ECDC4, 
+        #FF6B6B,
+        #FFEAA7,
+        transparent
+    );
+    animation: portal-spin 3s linear infinite, portal-pulse 2s ease-in-out infinite alternate;
+    opacity: 0.6;
+    filter: blur(1px);
+    box-shadow: 
+        0 0 60px rgba(255, 121, 198, 0.4),
+        0 0 120px rgba(139, 92, 246, 0.3),
+        inset 0 0 80px rgba(78, 205, 196, 0.2);
+}
+
+.portal-effect::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background: radial-gradient(circle, 
+        transparent 60%, 
+        rgba(0, 0, 0, 0.3) 70%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    border-radius: 50%;
+    animation: portal-inner-glow 2s ease-in-out infinite alternate;
+}
+
+.portal-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, 
+        rgba(255, 121, 198, 0.2) 0%,
+        rgba(139, 92, 246, 0.1) 50%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    animation: portal-core-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes portal-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes portal-pulse {
+    0% { 
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    100% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+        filter: blur(2px);
+    }
+}
+
+@keyframes portal-inner-glow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+@keyframes portal-core-pulse {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.2;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.6;
+    }
+}
+
+@keyframes realm-particle-float {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px) scale(1);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px) scale(1.2);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-10px) translateX(-15px) scale(0.8);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(-30px) translateX(5px) scale(1.1);
+        opacity: 0.6;
+    }
+}
+
+/* Mobile Responsive for Welcome/Realm */
+@media (max-width: 768px) {
+    .welcome-text {
+        font-size: clamp(2rem, 10vw, 4rem);
+    }
+    
+    .realm-title {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+        margin-bottom: 1rem;
+    }
+    
+    .realm-subtitle {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+    
+    .portal-effect {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 .loader-content {
