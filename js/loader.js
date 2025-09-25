@@ -636,65 +636,105 @@ function startWelcomeSequence() {
     }, 3000);
 }
 
-// Create multi-layered dimensional portal
+// Create Revolutionary Neural Network Genesis Effect
 function createDimensionalPortal(container) {
-    const existingPortal = container.querySelector('.portal-effect');
-    
-    // Create additional portal layers for depth
-    for (let i = 0; i < 3; i++) {
-        const portalLayer = document.createElement('div');
-        const scale = 1 - (i * 0.2);
-        const rotation = i * 120;
-        
-        portalLayer.style.cssText = `
-            position: absolute;
-            width: ${400 * scale}px;
-            height: ${400 * scale}px;
-            border-radius: 50%;
-            background: conic-gradient(from ${rotation}deg, 
-                transparent 10%, 
-                rgba(255, 121, 198, ${0.3 - i * 0.1}) 30%, 
-                rgba(139, 92, 246, ${0.4 - i * 0.1}) 50%, 
-                rgba(78, 205, 196, ${0.3 - i * 0.1}) 70%, 
-                transparent 90%
-            );
-            animation: portal-spin ${4 + i}s linear infinite reverse;
-            opacity: ${0.6 - i * 0.15};
-            filter: blur(${2 + i}px);
-            box-shadow: 0 0 ${60 + i * 20}px rgba(255, 121, 198, ${0.4 - i * 0.1});
-            z-index: ${10 - i};
-        `;
-        
-        if (existingPortal) {
-            container.insertBefore(portalLayer, existingPortal);
-        }
+    // Create Neural Network Nodes
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const neuralNode = document.createElement('div');
+            const size = Math.random() * 8 + 4;
+            const x = Math.random() * 80 + 10; // 10% to 90% of container width
+            const y = Math.random() * 80 + 10; // 10% to 90% of container height
+            
+            neuralNode.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: radial-gradient(circle, rgba(138, 43, 226, 1), rgba(75, 0, 130, 0.5));
+                border-radius: 50%;
+                left: ${x}%;
+                top: ${y}%;
+                opacity: 0;
+                animation: neural-node-genesis ${2 + Math.random() * 3}s ease-out forwards;
+                box-shadow: 
+                    0 0 ${size * 2}px rgba(138, 43, 226, 0.8),
+                    0 0 ${size * 4}px rgba(75, 0, 130, 0.4);
+                z-index: 100;
+            `;
+            
+            container.appendChild(neuralNode);
+            
+            // Create connecting synapses between nodes
+            if (i > 0) {
+                const synapseDelay = Math.random() * 1000;
+                setTimeout(() => {
+                    const synapse = document.createElement('div');
+                    const angle = Math.random() * 360;
+                    const length = Math.random() * 200 + 50;
+                    
+                    synapse.style.cssText = `
+                        position: absolute;
+                        width: ${length}px;
+                        height: 1px;
+                        background: linear-gradient(90deg, 
+                            rgba(138, 43, 226, 0), 
+                            rgba(138, 43, 226, 0.6) 50%, 
+                            rgba(138, 43, 226, 0)
+                        );
+                        left: ${x}%;
+                        top: ${y}%;
+                        transform-origin: 0 0;
+                        transform: rotate(${angle}deg);
+                        opacity: 0;
+                        animation: synapse-formation 2s ease-out forwards;
+                        box-shadow: 0 0 3px rgba(138, 43, 226, 0.8);
+                        z-index: 50;
+                    `;
+                    
+                    container.appendChild(synapse);
+                }, synapseDelay);
+            }
+            
+            // Remove nodes after animation completes
+            setTimeout(() => {
+                if (neuralNode.parentNode) {
+                    neuralNode.style.animation = 'neural-node-dissolution 1s ease-out forwards';
+                    setTimeout(() => {
+                        if (neuralNode.parentNode) {
+                            neuralNode.parentNode.removeChild(neuralNode);
+                        }
+                    }, 1000);
+                }
+            }, 8000);
+            
+        }, i * 200);
     }
     
-    // Add swirling energy rings
-    for (let i = 0; i < 5; i++) {
+    // Create Consciousness Emergence Waves
+    for (let i = 0; i < 8; i++) {
         setTimeout(() => {
-            const energyRing = document.createElement('div');
-            energyRing.style.cssText = `
+            const consciousnessWave = document.createElement('div');
+            consciousnessWave.style.cssText = `
                 position: absolute;
-                width: 50px;
-                height: 50px;
-                border: 2px solid rgba(255, 121, 198, 0.8);
-                border-radius: 50%;
+                width: 2px;
+                height: 2px;
+                background: rgba(138, 43, 226, 0.9);
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
-                animation: energy-expand 2s ease-out forwards;
-                z-index: 20;
+                border-radius: 50%;
+                animation: consciousness-wave-expansion 3s ease-out forwards;
+                z-index: 25;
             `;
             
-            container.appendChild(energyRing);
+            container.appendChild(consciousnessWave);
             
             setTimeout(() => {
-                if (energyRing.parentNode) {
-                    energyRing.parentNode.removeChild(energyRing);
+                if (consciousnessWave.parentNode) {
+                    consciousnessWave.parentNode.removeChild(consciousnessWave);
                 }
-            }, 2000);
-        }, i * 400);
+            }, 3000);
+        }, i * 500);
     }
 }
 
