@@ -1,749 +1,258 @@
 <!DOCTYPE html>
-<html lang="en" class="has-scroll-init has-scroll-smooth" data-scroll-direction="vertical">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saagnik Mondal - Creative Developer & Designer</title>
-    <meta name="description" content="Saagnik Mondal creative developer & designer experimental portfolio">
-    <meta name="author" content="Saagnik Mondal">
-    <meta name="keywords" content="Portfolio Saagnik Mondal Developer Designer Digital Artist">
+    <title>Saagnik Mondal - Digital Artist Portfolio</title>
     
+    <!-- External Libraries -->
     <script src="js/gsap.min.js"></script>
     <script src="js/ScrollTrigger.min.js"></script>
     <script src="js/three.min.js"></script>
     <script src="js/tone.min.js"></script>
     
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #000000;
-            --secondary-color: #ffffff;
-            --accent-color: #ff0040;
-            --text-color: #ffffff;
-            --bg-color: #000000;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            cursor: none;
-            overflow-x: hidden;
-            line-height: 1.4;
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: var(--secondary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: all 0.3s ease;
-        }
-
-        .cursor.hovering {
-            transform: scale(3);
-            background: var(--accent-color);
-            mix-blend-mode: normal;
-        }
-
-        /* Loading Screen */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-
-        .loader__content {
-            text-align: center;
-        }
-
-        .loader__text {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            opacity: 0.5;
-        }
-
-        .loader__progress {
-            width: 200px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loader__bar {
-            position: absolute;
-            left: -100%;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background: var(--accent-color);
-            animation: loading 2s ease-in-out forwards;
-        }
-
-        @keyframes loading {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* --- Custom Cursor --- */
-        #cursor, #cursor-follower {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            border-radius: 50%;
-            z-index: 10002; /* Increased z-index to be above the enter screen */
-            transition: transform 0.2s ease-out, opacity 0.3s ease-in-out;
-        }
-        #cursor {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-        }
-        #cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--accent-color);
-            opacity: 0.5;
-        }
-        .cursor-active #cursor-follower, .cursor-hover #cursor-follower {
-            transform: scale(1.5);
-        }
-        .cursor-active #cursor, .cursor-hover #cursor {
-            opacity: 0;
-        }
-
-        /* --- WebGL Canvas Background --- */
-        #hero-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: 0;
-        }
-        
-        /* --- Navigation --- */
-        #main-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(0, 0, 10, 0.8), transparent);
-            transform: translateY(-100%);
-            transition: transform 0.5s ease-in-out;
-        }
-        #main-nav.is-visible {
-            transform: translateY(0);
-        }
-        .nav-link {
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
-
-        /* --- Art Journey Section --- */
-        .art-slide {
-            mix-blend-mode: lighten;
-        }
-        .art-image {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            scale: 1.1;
-        }
-        .art-info {
-            position: relative;
-            z-index: 10;
-            mix-blend-mode: difference; /* Creative text effect over images */
-            color: white;
-            padding: 5vw;
-        }
-
-        /* --- Horizontal Gallery --- */
-        #gallery-section {
-            padding: 10vh 0;
-            overflow: hidden;
-            background-color: #111;
-        }
-        .gallery-container {
-            display: flex;
-            gap: 4vw;
-            padding: 0 5vw;
-        }
-        .gallery-item {
-            flex-shrink: 0;
-            width: 40vw; /* Wider items */
-            height: 60vh;
-            border-radius: 0.5rem;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-        
-        /* --- Unique Gemini Button --- */
-        .gemini-button {
-            background-color: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--heading-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        .gemini-button:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        /* --- Loader --- */
-        .loader {
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .split-char { display: inline-block; }
-
-        /* Manually Added Utility Classes (Replacement for Tailwind CDN) */
-        .absolute { position: absolute; }
-        .relative { position: relative; }
-        .fixed { position: fixed; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .z-0 { z-index: 0; }
-        .z-10 { z-index: 10; }
-        .z-100 { z-index: 100; }
-        .h-screen { height: 100vh; }
-        .w-full { width: 100%; }
-        .w-1\/2 { width: 50%; }
-        .container { width: 100%; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .max-w-2xl { max-width: 42rem; }
-        .max-w-4xl { max-width: 56rem; }
-        .flex { display: flex; }
-        .inline-flex { display: inline-flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-end { justify-content: flex-end; }
-        .gap-8 { gap: 2rem; }
-        .p-4 { padding: 1rem; }
-        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
-        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mt-6 { margin-top: 1.5rem; }
-        .mt-8 { margin-top: 2rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mb-12 { margin-bottom: 3rem; }
-        .mb-16 { margin-bottom: 4rem; }
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .text-base { font-size: 1rem; line-height: 1.5rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-        .text-5xl { font-size: 3rem; line-height: 1; }
-        .text-6xl { font-size: 3.75rem; line-height: 1; }
-        .font-bold { font-weight: 700; }
-        .font-semibold { font-weight: 600; }
-        .font-medium { font-weight: 500; }
-        .uppercase { text-transform: uppercase; }
-        .tracking-wider { letter-spacing: 0.05em; }
-        .text-neutral-300 { color: rgb(212 212 212); }
-        .text-neutral-400 { color: rgb(163 163 163); }
-        .text-neutral-600 { color: rgb(82 82 82); }
-        .leading-relaxed { line-height: 1.625; }
-        .rounded-full { border-radius: 9999px; }
-        .bg-black { background-color: #000; }
-        .opacity-0 { opacity: 0; }
-        .overflow-hidden { overflow: hidden; }
-        .hidden { display: none; }
-        .hover\:underline:hover { text-decoration-line: underline; }
-        @media (min-width: 768px) {
-            .md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-            .md\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-            .md\:text-5xl { font-size: 3rem; line-height: 1; }
-            .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
-            .md\:text-8xl { font-size: 6rem; line-height: 1; }
-            .md\:text-9xl { font-size: 8rem; line-height: 1; }
-            .md\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
-        }
-    </style>
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/hero.css">
 </head>
-<body class="overscroll-none">
-    
-    <!-- Enter Screen -->
-    <div id="enter-screen">
-        <!-- New canvas for the "chaotic" particle background -->
-        <canvas id="enter-canvas" class="absolute inset-0 z-0"></canvas>
-        <button id="enter-button" class="relative z-10">Enter the Realm</button>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <canvas id="loader-canvas"></canvas>
+        <div class="loader-content">
+            <div class="loader-main">
+                <div class="loading-text">
+                    <span class="loading-label">LOADING</span>
+                    <span class="loading-dash">–</span>
+                    <span class="loading-percentage">0%</span>
+                </div>
+                <div class="loading-messages">
+                    <div class="message active">Awakening digital consciousness...</div>
+                    <div class="message">Connecting neural pathways...</div>
+                    <div class="message">Scanning creative dimensions...</div>
+                    <div class="message">Initializing art matrix...</div>
+                    <div class="message">Preparing visual feast...</div>
+                </div>
+                <div class="loading-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+            <div class="loader-progress">
+                <div class="progress-bar"></div>
+                <div class="progress-glow"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Custom Cursor Elements -->
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
 
-    <!-- Animated Hero Background -->
-    <canvas id="hero-canvas"></canvas>
-
-    <!-- Navigation Header -->
-    <nav id="main-nav">
-        <div class="font-bold text-lg tracking-wider">DA</div>
-        <div class="flex gap-8 text-sm font-medium text-neutral-300">
-            <a href="#art-journey" class="nav-link">Work</a>
-            <a href="#gallery-section" class="nav-link">Gallery</a>
-            <a href="#contact" class="nav-link">Contact</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="h-screen w-full flex flex-col items-center justify-center text-center p-4 relative z-10">
-        <h1 class="text-6xl md:text-9xl opacity-0">
-            <span class="hero-line">DIGITAL</span>
-            <span class="hero-line">ARTIST</span>
-        </h1>
-        <p class="hero-subtitle text-lg md:text-xl text-neutral-400 mt-6 max-w-2xl opacity-0">
-            A curated portfolio showcasing the intersection of technology and creativity through immersive digital art experiences.
-        </p>
+    <!-- Enhanced Header -->
+    <header id="header">
+        <nav>
+            <div class="logo">SM</div>
+            <ul class="nav-links">
+                <li><a href="#home" data-cursor-hover class="nav-hover-btn">Home</a></li>
+                <li><a href="#about" data-cursor-hover class="nav-hover-btn">About</a></li>
+                <li><a href="#projects" data-cursor-hover class="nav-hover-btn">Work</a></li>
+                <li><a href="#contact" data-cursor-hover class="nav-hover-btn">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main>
-        <!-- Pinned Scrolling Section for Featured Art -->
-        <div id="art-journey" class="relative h-screen w-full overflow-hidden">
-            <!-- All slides are positioned absolutely on top of each other -->
-            
-            <!-- Slide 1 -->
-            <div class="art-slide absolute inset-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #000000, #333333);"></div>
-                <div class="art-info flex items-center w-full h-full">
-                    <div class="w-1/2">
-                         <h2 class="artwork-title text-6xl md:text-8xl">Digital Dreamscape</h2>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 2 -->
-            <div class="art-slide absolute inset-0 opacity-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #44337A, #6C63FF);"></div>
-                 <div class="art-info flex items-center justify-end w-full h-full">
-                    <div class="w-1/2 text-right">
-                        <h2 class="artwork-title text-6xl md:text-8xl">Neon Visions</h2>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="art-slide absolute inset-0 opacity-0">
-                <div class="art-image" style="background: linear-gradient(135deg, #A95C68, #FFB6C1);"></div>
-                 <div class="art-info flex items-center w-full h-full">
-                    <div class="w-1/2">
-                        <h2 class="artwork-title text-6xl md:text-8xl">Abstract Flow</h2>
-                    </div>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <!-- Dynamic Background Gallery -->
+        <div class="hero__background">
+            <img class="hero__bg-image active" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Background 1">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Background 2">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Background 3">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Background 4">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Background 5">
+            <img class="hero__bg-image" src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Background 6">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Background 7">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Background 8">
         </div>
+        <div class="hero__bg-overlay"></div>
         
-        <!-- Interactive Description Section -->
-        <section class="py-20 md:py-32 bg-black flex flex-col items-center justify-center text-center">
-            <h3 class="text-2xl md:text-3xl text-neutral-400 mb-4">A Deeper Look</h3>
-            <p id="dynamic-description" class="text-4xl md:text-6xl font-bold max-w-4xl h-48 flex items-center justify-center">Where creativity meets technology in digital form.</p>
-            <div class="mt-8">
-                <button id="gemini-vision-button" class="gemini-button text-base font-semibold py-3 px-6 rounded-full inline-flex items-center">
-                    <span>✨ Shift Perspective</span>
-                </button>
-                <div id="vision-loader" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
-            </div>
-        </section>
-
-
-        <!-- Horizontal Gallery Section -->
-        <section id="gallery-section">
-            <div class="gallery-container">
-                <div class="gallery-item" style="background: linear-gradient(135deg, #311D3F, #8E44AD);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #004D40, #26A69A);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #BF360C, #FF7043);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #4E342E, #8D6E63);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #0D47A1, #42A5F5);"></div>
-                <div class="gallery-item" style="background: linear-gradient(135deg, #263238, #607D8B);"></div>
-            </div>
-        </section>
-
-    </main>
-    
-    <footer id="contact" class="py-20 md:py-32 bg-black">
-         <div class="container mx-auto px-6 max-w-4xl text-center">
-            <h2 class="text-4xl md:text-5xl mb-8">About the Artist</h2>
-            <p id="artist-bio" class="text-lg text-neutral-300 mb-12 leading-relaxed">I am a digital artist exploring the intersection of technology and emotion. My work aims to create immersive visual experiences that challenge perception and evoke a sense of wonder.</p>
-             <div class="mb-16">
-                <button id="generate-statement-button" class="gemini-button text-sm font-semibold py-2 px-5 rounded-full inline-flex items-center">✨ Regenerate Statement</button>
-                <div id="statement-loader-container" class="loader-container hidden mt-4 flex justify-center"><div class="loader"></div></div>
-            </div>
-            <h3 class="text-3xl mb-8">Get In Touch</h3>
-            <p class="text-neutral-400">For inquiries & commissions:</p>
-            <a href="mailto:hello@example.com" class="text-lg hover:underline" style="color: var(--accent-color);">hello@example.com</a>
+        <div class="hero__content">
+            <h1 class="hero__title fade-in animated-title">SAAGNIK MONDAL</h1>
+            <p class="hero__subtitle fade-in scroll-reveal">DIGITAL ARTIST & CREATIVE SOUL</p>
+            <button class="hero__cta btn-hover-effect fade-in" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
+                <div class="btn-text">
+                    <span>EXPLORE MY UNIVERSE</span>
+                    <span>ENTER THE REALM</span>
+                </div>
+            </button>
         </div>
-        <div class="text-center text-neutral-600 mt-16 text-sm">&copy; 2024 Your Name Here. All Rights Reserved.</div>
-    </footer>
+    </section>
 
-    <!-- JS Libraries (Local) -->
-    <script src="js/gsap.min.js"></script>
-    <script src="js/ScrollTrigger.min.js"></script>
-    <script src="js/three.min.js"></script>
-    <script src="js/tone.min.js"></script>
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section__title fade-in animated-title scroll-reveal">ABOUT SAAGNIK MONDAL</h2>
+            
+            <div class="about__content">
+                <!-- About Text -->
+                <div class="about__text-content slide-in-left">
+                    <div class="about__description">
+                        <h3>Digital Artist & Creative Visionary</h3>
+                        <p>
+                            Welcome to my creative universe! I'm Saagnik Mondal, a passionate digital artist specializing in 
+                            anime-style character design and illustration. My journey began with a love for storytelling through 
+                            visual art, and has evolved into a dedication to bringing characters to life with depth, emotion, and detail.
+                        </p>
+                        
+                        <h4>My Artistic Philosophy</h4>
+                        <p>
+                            Every character I create carries a story. I believe in the power of visual narrative to connect with 
+                            audiences on an emotional level. My work focuses on capturing the essence of personality through 
+                            carefully crafted expressions, dynamic poses, and intricate design details.
+                        </p>
+                        
+                        <h4>Specializations</h4>
+                        <ul class="about__skills">
+                            <li>🎨 Character Design & Development</li>
+                            <li>📐 Technical Reference Sheets</li>
+                            <li>⚔️ Fantasy & Mythological Characters</li>
+                            <li>💫 Anime & Manga Style Illustration</li>
+                            <li>🎭 Expression & Emotion Studies</li>
+                            <li>🎯 Concept Art for Games & Animation</li>
+                        </ul>
+                        
+                        <h4>Creative Process</h4>
+                        <p>
+                            My approach combines traditional art fundamentals with modern digital techniques. I start with 
+                            understanding the character's personality and story, then develop their visual representation 
+                            through iterative design, ensuring every detail serves the narrative purpose.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Image Slider -->
+                <div class="about__slider-container slide-in-right">
+                    <div class="image-slider">
+                        <div class="slider-track">
+                            <div class="slide active">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Sheet">
+                                <div class="slide-caption">Character Design Sheet - Anaya</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Warrior Pose">
+                                <div class="slide-caption">Dynamic Warrior Pose</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Battle Design">
+                                <div class="slide-caption">Futuristic Mythology Design</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Character Turnaround">
+                                <div class="slide-caption">Character Turnaround Reference</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Portrait Study">
+                                <div class="slide-caption">Detailed Portrait Study</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Character Refinement">
+                                <div class="slide-caption">Iterative Character Refinement</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Advanced Character Sheet">
+                                <div class="slide-caption">Advanced Character Development</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Warrior Spirit">
+                                <div class="slide-caption">Warrior Spirit Study</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slider Controls -->
+                        <button class="slider-btn prev-btn" onclick="portfolio.previousSlide()">‹</button>
+                        <button class="slider-btn next-btn" onclick="portfolio.nextSlide()">›</button>
+                        
+                        <!-- Slider Indicators -->
+                        <div class="slider-indicators">
+                            <span class="indicator active" onclick="portfolio.goToSlide(0)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(1)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(2)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(3)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(4)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(5)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(6)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(7)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section__title fade-in animated-title scroll-reveal">GET IN TOUCH</h2>
+            <div class="contact__content">
+                <p class="contact__text fade-in">
+                    Ready to bring your characters to life? Let's collaborate and create something amazing together!
+                </p>
+                <div class="contact__links fade-in">
+                    <a href="mailto:saagnik@example.com" class="contact__link" data-cursor-hover>
+                        📧 Email Me
+                    </a>
+                    <a href="#" class="contact__link" data-cursor-hover>
+                        🎨 View Portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Load Scripts -->
+    <script src="js/loader.js"></script>
     <script>
-        // Main Application Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            gsap.registerPlugin(ScrollTrigger);
+        // Basic portfolio functionality
+        const portfolio = {
+            currentSlide: 0,
+            slides: [],
+            indicators: [],
             
-            // --- NEW MEDITATIVE SOUND DESIGN ---
-            const reverb = new Tone.Reverb({ decay: 20, wet: 0.7 }).toDestination();
-            const filter = new Tone.Filter(600, "lowpass").connect(reverb);
-            const lfo = new Tone.LFO("0.1Hz", 400, 1000).start();
-            lfo.connect(filter.frequency);
-            const drone1 = new Tone.Oscillator({ type: 'sine', frequency: 'A1', volume: -18 }).connect(filter);
-            const drone2 = new Tone.Oscillator({ type: 'triangle', frequency: 'A2', detune: 4, volume: -26 }).connect(filter);
-
-            // --- INTRO SEQUENCE ---
-            function runCosmicJourney() {
-                const masterTimeline = gsap.timeline();
-                const heroH1 = document.querySelector('header h1');
-                const heroP = document.querySelector('header p');
-
-                masterTimeline.to(camera.position, { z: 150, duration: 4, ease: 'power3.inOut' }, 0);
-                masterTimeline.to(galaxy.rotation, { z: 2, duration: 4, ease: 'power1.inOut' }, 0);
-                masterTimeline.to(galaxy.material.opacity, { value: 0, duration: 2, ease: 'power2.in' }, "-=1.5");
-                masterTimeline.to(cosmicDust.material.opacity, { value: 0.7, duration: 3, ease: 'power2.out' }, "-=1");
-                masterTimeline.to(camera.position, { z: 5, duration: 3, ease: 'power2.inOut' }, ">-1");
-
-                gsap.utils.toArray('.hero-line').forEach(line => {
-                    const chars = line.textContent.split('').map(char => `<span class="split-char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-                    line.innerHTML = chars;
-                });
-                
-                masterTimeline
-                    .to(heroH1, { opacity: 1 }, "-=1.5")
-                    .from('.hero-line .split-char', { yPercent: 120, opacity: 0, stagger: 0.02, duration: 1.2, ease: 'power4.out' }, "<")
-                    .to(heroP, { opacity: 1 }, "-=0.5")
-                    .from(heroP, { y: 20, duration: 1, ease: 'power2.out' }, "<")
-                    .add(() => {
-                        document.body.style.overflow = 'auto';
-                        initializeScrollAnimations();
-                    });
-            }
+            init() {
+                this.slides = document.querySelectorAll('.slide');
+                this.indicators = document.querySelectorAll('.indicator');
+                this.startAutoSlide();
+            },
             
-            // --- ENTER EXPERIENCE ---
-            const enterButton = document.getElementById('enter-button');
-            enterButton.addEventListener('click', async () => {
-                await Tone.start();
-                drone1.start();
-                drone2.start();
-                
-                gsap.to('#enter-screen', {
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        document.getElementById('enter-screen').style.display = 'none';
-                        if(enterAnimationId) cancelAnimationFrame(enterAnimationId);
-                        runCosmicJourney();
-                    }
-                });
-            });
-
-            // --- WEBGL SCENE (for Enter Screen) ---
-            let enterAnimationId;
-            const enterScene = new THREE.Scene();
-            const enterCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const enterRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('enter-canvas'), alpha: true });
-            enterRenderer.setSize(window.innerWidth, window.innerHeight);
-            enterCamera.position.z = 5;
-
-            const enterParticlesGeometry = new THREE.BufferGeometry();
-            const enterParticlesCount = 5000;
-            const enterPosArray = new Float32Array(enterParticlesCount * 3);
-            for (let i = 0; i < enterParticlesCount * 3; i++) {
-                enterPosArray[i] = (Math.random() - 0.5) * 15;
-            }
-            enterParticlesGeometry.setAttribute('position', new THREE.BufferAttribute(enterPosArray, 3));
-            const enterParticlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0xE0E0FF, transparent: true, opacity: 0.5 });
-            const enterParticles = new THREE.Points(enterParticlesGeometry, enterParticlesMaterial);
-            enterScene.add(enterParticles);
-
-            const enterClock = new THREE.Clock();
-            function animateEnterScreen() {
-                const elapsedTime = enterClock.getElapsedTime();
-                enterParticles.rotation.y = elapsedTime * 0.1;
-                enterParticles.position.x = Math.sin(elapsedTime * 2) * 0.02;
-                enterParticles.position.y = Math.cos(elapsedTime * 1.5) * 0.02;
-                enterRenderer.render(enterScene, enterCamera);
-                enterAnimationId = requestAnimationFrame(animateEnterScreen);
-            }
-            animateEnterScreen();
-
-            // --- WEBGL SCENE (for Hero) ---
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            const galaxyGeometry = new THREE.BufferGeometry();
-            const galaxyCount = 30000;
-            const galPositions = new Float32Array(galaxyCount * 3);
-            const numArms = 5;
-            const armSeparation = 2 * Math.PI / numArms;
-
-            for(let i = 0; i < galaxyCount; i++) {
-                let i3 = i * 3;
-                let radius = Math.random() * 20;
-                let armIndex = i % numArms;
-                let angle = armIndex * armSeparation + radius * 0.3 + (Math.random() - 0.5) * 0.5;
-                galPositions[i3] = Math.cos(angle) * radius;
-                galPositions[i3+1] = Math.sin(angle) * radius;
-                galPositions[i3+2] = (Math.random() - 0.5) * 0.5;
-            }
-            galaxyGeometry.setAttribute('position', new THREE.BufferAttribute(galPositions, 3));
-            const galaxyMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xFFD700, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
-            const galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
-            scene.add(galaxy);
-
-            const dustGeometry = new THREE.BufferGeometry();
-            const dustCount = 10000;
-            const dustPositions = new Float32Array(dustCount * 3);
-            for(let i=0; i<dustCount*3; i++) {
-                dustPositions[i] = (Math.random() - 0.5) * 100;
-            }
-            dustGeometry.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-            const dustMaterial = new THREE.PointsMaterial({ size: 0.03, color: 0xFFD700, transparent: true, opacity: 0, blending: THREE.AdditiveBlending });
-            const cosmicDust = new THREE.Points(dustGeometry, dustMaterial);
-            scene.add(cosmicDust);
-
-            camera.position.z = 2;
-
-            const clock = new THREE.Clock();
-            function animate() {
-                const elapsedTime = clock.getElapsedTime();
-                galaxy.rotation.z = -elapsedTime * 0.05;
-                cosmicDust.rotation.y = elapsedTime * 0.02;
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-            animate();
+            goToSlide(index) {
+                this.slides[this.currentSlide].classList.remove('active');
+                this.indicators[this.currentSlide].classList.remove('active');
+                this.currentSlide = index;
+                this.slides[this.currentSlide].classList.add('active');
+                this.indicators[this.currentSlide].classList.add('active');
+            },
             
-            // --- Custom Cursor Logic ---
-            const cursor = document.getElementById('cursor');
-            const cursorFollower = document.getElementById('cursor-follower');
-            gsap.set([cursor, cursorFollower], { xPercent: -50, yPercent: -50 });
-            window.addEventListener('mousemove', e => {
-                gsap.to(cursor, 0.1, { x: e.clientX, y: e.clientY });
-                gsap.to(cursorFollower, 0.5, { x: e.clientX, y: e.clientY, ease: 'power2.out' });
-            });
-            document.querySelectorAll('a, button, .gallery-item').forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-            });
-
-
-            window.addEventListener('resize', () => {
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-
-                enterRenderer.setSize(window.innerWidth, window.innerHeight);
-                enterCamera.aspect = window.innerWidth / window.innerHeight;
-                enterCamera.updateProjectionMatrix();
-            });
+            nextSlide() {
+                this.goToSlide((this.currentSlide + 1) % this.slides.length);
+            },
             
-            function initializeScrollAnimations() {
-                ScrollTrigger.create({
-                    start: 'top -100px',
-                    end: 99999,
-                    onUpdate: self => {
-                        const nav = document.getElementById('main-nav');
-                        self.direction === -1 ? nav.classList.add('is-visible') : nav.classList.remove('is-visible');
-                    }
-                });
-
-                let currentArtIndex = 0;
-                const slides = gsap.utils.toArray('.art-slide');
-                gsap.set(slides.slice(1), { autoAlpha: 0 });
-                gsap.from(slides[0].querySelector('.art-image'), { autoAlpha: 0, duration: 1.5, ease: 'power3.out' });
-                
-                const slideTimeline = gsap.timeline({ repeat: -1 });
-                slides.forEach((slide, index) => {
-                    const nextIndex = (index + 1) % slides.length;
-                    slideTimeline
-                        .to(slide, { autoAlpha: 0, duration: 1.5, ease: 'power3.in', delay: 4, onStart: () => { currentArtIndex = nextIndex; }})
-                        .to(slides[nextIndex], { autoAlpha: 1, duration: 1.5, ease: 'power3.out' }, `-=1.5`);
-                });
-
-                const gallery = document.querySelector('.gallery-container');
-                gsap.to(gallery, {
-                    x: () => -(gallery.scrollWidth - window.innerWidth),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#gallery-section",
-                        start: "top top",
-                        end: () => `+=${gallery.scrollWidth - window.innerWidth}`,
-                        scrub: true, pin: true, invalidateOnRefresh: true
-                    }
-                });
-
-                // --- OFFLINE "GEMINI" SIMULATION ---
-                const visionBtn = document.getElementById('gemini-vision-button');
-                const visionDesc = document.getElementById('dynamic-description');
-                const visionLoader = document.getElementById('vision-loader');
-                let descIndex = 0;
-                const placeholderDescriptions = {
-                    "Digital Dreamscape": "Exploring the boundaries between reality and digital imagination.",
-                    "Neon Visions": "Where electric dreams meet artistic expression in vivid color.",
-                    "Abstract Flow": "A fluid journey through form, color, and digital emotion."
-                };
-
-                visionBtn.addEventListener('click', () => {
-                    const artworkTitle = slides[currentArtIndex].querySelector('.artwork-title').textContent.trim();
-                    const newDesc = placeholderDescriptions[artworkTitle] || "A new story is waiting to be written.";
-                    
-                    visionBtn.disabled = true; visionLoader.classList.remove('hidden');
-                    setTimeout(() => {
-                         gsap.to(visionDesc, { opacity: 0, duration: 0.4, onComplete: () => {
-                            visionDesc.textContent = newDesc;
-                            gsap.to(visionDesc, { opacity: 1, duration: 0.4 });
-                        }});
-                        visionLoader.classList.add('hidden'); visionBtn.disabled = false;
-                    }, 800);
-                });
-                
-                const generateStatementBtn = document.getElementById('generate-statement-button');
-                const bioEl = document.getElementById('artist-bio');
-                const statementLoader = document.getElementById('statement-loader-container');
-                let statementIndex = 0;
-                const placeholderStatements = [
-                    "My work is a dialogue between the organic and the artificial, seeking the poetry that emerges when human hands guide the logic of machines.",
-                    "I craft digital canvases that act as windows into speculative futures, exploring themes of memory, identity, and our place in a hyper-connected world.",
-                    "Through code and color, I aim to capture fleeting moments of digital sublime, translating complex algorithms into visual experiences that resonate with emotion."
-                ];
-
-                generateStatementBtn.addEventListener('click', () => {
-                    generateStatementBtn.disabled = true; statementLoader.classList.remove('hidden');
-                     setTimeout(() => {
-                        statementIndex = (statementIndex + 1) % placeholderStatements.length;
-                        const newStatement = placeholderStatements[statementIndex];
-                        gsap.to(bioEl, { opacity: 0, duration: 0.3, onComplete: () => {
-                            bioEl.textContent = newStatement;
-                            gsap.to(bioEl, { opacity: 1, duration: 0.3 });
-                        }});
-                        statementLoader.classList.add('hidden'); generateStatementBtn.disabled = false;
-                    }, 800);
-                });
+            previousSlide() {
+                this.goToSlide((this.currentSlide - 1 + this.slides.length) % this.slides.length);
+            },
+            
+            startAutoSlide() {
+                setInterval(() => this.nextSlide(), 4000);
             }
-        });
+        };
+        
+        function initMainSite() {
+            portfolio.init();
+            // Add other main site initializations here
+        }
     </script>
 </body>
 </html>

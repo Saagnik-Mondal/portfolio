@@ -1,1501 +1,944 @@
 <!DOCTYPE html>
-<html lang="en" class="has-scroll-init has-scroll-smooth" data-scroll-direction="vertical">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saagnik Mondal - Creative Developer & Designer</title>
-    <meta name="description" content="Saagnik Mondal creative developer & designer experimental portfolio">
-    <meta name="author" content="Saagnik Mondal">
-    <meta name="keywords" content="Portfolio Saagnik Mondal Developer Designer Digital Artist">
+    <title>Saagnik Mondal - Digital Artist Portfolio</title>
     
+    <!-- External Libraries -->
     <script src="js/gsap.min.js"></script>
     <script src="js/ScrollTrigger.min.js"></script>
     <script src="js/three.min.js"></script>
     <script src="js/tone.min.js"></script>
     
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #0a0e1a;
-            --secondary-color: #e8f4fd;
-            --accent-color: #4a9eff;
-            --text-color: #c7d2fe;
-            --bg-color: linear-gradient(135deg, #0a0e1a 0%, #1e1b3c 50%, #2d1b69 100%);
-            --glow-color: rgba(74, 158, 255, 0.3);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            cursor: none;
-            overflow-x: hidden;
-            line-height: 1.6;
-            background-attachment: fixed;
-        }
-
-        /* Ambient Background */
-        .ambient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(74, 158, 255, 0.05) 0%, transparent 50%);
-            z-index: -1;
-            animation: breathe 8s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-
-        /* Floating Orbs */
-        .floating-orb {
-            position: fixed;
-            border-radius: 50%;
-            background: var(--glow-color);
-            filter: blur(40px);
-            animation: float 20s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        .floating-orb:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-orb:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 60%;
-            right: 15%;
-            animation-delay: -5s;
-        }
-
-        .floating-orb:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            bottom: 20%;
-            left: 60%;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-30px) rotate(120deg); }
-            66% { transform: translateY(15px) rotate(240deg); }
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: screen;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px var(--glow-color);
-        }
-
-        .cursor.hovering {
-            transform: scale(2.5);
-            background: var(--secondary-color);
-            box-shadow: 0 0 30px var(--accent-color);
-        }
-
-        /* Audio Controls */
-        .audio-controls {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1000;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .audio-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(74, 158, 255, 0.1);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .audio-btn:hover {
-            background: var(--glow-color);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--glow-color);
-        }
-
-        .audio-btn.active {
-            background: var(--accent-color);
-            color: var(--primary-color);
-        }
-
-        /* Loading Screen - Portal Entry */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            overflow: hidden;
-        }
-
-        /* Chaotic Real World Background */
-        .chaos-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(45deg, #ff0000, #ff8800),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23fff"/><g fill="%23000" opacity="0.1"><circle cx="20" cy="20" r="2"/><circle cx="80" cy="20" r="3"/><circle cx="50" cy="50" r="1"/><circle cx="30" cy="80" r="2"/><circle cx="70" cy="70" r="1.5"/></g></svg>');
-            animation: chaos-swirl 3s ease-in-out forwards;
-        }
-
-        @keyframes chaos-swirl {
-            0% { 
-                transform: scale(1) rotate(0deg);
-                filter: blur(0px) brightness(1);
-                opacity: 1;
-            }
-            60% { 
-                transform: scale(1.2) rotate(180deg);
-                filter: blur(10px) brightness(1.5);
-                opacity: 0.8;
-            }
-            100% { 
-                transform: scale(20) rotate(360deg);
-                filter: blur(50px) brightness(0);
-                opacity: 0;
-            }
-        }
-
-        /* Portal Animation */
-        .portal {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, 
-                transparent 30%, 
-                rgba(74, 158, 255, 0.1) 35%,
-                rgba(74, 158, 255, 0.3) 40%,
-                rgba(74, 158, 255, 0.6) 45%,
-                rgba(74, 158, 255, 0.9) 50%,
-                rgba(10, 14, 26, 1) 55%
-            );
-            animation: portal-expand 4s ease-in-out forwards;
-            opacity: 0;
-            transform: scale(0);
-        }
-
-        @keyframes portal-expand {
-            0% { 
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-                box-shadow: 0 0 0px rgba(74, 158, 255, 0);
-            }
-            30% { 
-                opacity: 1;
-                transform: scale(0.3) rotate(90deg);
-                box-shadow: 0 0 50px rgba(74, 158, 255, 0.5);
-            }
-            60% { 
-                transform: scale(0.8) rotate(180deg);
-                box-shadow: 0 0 100px rgba(74, 158, 255, 0.8);
-            }
-            80% { 
-                transform: scale(1) rotate(270deg);
-                box-shadow: 0 0 150px rgba(74, 158, 255, 1);
-            }
-            100% { 
-                transform: scale(100) rotate(360deg);
-                box-shadow: 0 0 200px rgba(74, 158, 255, 1);
-            }
-        }
-
-        /* Portal Rings */
-        .portal::before,
-        .portal::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid rgba(74, 158, 255, 0.6);
-            animation: portal-rings 4s ease-in-out infinite;
-        }
-
-        .portal::before {
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            animation-delay: 0s;
-        }
-
-        .portal::after {
-            top: -40px;
-            left: -40px;
-            right: -40px;
-            bottom: -40px;
-            animation-delay: 0.5s;
-        }
-
-        @keyframes portal-rings {
-            0% { 
-                transform: scale(0.8) rotate(0deg);
-                opacity: 1;
-            }
-            50% { 
-                transform: scale(1.2) rotate(180deg);
-                opacity: 0.5;
-            }
-            100% { 
-                transform: scale(0.8) rotate(360deg);
-                opacity: 1;
-            }
-        }
-
-        /* Dimension Text */
-        .dimension-text {
-            position: absolute;
-            bottom: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.5rem;
-            color: #333;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            animation: dimension-fade 5s ease-in-out forwards;
-            opacity: 0;
-        }
-
-        @keyframes dimension-fade {
-            0% { 
-                opacity: 0;
-                transform: translateX(-50%) translateY(50px);
-                color: #333;
-            }
-            20% { 
-                opacity: 1;
-                transform: translateX(-50%) translateY(0px);
-                color: #333;
-            }
-            40% { 
-                color: #666;
-            }
-            60% { 
-                color: #999;
-            }
-            80% { 
-                color: #4a9eff;
-                text-shadow: 0 0 20px rgba(74, 158, 255, 0.8);
-            }
-            100% { 
-                opacity: 0;
-                color: #4a9eff;
-                text-shadow: 0 0 30px rgba(74, 158, 255, 1);
-            }
-        }
-
-        /* Particles escaping from chaos */
-        .escape-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #4a9eff;
-            border-radius: 50%;
-            animation: escape-to-portal 3s ease-out forwards;
-            opacity: 0;
-        }
-
-        @keyframes escape-to-portal {
-            0% { 
-                opacity: 1;
-                transform: scale(0);
-                box-shadow: 0 0 0px #4a9eff;
-            }
-            30% { 
-                opacity: 1;
-                transform: scale(1);
-                box-shadow: 0 0 10px #4a9eff;
-            }
-            70% { 
-                opacity: 0.8;
-                transform: scale(0.8) translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7));
-                box-shadow: 0 0 20px #4a9eff;
-            }
-            100% { 
-                opacity: 0;
-                transform: scale(0) translate(var(--dx), var(--dy));
-                box-shadow: 0 0 30px #4a9eff;
-            }
-        }
-
-        /* Additional magical effects */
-        .portal-spark {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #ffffff;
-            border-radius: 50%;
-            animation: portal-sparks 2s ease-out infinite;
-        }
-
-        @keyframes portal-sparks {
-            0% { 
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-            }
-            50% { 
-                opacity: 1;
-                transform: scale(1) rotate(180deg);
-                box-shadow: 0 0 10px #ffffff;
-            }
-            100% { 
-                opacity: 0;
-                transform: scale(0) rotate(360deg) translateY(-100px);
-            }
-        }
-
-        .loader__content {
-            text-align: center;
-            z-index: 2;
-            position: relative;
-        }
-
-        .loader__text {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            opacity: 0;
-            color: #4a9eff;
-            animation: welcome-text 6s ease-in-out forwards;
-            animation-delay: 4s;
-        }
-
-        @keyframes welcome-text {
-            0% { 
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            30% { 
-                opacity: 1;
-                transform: translateY(0px);
-            }
-            70% { 
-                opacity: 1;
-                transform: translateY(0px);
-            }
-            100% { 
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-        }
-
-        .loader__progress {
-            width: 200px;
-            height: 2px;
-            background: rgba(74, 158, 255, 0.2);
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            animation: progress-appear 2s ease-in-out forwards;
-            animation-delay: 5s;
-        }
-
-        @keyframes progress-appear {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .loader__bar {
-            position: absolute;
-            left: -100%;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, transparent, #4a9eff, transparent);
-            animation: realm-loading 2s ease-in-out forwards;
-            animation-delay: 5s;
-        }
-
-        @keyframes realm-loading {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem;
-            z-index: 1000;
-            background: rgba(10, 14, 26, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(74, 158, 255, 0.1);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Main Content */
-        main {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero__content {
-            z-index: 2;
-            position: relative;
-        }
-
-        .hero__title {
-            font-size: clamp(3rem, 8vw, 8rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            line-height: 0.9;
-            margin-bottom: 1rem;
-        }
-
-        .hero__subtitle {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            opacity: 0.7;
-            margin-bottom: 3rem;
-        }
-
-        .hero__cta {
-            background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero__cta:hover {
-            color: var(--bg-color);
-        }
-
-        .hero__cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--accent-color);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .hero__cta:hover::before {
-            left: 0;
-        }
-
-        /* Background Canvas */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        /* Sections */
-        .section {
-            min-height: 100vh;
-            padding: 5rem 2rem;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section__title {
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        /* About Section */
-        .about {
-            background: rgba(74, 158, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(74, 158, 255, 0.1);
-            border-radius: 30px;
-            margin: 2rem;
-        }
-
-        .about__content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about__text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            opacity: 0.9;
-        }
-
-        .about__text h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px var(--glow-color);
-        }
-
-        .about__image {
-            position: relative;
-            aspect-ratio: 1;
-            background: radial-gradient(circle, var(--accent-color), var(--glow-color));
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 50px var(--glow-color);
-            animation: glow-pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 30px var(--glow-color); }
-            50% { box-shadow: 0 0 80px var(--glow-color), 0 0 120px rgba(74, 158, 255, 0.1); }
-        }
-
-        /* Projects Section */
-        .projects {
-            padding: 10rem 2rem;
-        }
-
-        .projects__grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 5rem;
-        }
-
-        .project-card {
-            background: rgba(74, 158, 255, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.5s ease;
-            cursor: pointer;
-            border: 1px solid rgba(74, 158, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            background: rgba(74, 158, 255, 0.1);
-            border-color: var(--accent-color);
-            box-shadow: 0 20px 40px rgba(74, 158, 255, 0.2);
-        }
-
-        .project-card__image {
-            width: 100%;
-            height: 200px;
-            background: radial-gradient(ellipse at center, var(--accent-color), var(--glow-color));
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
-        .project-card__title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .project-card__description {
-            opacity: 0.7;
-            line-height: 1.6;
-        }
-
-        .project-card__tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .project-card__tag {
-            background: var(--accent-color);
-            color: var(--primary-color);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px var(--glow-color);
-        }
-
-        /* Contact Section */
-        .contact {
-            background: rgba(74, 158, 255, 0.03);
-            backdrop-filter: blur(20px);
-            text-align: center;
-            border: 1px solid rgba(74, 158, 255, 0.1);
-            border-radius: 30px;
-            margin: 2rem;
-        }
-
-        .contact__content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact__title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 2rem;
-        }
-
-        .contact__text {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 3rem;
-        }
-
-        .contact__email {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            text-decoration: none;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .contact__email:hover {
-            color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-
-        .contact__social {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .contact__social a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .contact__social a:hover {
-            color: var(--accent-color);
-        }
-
-        /* Footer */
-        footer {
-            padding: 2rem;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-        }
-
-        .footer__content {
-            opacity: 0.5;
-            font-size: 0.9rem;
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-100px);
-        }
-
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(100px);
-        }
-
-        .scale-in {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .about__content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .projects__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .contact__social {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 9999;
-        }
-
-        .scroll-progress {
-            height: 100%;
-            background: var(--accent-color);
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-    </style>
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/LaserFlow.css">
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-
-    <!-- Ambient Background -->
-    <div class="ambient-bg"></div>
-    <div class="floating-orb"></div>
-    <div class="floating-orb"></div>
-    <div class="floating-orb"></div>
-
-    <!-- Audio Controls -->
-    <div class="audio-controls">
-        <button class="audio-btn" id="ambientBtn" data-cursor-hover title="Ambient Sounds">♪</button>
-        <button class="audio-btn" id="muteBtn" data-cursor-hover title="Mute/Unmute">🔊</button>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator">
-        <div class="scroll-progress"></div>
-    </div>
-
-    <!-- Loader -->
+    <!-- Loading Screen -->
     <div class="loader" id="loader">
-        <!-- Chaotic Real World Background -->
-        <div class="chaos-bg"></div>
-        
-        <!-- Escape Particles -->
-        <div class="escape-particle" style="--dx: 200px; --dy: -150px; top: 20%; left: 10%; animation-delay: 1s;"></div>
-        <div class="escape-particle" style="--dx: -180px; --dy: -120px; top: 60%; right: 15%; animation-delay: 1.2s;"></div>
-        <div class="escape-particle" style="--dx: 150px; --dy: -200px; bottom: 30%; left: 20%; animation-delay: 1.5s;"></div>
-        <div class="escape-particle" style="--dx: -120px; --dy: -180px; top: 40%; right: 30%; animation-delay: 1.8s;"></div>
-        <div class="escape-particle" style="--dx: 100px; --dy: -160px; bottom: 50%; left: 60%; animation-delay: 2s;"></div>
-        
-        <!-- Portal -->
-        <div class="portal">
-            <!-- Magical sparks around portal -->
-            <div class="portal-spark" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
-            <div class="portal-spark" style="top: 20%; right: 15%; animation-delay: 0.3s;"></div>
-            <div class="portal-spark" style="bottom: 15%; left: 20%; animation-delay: 0.6s;"></div>
-            <div class="portal-spark" style="bottom: 25%; right: 10%; animation-delay: 0.9s;"></div>
-            <div class="portal-spark" style="top: 50%; left: 5%; animation-delay: 1.2s;"></div>
-            <div class="portal-spark" style="top: 40%; right: 5%; animation-delay: 1.5s;"></div>
-        </div>
-        
-        <!-- Dimension Transition Text -->
-        <div class="dimension-text">Leaving Reality Behind</div>
-        
-        <div class="loader__content">
-            <div class="loader__text">Welcome to the Digital Realm</div>
-            <div class="loader__progress">
-                <div class="loader__bar"></div>
+        <canvas id="loader-canvas"></canvas>
+        <div class="loader-content">
+            <div class="loader-main">
+                <div class="loading-text">
+                    <span class="loading-label">LOADING</span>
+                    <span class="loading-dash">–</span>
+                    <span class="loading-percentage">0%</span>
+                </div>
+                <div class="loading-messages">
+                    <div class="message active">Awakening digital consciousness...</div>
+                    <div class="message">Connecting neural pathways...</div>
+                    <div class="message">Scanning creative dimensions...</div>
+                    <div class="message">Initializing art matrix...</div>
+                    <div class="message">Preparing visual feast...</div>
+                </div>
+                <div class="loading-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+            <div class="loader-progress">
+                <div class="progress-bar"></div>
+                <div class="progress-glow"></div>
             </div>
         </div>
     </div>
 
-    <!-- Background Canvas -->
-    <canvas id="bg-canvas"></canvas>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
 
-    <!-- Header -->
-    <header>
+    <!-- Audio Elements -->
+    <audio id="ambient-audio" loop preload="auto">
+        <source src="ancient-spirit-echoes-om-chanting-234045.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Audio Control Button -->
+    <button id="audio-toggle" class="audio-control muted" data-cursor-hover>
+        <span class="audio-icon">�</span>
+        <span class="audio-text">Sound Off</span>
+    </button>
+
+    <!-- Enhanced Header -->
+    <header id="header">
         <nav>
             <div class="logo">SM</div>
             <ul class="nav-links">
-                <li><a href="#home" data-cursor-hover>Home</a></li>
-                <li><a href="#about" data-cursor-hover>About</a></li>
-                <li><a href="#projects" data-cursor-hover>Work</a></li>
-                <li><a href="#contact" data-cursor-hover>Contact</a></li>
+                <li><a href="#home" data-cursor-hover class="nav-hover-btn">Home</a></li>
+                <li><a href="#about" data-cursor-hover class="nav-hover-btn">About</a></li>
+                <li><a href="#projects" data-cursor-hover class="nav-hover-btn">Work</a></li>
+                <li><a href="#contact" data-cursor-hover class="nav-hover-btn">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero__content">
-                <h1 class="hero__title fade-in">SAAGNIK MONDAL</h1>
-                <p class="hero__subtitle fade-in">DIGITAL ARTIST & CREATIVE SOUL</p>
-                <button class="hero__cta fade-in" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
-                    EXPLORE MY UNIVERSE
-                </button>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="section about">
-            <div class="container">
-                <h2 class="section__title fade-in">ABOUT THE ARTIST</h2>
-                <div class="about__content">
-                    <div class="about__text slide-in-left">
-                        <h3>Creative Vision</h3>
-                        <p>
-                            Welcome to my digital sanctuary. I'm a passionate artist who believes in the healing power of creative expression. 
-                            My work is designed to transport you to peaceful dimensions where technology meets tranquility.
-                        </p>
-                        <br>
-                        <p>
-                            Each piece is crafted with intention - to soothe the mind, inspire the soul, and create moments of pure serenity. 
-                            Through gentle animations, calming colors, and immersive experiences, I invite you to pause, breathe, and 
-                            discover beauty in the digital realm.
-                        </p>
-                    </div>
-                    <div class="about__image slide-in-right">
-                        <!-- Abstract representation -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="section projects">
-            <div class="container">
-                <h2 class="section__title fade-in">MINDFUL CREATIONS</h2>
-                <div class="projects__grid">
-                    <div class="project-card scale-in" data-cursor-hover>
-                        <div class="project-card__image"></div>
-                        <h3 class="project-card__title">Tranquil Canvas</h3>
-                        <p class="project-card__description">
-                            A meditative digital painting space where gentle brushstrokes create flowing watercolor patterns that evolve and breathe with your movements.
-                        </p>
-                        <div class="project-card__tags">
-                            <span class="project-card__tag">Meditation</span>
-                            <span class="project-card__tag">Flow</span>
-                            <span class="project-card__tag">Zen</span>
-                        </div>
-                    </div>
-
-                    <div class="project-card scale-in" data-cursor-hover>
-                        <div class="project-card__image"></div>
-                        <h3 class="project-card__title">Serene Geometries</h3>
-                        <p class="project-card__description">
-                            Harmonious mathematical patterns that slowly morph and dance, creating a hypnotic visual symphony perfect for contemplation and relaxation.
-                        </p>
-                        <div class="project-card__tags">
-                            <span class="project-card__tag">Harmony</span>
-                            <span class="project-card__tag">Sacred</span>
-                            <span class="project-card__tag">Peace</span>
-                        </div>
-                    </div>
-
-                    <div class="project-card scale-in" data-cursor-hover>
-                        <div class="project-card__image"></div>
-                        <h3 class="project-card__title">Gentle Waves</h3>
-                        <p class="project-card__description">
-                            Soft, flowing animations inspired by ocean waves and cloud movements, designed to calm the mind and ease stress.
-                        </p>
-                        <div class="project-card__tags">
-                            <span class="project-card__tag">Nature</span>
-                            <span class="project-card__tag">Calm</span>
-                            <span class="project-card__tag">Healing</span>
-                        </div>
-                    </div>
-
-                    <div class="project-card scale-in" data-cursor-hover>
-                        <div class="project-card__image"></div>
-                        <h3 class="project-card__title">Ambient Visualizer</h3>
-                        <p class="project-card__description">
-                            Ethereal soundscapes transformed into gentle visual flows that respond to ambient music and natural sounds for deep relaxation.
-                        </p>
-                        <div class="project-card__tags">
-                            <span class="project-card__tag">Sound</span>
-                            <span class="project-card__tag">Ambient</span>
-                            <span class="project-card__tag">Mindful</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section contact">
-            <div class="container">
-                <div class="contact__content">
-                    <h2 class="contact__title fade-in">CONNECT & CREATE</h2>
-                    <p class="contact__text fade-in">
-                        Let's create something beautiful together. Whether you seek collaborative art, peaceful digital experiences, 
-                        or simply want to share creative energy, I'd love to connect with kindred spirits.
-                    </p>
-                    <a href="mailto:hello@saagnikmondal.com" class="contact__email fade-in" data-cursor-hover>
-                        hello@saagnikmondal.com
-                    </a>
-                    <div class="contact__social fade-in">
-                        <a href="#" data-cursor-hover>Instagram</a>
-                        <a href="#" data-cursor-hover>LinkedIn</a>
-                        <a href="#" data-cursor-hover>GitHub</a>
-                        <a href="#" data-cursor-hover>Behance</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer__content">
-            <p>&copy; 2024 Saagnik Mondal. All rights reserved.</p>
-            <p>Designed & developed with passion</p>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <!-- Dynamic Background Gallery -->
+        <div class="hero__background">
+            <img class="hero__bg-image active" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Background 1">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Background 2">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Background 3">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Background 4">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Background 5">
+            <img class="hero__bg-image" src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Background 6">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Background 7">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Background 8">
         </div>
-    </footer>
+        <div class="hero__bg-overlay"></div>
+        
+        <div class="hero__content">
+            <h1 class="hero__title fade-in animated-title">SAAGNIK MONDAL</h1>
+            <p class="hero__subtitle fade-in scroll-reveal">DIGITAL ARTIST & CREATIVE SOUL</p>
+            <button class="hero__cta btn-hover-effect fade-in" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
+                <div class="btn-text">
+                    <span>EXPLORE MY UNIVERSE</span>
+                    <span>ENTER THE REALM</span>
+                </div>
+            </button>
+        </div>
+    </section>
 
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section__title fade-in animated-title scroll-reveal">ABOUT SAAGNIK MONDAL</h2>
+            
+            <div class="about__content">
+                <!-- About Text -->
+                <div class="about__text-content slide-in-left">
+                    <div class="about__description">
+                        <h3>Digital Artist & Creative Visionary</h3>
+                        <p>
+                            Welcome to my creative universe! I'm Saagnik Mondal, a passionate digital artist specializing in 
+                            anime-style character design and illustration. My journey began with a love for storytelling through 
+                            visual art, and has evolved into a dedication to bringing characters to life with depth, emotion, and detail.
+                        </p>
+                        
+                        <h4>My Artistic Philosophy</h4>
+                        <p>
+                            Every character I create carries a story. I believe in the power of visual narrative to connect with 
+                            audiences on an emotional level. My work focuses on capturing the essence of personality through 
+                            carefully crafted expressions, dynamic poses, and intricate design details.
+                        </p>
+                        
+                        <h4>Specializations</h4>
+                        <ul class="about__skills">
+                            <li>🎨 Character Design & Development</li>
+                            <li>📐 Technical Reference Sheets</li>
+                            <li>⚔️ Fantasy & Mythological Characters</li>
+                            <li>💫 Anime & Manga Style Illustration</li>
+                            <li>🎭 Expression & Emotion Studies</li>
+                            <li>🎯 Concept Art for Games & Animation</li>
+                        </ul>
+                        
+                        <h4>Creative Process</h4>
+                        <p>
+                            My approach combines traditional art fundamentals with modern digital techniques. I start with 
+                            understanding the character's personality and story, then develop their visual representation 
+                            through iterative design, ensuring every detail serves the narrative purpose.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Image Slider -->
+                <div class="about__slider-container slide-in-right">
+                    <div class="image-slider">
+                        <div class="slider-track">
+                            <div class="slide active">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Sheet">
+                                <div class="slide-caption">Character Design Sheet - Anaya</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Warrior Pose">
+                                <div class="slide-caption">Dynamic Warrior Pose</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Battle Design">
+                                <div class="slide-caption">Futuristic Mythology Design</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Character Turnaround">
+                                <div class="slide-caption">Character Turnaround Reference</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Portrait Study">
+                                <div class="slide-caption">Detailed Portrait Study</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Character Refinement">
+                                <div class="slide-caption">Iterative Character Refinement</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Advanced Character Sheet">
+                                <div class="slide-caption">Advanced Character Development</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Warrior Spirit">
+                                <div class="slide-caption">Warrior Spirit Study</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slider Controls -->
+                        <button class="slider-btn prev-btn" onclick="portfolio.previousSlide()">‹</button>
+                        <button class="slider-btn next-btn" onclick="portfolio.nextSlide()">›</button>
+                        
+                        <!-- Slider Indicators -->
+                        <div class="slider-indicators">
+                            <span class="indicator active" onclick="portfolio.goToSlide(0)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(1)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(2)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(3)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(4)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(5)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(6)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(7)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section__title fade-in animated-title scroll-reveal">GET IN TOUCH</h2>
+            <div class="contact__content">
+                <p class="contact__text fade-in">
+                    Ready to bring your characters to life? Let's collaborate and create something amazing together!
+                </p>
+                <div class="contact__links fade-in">
+                    <a href="mailto:saagnik@example.com" class="contact__link" data-cursor-hover>
+                        📧 Email Me
+                    </a>
+                    <a href="#" class="contact__link" data-cursor-hover>
+                        🎨 View Portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Load Scripts -->
+    <script src="js/LaserFlow.js"></script>
+    <script src="js/loader.js"></script>
     <script>
-        // GSAP Setup
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const hoverable = document.querySelectorAll('[data-cursor-hover]');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        hoverable.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-        });
-
-        // Epic Loading Animation Sequence
-        window.addEventListener('load', () => {
-            // Total animation sequence: 7 seconds
-            setTimeout(() => {
-                // Fade out the entire loader with a portal effect
-                gsap.to('#loader', {
-                    opacity: 0,
-                    scale: 0,
-                    duration: 2,
-                    ease: 'power4.in',
-                    transformOrigin: 'center center',
-                    onComplete: () => {
-                        document.getElementById('loader').style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                        initAnimations();
+        // Basic portfolio functionality
+        const portfolio = {
+            currentSlide: 0,
+            slides: [],
+            indicators: [],
+            
+            init() {
+                this.slides = document.querySelectorAll('.slide');
+                this.indicators = document.querySelectorAll('.indicator');
+                this.startAutoSlide();
+            },
+            
+            goToSlide(index) {
+                this.slides[this.currentSlide].classList.remove('active');
+                this.indicators[this.currentSlide].classList.remove('active');
+                this.currentSlide = index;
+                this.slides[this.currentSlide].classList.add('active');
+                this.indicators[this.currentSlide].classList.add('active');
+            },
+            
+            nextSlide() {
+                this.goToSlide((this.currentSlide + 1) % this.slides.length);
+            },
+            
+            previousSlide() {
+                this.goToSlide((this.currentSlide - 1 + this.slides.length) % this.slides.length);
+            },
+            
+            startAutoSlide() {
+                setInterval(() => this.nextSlide(), 4000);
+            }
+        };
+        
+        // Audio System
+        const audioSystem = {
+            ambientAudio: document.getElementById('ambient-audio'),
+            toggleButton: document.getElementById('audio-toggle'),
+            isPlaying: false,
+            isInitialized: false,
+            audioContext: null,
+            
+            init() {
+                if (!this.ambientAudio || !this.toggleButton) return;
+                
+                console.log('Initializing audio system');
+                
+                // Initialize Web Audio Context for sound effects
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (error) {
+                    console.log('Web Audio API not supported:', error);
+                }
+                
+                // Set initial volume and button state
+                this.ambientAudio.volume = 0.3;
+                this.ambientAudio.loop = true;
+                this.updateButton(); // Set initial button state (muted)
+                
+                // Add click handler for audio toggle
+                this.toggleButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Audio toggle clicked, current state:', this.isPlaying);
+                    this.toggle();
+                });
+                
+                // Auto-start audio on first user interaction
+                document.addEventListener('click', () => {
+                    if (!this.isInitialized) {
+                        console.log('First click detected, initializing audio');
+                        this.startAmbient();
+                        this.isInitialized = true;
                         
-                        // Add entrance effect to the main content
-                        gsap.fromTo('body', 
-                            { 
-                                filter: 'blur(20px) brightness(0)',
-                                scale: 1.2 
-                            },
-                            { 
-                                filter: 'blur(0px) brightness(1)',
-                                scale: 1,
-                                duration: 3,
-                                ease: 'power3.out'
-                            }
-                        );
+                        // Resume audio context if needed
+                        if (this.audioContext && this.audioContext.state === 'suspended') {
+                            this.audioContext.resume();
+                        }
+                    }
+                }, { once: true });
+                
+                // Add hover sound effects
+                const hoverElements = document.querySelectorAll('a, button, [data-cursor-hover]');
+                hoverElements.forEach(el => {
+                    if (el !== this.toggleButton) { // Don't add to audio button
+                        el.addEventListener('mouseenter', () => {
+                            this.playHoverSound();
+                        });
                         
-                        // Animate ambient orbs into existence
-                        gsap.fromTo('.floating-orb', 
-                            { 
-                                opacity: 0,
-                                scale: 0 
-                            },
-                            { 
-                                opacity: 1,
-                                scale: 1,
-                                duration: 2,
-                                stagger: 0.5,
-                                ease: 'elastic.out(1, 0.3)'
-                            }
-                        );
+                        el.addEventListener('click', () => {
+                            this.playClickSound();
+                        });
                     }
                 });
-            }, 7000); // 7 seconds total
-        });
-
-        // Scroll Progress
-        window.addEventListener('scroll', () => {
-            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            document.querySelector('.scroll-progress').style.width = scrolled + '%';
-        });
-
-        // Background Animation with Three.js
-        function initBackground() {
-            const canvas = document.getElementById('bg-canvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+                
+                // Handle audio events
+                this.ambientAudio.addEventListener('ended', () => {
+                    console.log('Audio ended');
+                    this.isPlaying = false;
+                    this.updateButton();
+                });
+                
+                this.ambientAudio.addEventListener('pause', () => {
+                    console.log('Audio paused');
+                    this.isPlaying = false;
+                    this.updateButton();
+                });
+                
+                this.ambientAudio.addEventListener('play', () => {
+                    console.log('Audio playing');
+                    this.isPlaying = true;
+                    this.updateButton();
+                });
+                
+                // Handle audio loading
+                this.ambientAudio.addEventListener('canplaythrough', () => {
+                    console.log('Audio loaded and ready to play');
+                });
+                
+                this.ambientAudio.addEventListener('error', (e) => {
+                    console.log('Audio loading error:', e);
+                });
+            },
             
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Create gentle floating particles
-            const particlesCount = 500;
-            const positions = new Float32Array(particlesCount * 3);
-            const colors = new Float32Array(particlesCount * 3);
-            
-            for (let i = 0; i < particlesCount; i++) {
-                // Positions
-                positions[i * 3] = (Math.random() - 0.5) * 15;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
-                positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+            // Create hover sound effect
+            playHoverSound() {
+                if (!this.audioContext || !this.isPlaying) return;
                 
-                // Colors (soft blues and purples)
-                colors[i * 3] = 0.3 + Math.random() * 0.4;     // R
-                colors[i * 3 + 1] = 0.6 + Math.random() * 0.4; // G
-                colors[i * 3 + 2] = 0.9 + Math.random() * 0.1; // B
-            }
-
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.03,
-                sizeAttenuation: true,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.6
-            });
-
-            const particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-
-            camera.position.z = 5;
-
-            let time = 0;
-
-            // Animation loop with gentle movement
-            function animate() {
-                requestAnimationFrame(animate);
-                
-                time += 0.005;
-                
-                // Gentle rotation and floating
-                particles.rotation.x = Math.sin(time) * 0.1;
-                particles.rotation.y = Math.cos(time) * 0.1;
-                
-                // Update particle positions for gentle floating
-                const positions = particles.geometry.attributes.position.array;
-                for (let i = 0; i < particlesCount; i++) {
-                    positions[i * 3 + 1] += Math.sin(time + i * 0.1) * 0.001;
+                try {
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(this.audioContext.currentTime);
+                    oscillator.stop(this.audioContext.currentTime + 0.1);
+                } catch (error) {
+                    console.log('Hover sound error:', error);
                 }
-                particles.geometry.attributes.position.needsUpdate = true;
-                
-                renderer.render(scene, camera);
-            }
-
-            animate();
-
-            // Handle resize
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        }
-
-        // Ambient Sound System with Portal Effects
-        let ambientSound = null;
-        let portalSound = null;
-        let isMuted = false;
-
-        function initPortalSound() {
-            // Create portal entrance sound effects
-            if (typeof Tone !== 'undefined') {
-                const portalReverb = new Tone.Reverb(12).toDestination();
-                const portalFilter = new Tone.Filter(2000, "lowpass").connect(portalReverb);
-                
-                // Deep portal opening sound
-                const portalOsc = new Tone.Oscillator(55, "sawtooth").connect(portalFilter);
-                portalOsc.volume.value = -15;
-                
-                // Magical shimmer
-                const shimmerOsc = new Tone.Oscillator(880, "sine").connect(portalFilter);
-                shimmerOsc.volume.value = -20;
-                
-                portalSound = {
-                    start: () => {
-                        Tone.start().then(() => {
-                            // Portal opening sequence
-                            portalOsc.start();
-                            portalOsc.frequency.exponentialRampTo(110, 3);
-                            
-                            setTimeout(() => {
-                                shimmerOsc.start();
-                                shimmerOsc.frequency.exponentialRampTo(1760, 2);
-                            }, 1000);
-                            
-                            setTimeout(() => {
-                                portalOsc.stop();
-                                shimmerOsc.stop();
-                            }, 4000);
-                        });
-                    }
-                };
-                
-                // Auto-play portal sound on load
-                setTimeout(() => {
-                    if (!isMuted) {
-                        portalSound.start();
-                    }
-                }, 1500);
-            }
-        }
-
-        function initAmbientSound() {
-            // Create ambient tones using Tone.js
-            if (typeof Tone !== 'undefined') {
-                // Create gentle ambient pad
-                const reverb = new Tone.Reverb(8).toDestination();
-                const filter = new Tone.Filter(800, "lowpass").connect(reverb);
-                
-                const oscillator1 = new Tone.Oscillator(110, "sine").connect(filter);
-                const oscillator2 = new Tone.Oscillator(165, "sine").connect(filter);
-                const oscillator3 = new Tone.Oscillator(220, "triangle").connect(filter);
-                
-                oscillator1.volume.value = -20;
-                oscillator2.volume.value = -22;
-                oscillator3.volume.value = -25;
-                
-                ambientSound = {
-                    start: () => {
-                        Tone.start().then(() => {
-                            oscillator1.start();
-                            oscillator2.start();
-                            oscillator3.start();
-                        });
-                    },
-                    stop: () => {
-                        oscillator1.stop();
-                        oscillator2.stop();
-                        oscillator3.stop();
-                    }
-                };
-            }
-        }
-
-        // Initialize portal sound immediately
-        initPortalSound();        // Audio controls
-        document.addEventListener('DOMContentLoaded', () => {
-            const ambientBtn = document.getElementById('ambientBtn');
-            const muteBtn = document.getElementById('muteBtn');
+            },
             
-            if (ambientBtn) {
-                ambientBtn.addEventListener('click', () => {
-                    if (ambientSound) {
-                        if (ambientBtn.classList.contains('active')) {
-                            ambientSound.stop();
-                            ambientBtn.classList.remove('active');
+            // Create click sound effect
+            playClickSound() {
+                if (!this.audioContext || !this.isPlaying) return;
+                
+                try {
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(600, this.audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, this.audioContext.currentTime + 0.2);
+                    
+                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.15, this.audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.2);
+                    
+                    oscillator.start(this.audioContext.currentTime);
+                    oscillator.stop(this.audioContext.currentTime + 0.2);
+                } catch (error) {
+                    console.log('Click sound error:', error);
+                }
+            },
+            
+            async startAmbient() {
+                try {
+                    // Make sure audio element is properly loaded
+                    if (!this.ambientAudio.src) {
+                        this.ambientAudio.src = 'ancient-spirit-echoes-om-chanting-234045.mp3';
+                    }
+                    
+                    this.ambientAudio.currentTime = 0; // Start from beginning
+                    this.ambientAudio.volume = 0.3; // Set appropriate volume
+                    this.ambientAudio.loop = true; // Make sure looping is enabled
+                    
+                    console.log('Attempting to play ambient audio...');
+                    await this.ambientAudio.play();
+                    this.isPlaying = true;
+                    this.updateButton();
+                    console.log('Successfully playing ambient audio');
+                } catch (error) {
+                    console.log('Audio autoplay prevented:', error);
+                    this.isPlaying = false;
+                    this.updateButton();
+                    
+                    // Show a message to the user
+                    alert('Please click the Sound button to enable audio');
+                }
+            },
+            
+            toggle() {
+                console.log('Toggle called, current playing state:', this.isPlaying);
+                
+                if (this.isPlaying) {
+                    // Stop and reset audio
+                    this.ambientAudio.pause();
+                    this.isPlaying = false;
+                    console.log('Audio stopped');
+                } else {
+                    // Start audio
+                    try {
+                        const playPromise = this.ambientAudio.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                this.isPlaying = true;
+                                console.log('Audio started successfully');
+                                this.updateButton(); // Update button after successful play
+                            }).catch(error => {
+                                console.error('Audio play failed:', error);
+                                this.isPlaying = false;
+                                this.updateButton(); // Update button to reflect failed state
+                                
+                                // Show user feedback
+                                alert('Please try clicking the sound button again. Audio playback was blocked by browser.');
+                            });
                         } else {
-                            initAmbientSound();
-                            ambientSound.start();
-                            ambientBtn.classList.add('active');
+                            this.isPlaying = true;
                         }
-                    } else {
-                        initAmbientSound();
-                        if (ambientSound) {
-                            ambientSound.start();
-                            ambientBtn.classList.add('active');
-                        }
+                    } catch (error) {
+                        console.error('Toggle audio error:', error);
+                        this.isPlaying = false;
                     }
-                });
-            }
+                }
+                
+                // Update button immediately for feedback
+                this.updateButton();
+                
+                // Play click sound if audio context is available
+                if (this.audioContext && this.audioContext.state === 'running') {
+                    this.playClickSound();
+                }
+            },
             
-            if (muteBtn) {
-                muteBtn.addEventListener('click', () => {
-                    isMuted = !isMuted;
-                    if (typeof Tone !== 'undefined') {
-                        Tone.Master.mute = isMuted;
-                        muteBtn.textContent = isMuted ? '🔇' : '🔊';
-                        muteBtn.classList.toggle('active', isMuted);
-                    }
-                });
+            updateButton() {
+                const iconElement = this.toggleButton.querySelector('.audio-icon');
+                const textElement = this.toggleButton.querySelector('.audio-text');
+                
+                console.log('Updating button, isPlaying:', this.isPlaying);
+                
+                if (this.isPlaying) {
+                    this.toggleButton.classList.remove('muted');
+                    iconElement.textContent = '🔊';
+                    textElement.textContent = 'Sound On';
+                    console.log('Button set to Sound On state');
+                } else {
+                    this.toggleButton.classList.add('muted');
+                    iconElement.textContent = '🔇';
+                    textElement.textContent = 'Sound Off';
+                    console.log('Button set to Sound Off state');
+                }
             }
-        });
+        };
 
-        // GSAP Animations
-        function initAnimations() {
-            // Hero animations
-            gsap.timeline()
-                .from('.hero__title', { opacity: 0, y: 100, duration: 1, ease: 'power3.out' })
-                .from('.hero__subtitle', { opacity: 0, y: 50, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-                .from('.hero__cta', { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' }, '-=0.3');
-
-            // Scroll-triggered animations
-            gsap.utils.toArray('.fade-in').forEach(el => {
-                gsap.from(el, {
-                    opacity: 0,
-                    y: 50,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
+        // Custom Cursor Functionality
+        const cursor = {
+            element: document.querySelector('.cursor'),
+            
+            init() {
+                if (!this.element) return;
+                
+                // Show cursor immediately
+                this.element.style.opacity = '1';
+                
+                // Follow mouse movement with offset for centering
+                document.addEventListener('mousemove', (e) => {
+                    this.element.style.left = (e.clientX - 12) + 'px';
+                    this.element.style.top = (e.clientY - 12) + 'px';
                 });
-            });
-
-            gsap.utils.toArray('.slide-in-left').forEach(el => {
-                gsap.from(el, {
-                    opacity: 0,
-                    x: -100,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-
-            gsap.utils.toArray('.slide-in-right').forEach(el => {
-                gsap.from(el, {
-                    opacity: 0,
-                    x: 100,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-
-            gsap.utils.toArray('.scale-in').forEach(el => {
-                gsap.from(el, {
-                    opacity: 0,
-                    scale: 0.8,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-
-            // Project cards hover animations
-            document.querySelectorAll('.project-card').forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    gsap.to(card, { 
-                        y: -10, 
-                        duration: 0.3, 
-                        ease: 'power2.out' 
+                
+                // Add hover effects for all interactive elements
+                const hoverElements = document.querySelectorAll('a, button, [data-cursor-hover], .slider-btn, .indicator');
+                hoverElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        this.element.style.transform = 'scale(1.5)';
+                        this.element.style.background = 'rgba(139, 92, 246, 0.8)';
+                        this.element.style.borderColor = 'rgba(139, 92, 246, 1)';
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        this.element.style.transform = 'scale(1)';
+                        this.element.style.background = 'rgba(74, 158, 255, 0.8)';
+                        this.element.style.borderColor = 'rgba(74, 158, 255, 1)';
                     });
                 });
                 
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(card, { 
-                        y: 0, 
-                        duration: 0.3, 
-                        ease: 'power2.out' 
+                // Hide cursor when leaving window
+                document.addEventListener('mouseleave', () => {
+                    this.element.style.opacity = '0';
+                });
+                
+                document.addEventListener('mouseenter', () => {
+                    this.element.style.opacity = '1';
+                });
+                
+                // Click animation
+                document.addEventListener('mousedown', () => {
+                    this.element.style.transform += ' scale(0.8)';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    this.element.style.transform = this.element.style.transform.replace(' scale(0.8)', '');
+                });
+            }
+        };
+        
+        // GSAP Masterpiece Animations - Inspired by GSAP's best demos
+        const gsapAnimations = {
+            init() {
+                if (typeof gsap === 'undefined') return;
+                
+                // Register GSAP plugins
+                gsap.registerPlugin(ScrollTrigger);
+                
+                this.setupMasterTimeline();
+                this.setupScrollAnimations();
+                this.setupHeroAnimations();
+                this.setupImageSliderAnimations();
+                this.setupInteractiveAnimations();
+            },
+            
+            setupMasterTimeline() {
+                // Create a master timeline for the entrance sequence
+                const masterTL = gsap.timeline({ paused: true });
+                
+                // Set initial states
+                gsap.set("header", { y: -100, opacity: 0 });
+                gsap.set(".hero__title", { scale: 0.8, opacity: 0, rotationX: -90 });
+                gsap.set(".hero__subtitle", { y: 50, opacity: 0 });
+                gsap.set(".hero__cta", { scale: 0, rotation: 180, opacity: 0 });
+                gsap.set(".hero__bg-image", { scale: 1.3, opacity: 0 });
+                
+                // Epic entrance sequence
+                masterTL
+                    .to("header", {
+                        duration: 1.2,
+                        y: 0,
+                        opacity: 1,
+                        ease: "back.out(1.7)"
+                    })
+                    .to(".hero__bg-image.active", {
+                        duration: 1.5,
+                        scale: 1,
+                        opacity: 1,
+                        ease: "power3.out"
+                    }, "-=0.8")
+                    .to(".hero__title", {
+                        duration: 1.5,
+                        scale: 1,
+                        opacity: 1,
+                        rotationX: 0,
+                        ease: "power4.out",
+                        transformOrigin: "center center"
+                    }, "-=1")
+                    .to(".hero__subtitle", {
+                        duration: 1.2,
+                        y: 0,
+                        opacity: 1,
+                        ease: "power3.out"
+                    }, "-=0.8")
+                    .to(".hero__cta", {
+                        duration: 1,
+                        scale: 1,
+                        rotation: 0,
+                        opacity: 1,
+                        ease: "elastic.out(1, 0.5)"
+                    }, "-=0.5");
+                
+                // Store timeline for later use
+                this.masterTimeline = masterTL;
+                
+                // Start the animation when called
+                window.startGSAPAnimations = () => masterTL.play();
+            },
+            
+            setupScrollAnimations() {
+                // Parallax background images
+                gsap.utils.toArray(".hero__bg-image").forEach(img => {
+                    gsap.to(img, {
+                        yPercent: -50,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: img,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
                     });
                 });
-            });
-        }
-
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                
+                // Section reveals with different effects
+                gsap.utils.toArray(".section").forEach((section, i) => {
+                    const direction = i % 2 === 0 ? -100 : 100;
+                    
+                    gsap.fromTo(section, {
+                        x: direction,
+                        opacity: 0,
+                        rotationY: direction > 0 ? 45 : -45
+                    }, {
+                        x: 0,
+                        opacity: 1,
+                        rotationY: 0,
+                        duration: 1.5,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            end: "top 20%",
+                            scrub: 1
+                        }
+                    });
+                });
+                
+                // Text animations
+                gsap.utils.toArray(".section__title").forEach(title => {
+                    const chars = title.textContent.split('');
+                    title.innerHTML = chars.map(char => 
+                        char === ' ' ? ' ' : `<span class="char">${char}</span>`
+                    ).join('');
+                    
+                    gsap.fromTo(title.querySelectorAll('.char'), {
+                        y: 100,
+                        opacity: 0,
+                        rotationX: -90
+                    }, {
+                        y: 0,
+                        opacity: 1,
+                        rotationX: 0,
+                        duration: 0.8,
+                        ease: "back.out(1.7)",
+                        stagger: 0.05,
+                        scrollTrigger: {
+                            trigger: title,
+                            start: "top 90%",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+                });
+            },
+            
+            setupHeroAnimations() {
+                // Continuous hero title animation
+                const heroTitle = document.querySelector('.hero__title');
+                if (heroTitle) {
+                    gsap.to(heroTitle, {
+                        textShadow: "0 0 20px #4a9eff, 0 0 40px #4a9eff, 0 0 60px #4a9eff",
+                        duration: 2,
+                        ease: "power2.inOut",
+                        yoyo: true,
+                        repeat: -1
                     });
                 }
-            });
-        });
-
-        // Initialize background
-        initBackground();
-
-        // Add some interactive elements
-        document.addEventListener('click', (e) => {
-            // Create click ripple effect
-            const ripple = document.createElement('div');
-            ripple.style.position = 'fixed';
-            ripple.style.left = e.clientX + 'px';
-            ripple.style.top = e.clientY + 'px';
-            ripple.style.width = '20px';
-            ripple.style.height = '20px';
-            ripple.style.background = 'rgba(255, 0, 64, 0.5)';
-            ripple.style.borderRadius = '50%';
-            ripple.style.pointerEvents = 'none';
-            ripple.style.zIndex = '9998';
-            ripple.style.transform = 'translate(-50%, -50%)';
-            document.body.appendChild(ripple);
-
-            gsap.to(ripple, {
-                scale: 20,
-                opacity: 0,
-                duration: 1,
-                ease: 'power2.out',
-                onComplete: () => ripple.remove()
-            });
-        });
-
-        // Parallax effect for hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero');
-            const speed = scrolled * 0.5;
+                
+                // Hero background rotation
+                const heroBackground = document.querySelector('.hero__background');
+                if (heroBackground) {
+                    gsap.to(heroBackground, {
+                        rotation: 0.5,
+                        duration: 20,
+                        ease: "none",
+                        repeat: -1,
+                        yoyo: true
+                    });
+                }
+                
+                // CTA button hover animations
+                const ctaButton = document.querySelector('.hero__cta');
+                if (ctaButton) {
+                    ctaButton.addEventListener('mouseenter', () => {
+                        gsap.to(ctaButton, {
+                            scale: 1.1,
+                            rotation: 5,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    ctaButton.addEventListener('mouseleave', () => {
+                        gsap.to(ctaButton, {
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                }
+            },
             
-            if (parallax) {
-                parallax.style.transform = `translateY(${speed}px)`;
+            setupImageSliderAnimations() {
+                // Enhanced slider transitions
+                const slides = document.querySelectorAll('.slide');
+                const indicators = document.querySelectorAll('.indicator');
+                
+                // Override portfolio slider with GSAP animations
+                if (window.portfolio) {
+                    const originalGoToSlide = window.portfolio.goToSlide;
+                    window.portfolio.goToSlide = function(index) {
+                        const currentSlide = slides[this.currentSlide];
+                        const nextSlide = slides[index];
+                        const currentIndicator = indicators[this.currentSlide];
+                        const nextIndicator = indicators[index];
+                        
+                        // Animate out current slide
+                        gsap.to(currentSlide, {
+                            scale: 0.8,
+                            opacity: 0,
+                            rotationY: -90,
+                            duration: 0.5,
+                            ease: "power2.in",
+                            onComplete: () => {
+                                currentSlide.classList.remove('active');
+                                nextSlide.classList.add('active');
+                                
+                                // Animate in next slide
+                                gsap.fromTo(nextSlide, {
+                                    scale: 1.2,
+                                    opacity: 0,
+                                    rotationY: 90
+                                }, {
+                                    scale: 1,
+                                    opacity: 1,
+                                    rotationY: 0,
+                                    duration: 0.6,
+                                    ease: "power2.out"
+                                });
+                            }
+                        });
+                        
+                        // Update indicators with animation
+                        gsap.to(currentIndicator, {
+                            scale: 1,
+                            duration: 0.3
+                        });
+                        gsap.to(nextIndicator, {
+                            scale: 1.3,
+                            duration: 0.3
+                        });
+                        
+                        currentIndicator.classList.remove('active');
+                        nextIndicator.classList.add('active');
+                        this.currentSlide = index;
+                    };
+                }
+                
+                // Slider button animations
+                document.querySelectorAll('.slider-btn').forEach(btn => {
+                    btn.addEventListener('mouseenter', () => {
+                        gsap.to(btn, {
+                            scale: 1.2,
+                            backgroundColor: "#8B5CF6",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, {
+                            scale: 1,
+                            backgroundColor: "rgba(74, 158, 255, 0.8)",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+            },
+            
+            setupInteractiveAnimations() {
+                // Magnetic effect for buttons and links
+                document.querySelectorAll('a, button, [data-cursor-hover]').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        gsap.to(el, {
+                            scale: 1.05,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        gsap.to(el, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        gsap.to(el, {
+                            x: x * 0.1,
+                            y: y * 0.1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        gsap.to(el, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+                
+                // Contact links with special effects
+                document.querySelectorAll('.contact__link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Create ripple effect
+                        const ripple = document.createElement('div');
+                        ripple.style.position = 'absolute';
+                        ripple.style.borderRadius = '50%';
+                        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                        ripple.style.transform = 'scale(0)';
+                        ripple.style.left = '50%';
+                        ripple.style.top = '50%';
+                        ripple.style.width = '10px';
+                        ripple.style.height = '10px';
+                        ripple.style.marginLeft = '-5px';
+                        ripple.style.marginTop = '-5px';
+                        ripple.style.pointerEvents = 'none';
+                        
+                        link.style.position = 'relative';
+                        link.appendChild(ripple);
+                        
+                        gsap.to(ripple, {
+                            scale: 20,
+                            opacity: 0,
+                            duration: 0.6,
+                            ease: "power2.out",
+                            onComplete: () => ripple.remove()
+                        });
+                        
+                        // Execute original link action after animation
+                        setTimeout(() => {
+                            if (link.href && link.href !== '#') {
+                                window.location.href = link.href;
+                            }
+                        }, 300);
+                    });
+                });
+            }
+        };
+
+        function initMainSite() {
+            portfolio.init();
+            cursor.init();
+            audioSystem.init();
+            gsapAnimations.init();
+            
+            // Start the epic GSAP entrance animations
+            if (typeof startGSAPAnimations === 'function') {
+                startGSAPAnimations();
+            }
+            
+            // Initialize scroll animations
+            const scrollElements = document.querySelectorAll('.scroll-reveal');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, observerOptions);
+            
+            scrollElements.forEach(el => observer.observe(el));
+        }
+        
+        // Initialize cursor and audio immediately when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Initializing systems');
+            cursor.init();
+            audioSystem.init();
+            
+            // Initialize loader animation immediately
+            if (typeof initLoaderAnimation === 'function') {
+                initLoaderAnimation();
+                console.log('Loader animation initialized');
+            } else {
+                console.log('initLoaderAnimation function not found');
+            }
+            
+            // Ensure loader is visible initially
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.style.display = 'flex';
+                loader.style.opacity = '1';
+                console.log('Loader made visible');
+            } else {
+                console.log('Loader element not found');
             }
         });
-
-        console.log('🎨 Portfolio loaded successfully!');
     </script>
 </body>
 </html>
