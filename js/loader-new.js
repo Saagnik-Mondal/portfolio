@@ -1,311 +1,275 @@
-// ===========================================
-// PREMIUM LOADING SCREEN - MODERN CSS APPROACH
-// ===========================================
-
-function initLoaderAnimation() {
-    console.log('Premium Loader v2.0 - Starting...');
-    
-    const loader = document.getElementById('loader');
-    const percentageElement = document.querySelector('.loading-percentage');
-    const progressBar = document.querySelector('.progress-bar');
-    const messages = document.querySelectorAll('.message');
-    const skipLoader = document.getElementById('skip-loader');
-    const canvas = document.getElementById('loader-canvas');
-    
-    // Hide canvas - using pure CSS animations
-    if (canvas) {
-        canvas.style.display = 'none';
+// Progressive Content Loading System
+class ProgressiveLoader {
+    constructor() {
+        this.loader = document.getElementById('loader');
+        this.loadingOverlay = document.querySelector('.loading-overlay');
+        this.contentContainer = document.querySelector('.loading-content-container');
+        this.percentageElement = document.querySelector('.loading-percentage');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.messages = document.querySelectorAll('.message');
+        this.loadingElements = document.querySelectorAll('.loading-element');
+        this.skipButton = document.getElementById('skip-loader');
+        
+        this.progress = 0;
+        this.duration = 10000; // 10 seconds
+        this.currentMessageIndex = 0;
+        this.messageInterval = null;
+        this.progressInterval = null;
+        this.isSkipped = false;
+        this.revealThresholds = [10, 30, 50, 70, 90]; // Progress points to reveal elements
+        
+        this.init();
     }
     
-    // Ensure loader visibility
-    if (loader) {
-        loader.style.display = 'flex';
-        loader.classList.add('active');
-    } else {
-        console.error('Loader element not found!');
-        return;
-    }
-    
-    let progress = 0;
-    let currentMessageIndex = 0;
-    let animationId;
-    
-    // Premium loading messages
-    const loadingMessages = [
-        "Initializing experience...",
-        "Loading creative assets...", 
-        "Preparing portfolio...",
-        "Optimizing performance...",
-        "Almost ready...",
-        "Welcome! ✨"
-    ];
-    
-    // Initialize progress display
-    if (percentageElement) {
-        percentageElement.textContent = '0%';
-    }
-    
-    // Message cycling function
-    function updateMessage() {
-        messages.forEach(msg => msg.classList.remove('active'));
-        if (messages[currentMessageIndex]) {
-            messages[currentMessageIndex].textContent = loadingMessages[currentMessageIndex];
-            messages[currentMessageIndex].classList.add('active');
+    init() {
+        console.log('Progressive Loader - Starting...');
+        
+        // Add loading class to body
+        document.body.classList.add('loading');
+        
+        // Start loading animation
+        this.startProgress();
+        this.startMessageRotation();
+        
+        // Skip button functionality
+        if (this.skipButton) {
+            this.skipButton.addEventListener('click', () => this.skipLoader());
         }
-        currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+        
+        // Prevent scrolling during loading
+        this.preventScroll();
+        
+        // Initialize content visibility
+        this.initializeContentVisibility();
     }
     
-    // Start message cycling - slower for 10-second duration
-    updateMessage();
-    const messageInterval = setInterval(updateMessage, 1600); // Change message every 1.6 seconds
-    
-    // Simple 10-second loading progress
-    const loadingStartTime = Date.now();
-    const loadingDuration = 10000; // Exactly 10 seconds
-    
-    function updateProgress() {
-        const currentTime = Date.now();
-        const elapsed = currentTime - loadingStartTime;
+    initializeContentVisibility() {
+        if (!this.contentContainer) return;
         
-        // Calculate progress (0-100) over exactly 10 seconds
-        progress = Math.min((elapsed / loadingDuration) * 100, 100);
+        // Start with content container slightly visible
+        this.contentContainer.style.opacity = '0.1';
+        this.contentContainer.style.transform = 'scale(0.95)';
         
-        // Update UI
-        if (percentageElement) {
-            const displayProgress = Math.floor(progress);
-            percentageElement.textContent = displayProgress + '%';
+        // Hide all loading elements initially
+        this.loadingElements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(50px)';
+        });
+    }
+    
+    startProgress() {
+        const startTime = Date.now();
+        
+        this.progressInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            this.progress = Math.min((elapsed / this.duration) * 100, 100);
             
-            // Add milestone effects every 20%
-            if (displayProgress % 20 === 0 && displayProgress > 0) {
-                percentageElement.style.transform = 'scale(1.2)';
+            this.updateProgress();
+            this.revealContentProgressively();
+            
+            if (this.progress >= 100) {
+                this.completeLoading();
+            }
+        }, 16); // ~60fps
+    }
+    
+    updateProgress() {
+        // Update percentage text
+        if (this.percentageElement) {
+            this.percentageElement.textContent = `${Math.floor(this.progress)}%`;
+        }
+        
+        // Update progress bar
+        if (this.progressBar) {
+            this.progressBar.style.width = `${this.progress}%`;
+        }
+        
+        // Gradually make content more visible as progress increases
+        if (this.contentContainer) {
+            const contentOpacity = Math.min(0.1 + (this.progress / 100) * 0.9, 1);
+            const contentScale = 0.95 + (this.progress / 100) * 0.05;
+            
+            this.contentContainer.style.opacity = contentOpacity;
+            this.contentContainer.style.transform = `scale(${contentScale})`;
+        }
+    }
+    
+    revealContentProgressively() {
+        // Reveal elements based on progress thresholds
+        this.loadingElements.forEach((element, index) => {
+            const threshold = element.dataset.loadProgress || this.revealThresholds[index] || (index + 1) * 20;
+            
+            if (this.progress >= threshold && !element.classList.contains('revealed')) {
+                element.classList.add('revealed');
                 setTimeout(() => {
-                    percentageElement.style.transform = 'scale(1)';
-                }, 200);
-            }
-        }
-        
-        if (progressBar) {
-            progressBar.style.width = progress + '%';
-        }
-        
-        // Continue animation if not complete
-        if (progress < 100) {
-            animationId = requestAnimationFrame(updateProgress);
-        } else {
-            // Loading complete after exactly 10 seconds
-            clearInterval(messageInterval);
-            messages.forEach(msg => msg.classList.remove('active'));
-            if (messages[0]) {
-                messages[0].textContent = "Welcome! ✨";
-                messages[0].classList.add('active');
-            }
-            setTimeout(() => completeLoading(), 300);
-        }
-    }
-    
-    // Skip loader functionality
-    if (skipLoader) {
-        skipLoader.addEventListener('click', () => {
-            console.log('Skip loader clicked');
-            clearInterval(messageInterval);
-            if (animationId) cancelAnimationFrame(animationId);
-            progress = 100;
-            if (percentageElement) percentageElement.textContent = '100%';
-            if (progressBar) progressBar.style.width = '100%';
-            completeLoading();
-        });
-    }
-    
-    // Start progress animation
-    updateProgress();
-}
-
-function completeLoading() {
-    console.log('Loading complete - transitioning to main site');
-    
-    const loader = document.getElementById('loader');
-    const welcomeScreen = document.getElementById('welcome-screen');
-    
-    // Hide welcome screen if still visible
-    if (welcomeScreen) {
-        welcomeScreen.style.display = 'none';
-    }
-    
-    // Initialize main site first
-    if (typeof initMainSite === 'function') {
-        initMainSite();
-    }
-    
-    // Force immediate positioning and visibility
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    document.body.style.position = 'static';
-    document.body.style.overflow = 'auto';
-    document.body.style.height = 'auto';
-    
-    // Force scroll to absolute top
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    
-    // Add loaded class
-    document.body.classList.add('loaded');
-    
-    // Make main content visible immediately
-    const heroSection = document.querySelector('.hero');
-    const headerSection = document.querySelector('#header');
-    const allSections = document.querySelectorAll('.section');
-    
-    if (headerSection) {
-        headerSection.style.opacity = '1';
-        headerSection.style.visibility = 'visible';
-        headerSection.style.pointerEvents = 'auto';
-        headerSection.style.position = 'fixed';
-        headerSection.style.top = '0';
-        headerSection.style.left = '0';
-        headerSection.style.width = '100%';
-        headerSection.style.zIndex = '1000';
-    }
-    
-    if (heroSection) {
-        heroSection.style.opacity = '1';
-        heroSection.style.visibility = 'visible';
-        heroSection.style.pointerEvents = 'auto';
-        heroSection.style.marginTop = '0';
-        heroSection.style.paddingTop = '0';
-        heroSection.style.position = 'relative';
-        heroSection.style.top = '0';
-        heroSection.style.height = '100vh';
-        heroSection.style.minHeight = '100vh';
-    }
-    
-    allSections.forEach(section => {
-        section.style.opacity = '1';
-        section.style.visibility = 'visible';
-        section.style.pointerEvents = 'auto';
-    });
-    
-    // Force another scroll to top after DOM updates
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-    }, 50);
-    
-    // Smooth fade out loader
-    if (typeof gsap !== 'undefined') {
-        gsap.to('#loader', {
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            onComplete: () => {
-                if (loader) {
-                    loader.style.display = 'none';
-                }
-                console.log('Site loaded successfully - content visible at top');
-                
-                // Trigger any awwwards effects
-                if (typeof initAwwwardsEffects === 'function') {
-                    initAwwwardsEffects();
-                }
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200); // Stagger the reveals
             }
         });
-    } else {
-        // Fallback without GSAP
-        if (loader) {
-            loader.style.transition = 'opacity 0.8s ease';
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                console.log('Site loaded successfully - content visible at top (fallback)');
-                
-                // Trigger any awwwards effects
-                if (typeof initAwwwardsEffects === 'function') {
-                    initAwwwardsEffects();
-                }
-            }, 800);
-        }
-    }
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded - Setting up premium loader');
-    const loader = document.getElementById('loader');
-    if (loader) {
-        loader.style.display = 'flex';
-        loader.style.visibility = 'visible';
-        loader.style.opacity = '1';
-        document.body.classList.remove('loaded');
-    }
-});
-
-// Start complete sequence
-window.addEventListener('load', () => {
-    console.log('Page fully loaded - Starting premium sequence');
-    
-    // Fallback timeout - 15 seconds total (3s welcome + 10s loading + 2s buffer)
-    const fallbackTimeout = setTimeout(() => {
-        console.log('Loading fallback triggered after 15 seconds');
-        completeLoading();
-    }, 15000);
-    
-    // Clear fallback when complete
-    window.addEventListener('loaderComplete', () => {
-        clearTimeout(fallbackTimeout);
-    });
-    
-    // Dispatch complete event
-    function dispatchComplete() {
-        window.dispatchEvent(new CustomEvent('loaderComplete'));
     }
     
-    // Start welcome sequence
-    setTimeout(() => {
-        startWelcomeSequence();
-    }, 500);
-});
-
-// Welcome sequence (simplified)
-function startWelcomeSequence() {
-    console.log('Starting welcome sequence');
+    startMessageRotation() {
+        if (this.messages.length === 0) return;
+        
+        this.messageInterval = setInterval(() => {
+            // Hide current message
+            this.messages[this.currentMessageIndex].classList.remove('active');
+            
+            // Show next message
+            this.currentMessageIndex = (this.currentMessageIndex + 1) % this.messages.length;
+            this.messages[this.currentMessageIndex].classList.add('active');
+        }, 1666); // Change every ~1.67 seconds for 6 messages in 10 seconds
+    }
     
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const loader = document.getElementById('loader');
-    const skipIntro = document.getElementById('skip-intro');
-    
-    // Ensure body is locked during sequence
-    document.body.classList.remove('loaded');
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    
-    // Ensure proper display
-    if (welcomeScreen) welcomeScreen.style.display = 'flex';
-    if (loader) loader.style.display = 'flex';
-    
-    // Skip functionality
-    if (skipIntro) {
-        skipIntro.addEventListener('click', () => {
-            console.log('Skip intro clicked - going directly to main content');
-            if (welcomeScreen) welcomeScreen.style.display = 'none';
-            // Skip loader and go directly to main content
-            completeLoading();
+    completeLoading() {
+        if (this.isSkipped) return;
+        
+        // Clear intervals
+        clearInterval(this.progressInterval);
+        clearInterval(this.messageInterval);
+        
+        // Final progress state
+        this.progress = 100;
+        this.updateProgress();
+        if (this.percentageElement) this.percentageElement.textContent = '100%';
+        if (this.progressBar) this.progressBar.style.width = '100%';
+        
+        // Reveal all remaining elements
+        this.loadingElements.forEach((element, index) => {
+            if (!element.classList.contains('revealed')) {
+                element.classList.add('revealed');
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            }
         });
-    }
-    
-    // Auto transition after welcome - then exactly 10 seconds of loading
-    setTimeout(() => {
-        console.log('Transitioning to 10-second loader');
         
-        if (welcomeScreen) {
-            welcomeScreen.classList.add('fade-out');
+        // Show completion message
+        if (this.messages.length > 0) {
+            this.messages.forEach(msg => msg.classList.remove('active'));
+            this.messages[this.messages.length - 1].classList.add('active');
         }
         
+        // Complete the loading
         setTimeout(() => {
-            if (welcomeScreen) welcomeScreen.style.display = 'none';
-            initLoaderAnimation();
-        }, 800);
+            this.hideLoader();
+        }, 1000);
+    }
+    
+    skipLoader() {
+        this.isSkipped = true;
         
-    }, 3000);
+        // Clear intervals
+        clearInterval(this.progressInterval);
+        clearInterval(this.messageInterval);
+        
+        // Instantly complete progress
+        this.progress = 100;
+        this.updateProgress();
+        if (this.percentageElement) this.percentageElement.textContent = '100%';
+        if (this.progressBar) this.progressBar.style.width = '100%';
+        
+        // Instantly reveal all content
+        if (this.contentContainer) {
+            this.contentContainer.style.opacity = '1';
+            this.contentContainer.style.transform = 'scale(1)';
+        }
+        
+        this.loadingElements.forEach(element => {
+            element.classList.add('revealed');
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        });
+        
+        // Hide loader quickly
+        setTimeout(() => {
+            this.hideLoader();
+        }, 300);
+    }
+    
+    hideLoader() {
+        // Remove loading class from body
+        document.body.classList.remove('loading');
+        
+        // Enable scrolling
+        this.enableScroll();
+        
+        // Mark loader as loaded
+        if (this.loader) {
+            this.loader.classList.add('loaded');
+        }
+        
+        // Ensure content is fully visible
+        if (this.contentContainer) {
+            this.contentContainer.style.opacity = '1';
+            this.contentContainer.style.transform = 'scale(1)';
+        }
+        
+        // Remove loading overlay
+        setTimeout(() => {
+            if (this.loadingOverlay) {
+                this.loadingOverlay.remove();
+            }
+        }, 1000);
+        
+        // Remove entire loader after transition
+        setTimeout(() => {
+            if (this.loader && this.loader.parentNode) {
+                this.loader.remove();
+            }
+        }, 2000);
+    }
+    
+    preventScroll() {
+        // Disable scroll
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        
+        // Prevent scroll events
+        document.addEventListener('wheel', this.preventScrollEvent, { passive: false });
+        document.addEventListener('touchmove', this.preventScrollEvent, { passive: false });
+        document.addEventListener('keydown', this.preventScrollKeys, { passive: false });
+    }
+    
+    enableScroll() {
+        // Re-enable scroll
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
+        // Remove event listeners
+        document.removeEventListener('wheel', this.preventScrollEvent, { passive: false });
+        document.removeEventListener('touchmove', this.preventScrollEvent, { passive: false });
+        document.removeEventListener('keydown', this.preventScrollKeys, { passive: false });
+    }
+    
+    preventScrollEvent(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    
+    preventScrollKeys(e) {
+        const keys = [32, 33, 34, 35, 36, 37, 38, 39, 40]; // space, page up/down, end, home, arrows
+        if (keys.includes(e.keyCode)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+}
+
+// Initialize loader when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Progressive Loader - Initializing...');
+    new ProgressiveLoader();
+});
+
+// Backup initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        new ProgressiveLoader();
+    });
+} else {
+    new ProgressiveLoader();
 }

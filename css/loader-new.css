@@ -68,28 +68,216 @@ body.loaded .hero {
 }
 
 /* Main loader container */
+/* PROGRESSIVE LOADING STYLES */
 .loader {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1), transparent 50%),
-        radial-gradient(circle at 80% 50%, rgba(236, 72, 153, 0.1), transparent 50%),
-        linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-    display: none !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 9999 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    z-index: 9999;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Loading Overlay (UI Elements) */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+.loader.loaded .loading-overlay {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-content {
+    text-align: center;
+    position: relative;
+    color: #ffffff;
+}
+
+/* Loading Text */
+.loading-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+.loading-dash {
+    margin: 0 1rem;
+    color: #666;
+}
+
+.loading-percentage {
+    color: #00ffff;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Loading Messages */
+.loading-messages {
+    height: 60px;
+    margin-bottom: 2rem;
+    position: relative;
     overflow: hidden;
 }
 
-.loader.active {
-    display: flex !important;
+.message {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    color: #aaa;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    white-space: nowrap;
+}
+
+.message.active {
+    opacity: 1;
+}
+
+/* Progress Bar */
+.loading-progress {
+    position: relative;
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+    position: relative;
+}
+
+.progress-shine {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    height: 8px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.8), transparent);
+    border-radius: 4px;
+    opacity: 0;
+    animation: progressShine 2s ease-in-out infinite;
+}
+
+/* Skip Button */
+.skip-loader {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+}
+
+.skip-loader:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Main Content Container (Progressive Reveal) */
+.loading-content-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    opacity: 0.1;
+    transform: scale(0.95);
+    transition: all 1s ease-out;
+}
+
+.loader.loaded .loading-content-container {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Loading Elements (Progressive Appearance) */
+.loading-element {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+.loading-element.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes progressShine {
+    0%, 100% { 
+        opacity: 0; 
+        transform: translateX(-100%); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: translateX(100%); 
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .loading-text {
+        font-size: 1.5rem;
+        letter-spacing: 4px;
+    }
+    
+    .loading-progress {
+        width: 250px;
+    }
+    
+    .skip-loader {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
 }
 
 /* Advanced particle system */
