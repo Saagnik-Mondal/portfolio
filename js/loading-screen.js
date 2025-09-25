@@ -31,9 +31,14 @@ class LoadingScreen {
     }
 
     createLoadingScreen() {
+        // Ensure we start at top
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
         // Create loading screen HTML
         const loadingHTML = `
-            <div class="loading-screen" id="loadingScreen">
+            <div class="loading-screen" id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999;">
                 <div class="matrix-bg" id="matrixBg"></div>
                 <div class="loading-content">
                     <h1 class="loading-title" 
@@ -77,14 +82,29 @@ class LoadingScreen {
             </div>
         `;
 
-        // Add to body
+        // Add to body at the very beginning
         document.body.insertAdjacentHTML('afterbegin', loadingHTML);
         
         // Add loading class to body and ensure we start at top
         document.body.classList.add('loading');
+        document.documentElement.classList.add('loading');
+        
+        // Force scroll to top multiple times
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
+        
+        // Force loading screen to be visible
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.position = 'fixed';
+            loadingScreen.style.top = '0';
+            loadingScreen.style.left = '0';
+            loadingScreen.style.width = '100vw';
+            loadingScreen.style.height = '100vh';
+            loadingScreen.style.zIndex = '99999';
+        }
     }
 
     createMatrixEffect() {
@@ -215,10 +235,15 @@ class LoadingScreen {
             
             // Remove loading class and restore normal scrolling
             document.body.classList.remove('loading');
+            document.documentElement.classList.remove('loading');
             document.body.style.overflow = '';
             document.body.style.position = '';
             document.body.style.width = '';
             document.body.style.height = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.margin = '';
+            document.body.style.padding = '';
             
             // Ensure page starts at top after loading
             window.scrollTo(0, 0);
