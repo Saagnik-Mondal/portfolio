@@ -2,19 +2,19 @@
    PREMIUM LOADING SCREEN - MODERN DESIGN
    =========================================== */
 
-/* Prevent scrolling during loading */
-body:not(.loaded) {
-    overflow: hidden !important;
-    height: 100vh !important;
-    position: fixed !important;
+/* Loader disabled - allow normal scrolling */
+body {
+    overflow: auto !important;
+    height: auto !important;
+    position: static !important;
     width: 100% !important;
 }
 
-body:not(.loaded) #header,
-body:not(.loaded) .hero,
-body:not(.loaded) .section {
-    opacity: 0 !important;
-    pointer-events: none !important;
+body #header,
+body .hero,
+body .section {
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 /* Ensure smooth transition to main content */
