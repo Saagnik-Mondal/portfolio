@@ -1,6 +1,9 @@
 // Progressive Content Loading System
 class ProgressiveLoader {
     constructor() {
+        console.log('ProgressiveLoader constructor called');
+        window.loaderInitialized = true;
+        
         this.loader = document.getElementById('loader');
         this.loadingOverlay = document.querySelector('.loading-overlay');
         this.contentContainer = document.querySelector('.loading-content-container');
@@ -23,6 +26,19 @@ class ProgressiveLoader {
     
     init() {
         console.log('Progressive Loader - Starting...');
+        console.log('Loader element:', this.loader);
+        console.log('Loading overlay:', this.loadingOverlay);
+        console.log('Content container:', this.contentContainer);
+        console.log('Progress bar:', this.progressBar);
+        console.log('Loading elements:', this.loadingElements);
+        
+        // Ensure loader is visible
+        if (this.loader) {
+            this.loader.style.display = 'flex';
+            this.loader.style.opacity = '1';
+            this.loader.style.visibility = 'visible';
+            this.loader.style.zIndex = '9999';
+        }
         
         // Add loading class to body
         document.body.classList.add('loading');
@@ -77,6 +93,7 @@ class ProgressiveLoader {
         // Update percentage text
         if (this.percentageElement) {
             this.percentageElement.textContent = `${Math.floor(this.progress)}%`;
+            console.log('Progress updated:', Math.floor(this.progress) + '%');
         }
         
         // Update progress bar
@@ -91,6 +108,10 @@ class ProgressiveLoader {
             
             this.contentContainer.style.opacity = contentOpacity;
             this.contentContainer.style.transform = `scale(${contentScale})`;
+            
+            if (this.progress % 20 === 0) {
+                console.log('Content opacity:', contentOpacity, 'Scale:', contentScale);
+            }
         }
     }
     
@@ -300,17 +321,52 @@ class ProgressiveLoader {
     }
 }
 
+// Immediate initialization - force loader to start
+console.log('Loader script loaded');
+
+// Force loader visibility immediately
+const forceShowLoader = () => {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'flex';
+        loader.style.opacity = '1';
+        loader.style.visibility = 'visible';
+        loader.style.zIndex = '9999';
+        console.log('Loader forced to be visible');
+    }
+};
+
+// Try to show loader immediately
+forceShowLoader();
+
 // Initialize loader when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Progressive Loader - Initializing...');
-    new ProgressiveLoader();
+    console.log('DOM Ready - Progressive Loader - Initializing...');
+    forceShowLoader();
+    setTimeout(() => {
+        new ProgressiveLoader();
+    }, 100);
 });
 
-// Backup initialization
+// Backup initialization for different ready states
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('Document loading - initializing loader');
+        forceShowLoader();
         new ProgressiveLoader();
     });
-} else {
+} else if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log('Document already ready - initializing loader immediately');
+    forceShowLoader();
     new ProgressiveLoader();
 }
+
+// Final fallback
+setTimeout(() => {
+    console.log('Fallback initialization after 500ms');
+    forceShowLoader();
+    if (!window.loaderInitialized) {
+        new ProgressiveLoader();
+        window.loaderInitialized = true;
+    }
+}, 500);
