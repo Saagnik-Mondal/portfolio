@@ -265,11 +265,11 @@ function initLoaderAnimation() {
             // Final message
             messages.forEach(msg => msg.classList.remove('active'));
             if (messages[0]) {
-                messages[0].textContent = "Ready to enter the laser realm! ⚡";
+                messages[0].textContent = "Welcome to the Digital Realm! ✨";
                 messages[0].classList.add('active');
             }
-            // Wait a moment before completing
-            setTimeout(() => completeNeuralLoading(laserFlow), 1200);
+            // Complete loading immediately
+            completeNeuralLoading(laserFlow);
             return;
         }
 
@@ -319,8 +319,8 @@ function initLoaderAnimation() {
             animationId = requestAnimationFrame(updateProgress);
         } else {
             clearInterval(messageInterval);
-            // Complete loading after a brief pause
-            setTimeout(() => completeNeuralLoading(laserFlow), 800);
+            // Complete loading immediately
+            completeNeuralLoading(laserFlow);
         }
     }
 
@@ -355,9 +355,13 @@ function initLoaderAnimation() {
     // Add skip loader functionality  
     if (skipLoader) {
         skipLoader.addEventListener('click', () => {
-            console.log('Skip loader clicked');
+            console.log('Skip loader clicked - entering realm instantly');
             clearInterval(messageInterval);
             if (animationId) cancelAnimationFrame(animationId);
+            // Set progress to 100% and complete immediately
+            progress = 100;
+            if (percentageElement) percentageElement.textContent = '100%';
+            if (progressBar) progressBar.style.width = '100%';
             completeNeuralLoading(laserFlow);
         });
     }
@@ -473,15 +477,15 @@ function completeNeuralLoading(laserFlow = null) {
         const portalColors = ['#8B5CF6', '#FF79C6', '#4ECDC4', '#F7DC6F'];
         
         function portalAnimation() {
-            burstProgress += 0.03;
+            burstProgress += 0.08; // Faster animation
             
             ctx.save();
             ctx.globalCompositeOperation = 'lighter';
             
             // Create mystical portal rings
-            for (let i = 0; i < 8; i++) {
-                const radius = burstProgress * 400 * (i + 1) * 0.8;
-                const alpha = Math.max(0, 1 - burstProgress * 1.5);
+            for (let i = 0; i < 6; i++) { // Fewer rings for faster completion
+                const radius = burstProgress * 300 * (i + 1) * 0.8;
+                const alpha = Math.max(0, 1 - burstProgress * 2);
                 
                 ctx.globalAlpha = alpha * 0.4;
                 ctx.strokeStyle = portalColors[i % portalColors.length];
@@ -494,7 +498,7 @@ function completeNeuralLoading(laserFlow = null) {
             
             ctx.restore();
             
-            if (burstProgress < 1.2) {
+            if (burstProgress < 0.8) { // Complete faster
                 requestAnimationFrame(portalAnimation);
             }
         }
@@ -523,31 +527,31 @@ function completeNeuralLoading(laserFlow = null) {
     if (typeof gsap !== 'undefined') {
         gsap.to('#loader', {
             opacity: 0,
-            duration: 1.5,
+            duration: 0.5,
             ease: 'power2.out',
             onComplete: () => {
                 const loader = document.getElementById('loader');
                 if (loader) {
                     loader.style.display = 'none';
                 }
-                // Reveal the main content with mystical effect
+                // Reveal the main content immediately
                 document.body.classList.add('loaded');
                 document.body.style.overflow = 'auto';
-                console.log('Welcome to the Digital Realm - site materialized');
+                console.log('Welcome to the Digital Realm - site materialized instantly');
             }
         });
     } else {
         // Fallback if GSAP is not loaded
         const loader = document.getElementById('loader');
         if (loader) {
-            loader.style.transition = 'opacity 1.5s ease';
+            loader.style.transition = 'opacity 0.5s ease';
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
                 document.body.classList.add('loaded');
                 document.body.style.overflow = 'auto';
-                console.log('Welcome to the Digital Realm - site materialized (fallback)');
-            }, 1500);
+                console.log('Welcome to the Digital Realm - site materialized instantly (fallback)');
+            }, 500);
         }
     }
 }
@@ -643,7 +647,7 @@ function startWelcomeSequence() {
         setTimeout(() => {
             if (welcomeScreen) welcomeScreen.style.display = 'none';
             initLoaderAnimation();
-        }, 1200);
+        }, 800);
         
     }, 3000);
 }
