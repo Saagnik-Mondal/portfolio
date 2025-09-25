@@ -25,112 +25,195 @@ class LoadingScreen {
     }
 
     init() {
-        this.createLoadingScreen();
-        this.startLoading();
-        this.createMatrixEffect();
+        try {
+            console.log('Initializing loading screen...');
+            this.createLoadingScreen();
+            this.startLoading();
+            this.createMatrixEffect();
+            console.log('Loading screen initialized successfully');
+        } catch (error) {
+            console.error('Error during loading screen initialization:', error);
+            this.handleError(error);
+        }
+    }
+
+    handleError(error) {
+        console.error('Loading screen error:', error);
+        
+        // Remove loading state to prevent infinite loading
+        document.body.classList.remove('loading');
+        document.documentElement.classList.remove('loading');
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        
+        // Try to remove any partial loading screen
+        const existingScreen = document.getElementById('loadingScreen');
+        if (existingScreen && existingScreen.parentNode) {
+            existingScreen.parentNode.removeChild(existingScreen);
+        }
+        
+        // Call completion callback even in error state
+        if (this.options.onComplete && typeof this.options.onComplete === 'function') {
+            try {
+                this.options.onComplete();
+            } catch (callbackError) {
+                console.error('Error in completion callback:', callbackError);
+            }
+        }
     }
 
     createLoadingScreen() {
-        // Ensure we start at top
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        
-        // Create loading screen HTML
-        const loadingHTML = `
-            <div class="loading-screen" id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999;">
-                <div class="matrix-bg" id="matrixBg"></div>
-                <div class="loading-content">
-                    <h1 class="loading-title" 
-                        data-decrypt
-                        data-text="SAAGNIK MONDAL"
-                        data-animate-on="immediate"
-                        data-speed="80"
-                        data-max-iterations="15"
-                        data-reveal-direction="center">
-                        SAAGNIK MONDAL
-                    </h1>
-                    
-                    <p class="loading-subtitle"
-                       data-decrypt
-                       data-text="DIGITAL ARTIST & DEVELOPER"
-                       data-animate-on="view"
-                       data-speed="60"
-                       data-sequential="true"
-                       data-reveal-direction="start">
-                        DIGITAL ARTIST & DEVELOPER
-                    </p>
-                    
-                    <div class="loading-progress">
-                        <div class="loading-progress-fill" id="progressFill"></div>
+        try {
+            console.log('Creating loading screen HTML...');
+            
+            // Ensure we start at top
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            
+            // Check if loading screen already exists
+            if (document.getElementById('loadingScreen')) {
+                console.log('Loading screen already exists, skipping creation');
+                return;
+            }
+            
+            // Create loading screen HTML
+            const loadingHTML = `
+                <div class="loading-screen" id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999;">
+                    <div class="matrix-bg" id="matrixBg"></div>
+                    <div class="loading-content">
+                        <h1 class="loading-title" 
+                            data-decrypt
+                            data-text="SAAGNIK MONDAL"
+                            data-animate-on="immediate"
+                            data-speed="80"
+                            data-max-iterations="15"
+                            data-reveal-direction="center">
+                            SAAGNIK MONDAL
+                        </h1>
+                        
+                        <p class="loading-subtitle"
+                           data-decrypt
+                           data-text="DIGITAL ARTIST & DEVELOPER"
+                           data-animate-on="view"
+                           data-speed="60"
+                           data-sequential="true"
+                           data-reveal-direction="start">
+                            DIGITAL ARTIST & DEVELOPER
+                        </p>
+                        
+                        <div class="loading-progress">
+                            <div class="loading-progress-fill" id="progressFill"></div>
+                        </div>
+                        
+                        <div class="loading-percentage" id="loadingPercentage">0%</div>
+                        
+                        <div class="loading-status"
+                             data-decrypt
+                             data-text="INITIALIZING SYSTEM"
+                             data-animate-on="immediate"
+                             data-speed="50"
+                             data-max-iterations="8"
+                             id="loadingStatus">
+                            INITIALIZING SYSTEM
+                        </div>
+                        
+                        <span class="terminal-cursor"></span>
                     </div>
-                    
-                    <div class="loading-percentage" id="loadingPercentage">0%</div>
-                    
-                    <div class="loading-status"
-                         data-decrypt
-                         data-text="INITIALIZING SYSTEM"
-                         data-animate-on="immediate"
-                         data-speed="50"
-                         data-max-iterations="8"
-                         id="loadingStatus">
-                        INITIALIZING SYSTEM
-                    </div>
-                    
-                    <span class="terminal-cursor"></span>
                 </div>
-            </div>
-        `;
+            `;
 
-        // Add to body at the very beginning
-        document.body.insertAdjacentHTML('afterbegin', loadingHTML);
-        
-        // Add loading class to body and ensure we start at top
-        document.body.classList.add('loading');
-        document.documentElement.classList.add('loading');
-        
-        // Force scroll to top multiple times
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        
-        // Force loading screen to be visible
-        const loadingScreen = document.getElementById('loadingScreen');
-        if (loadingScreen) {
-            loadingScreen.style.display = 'flex';
-            loadingScreen.style.position = 'fixed';
-            loadingScreen.style.top = '0';
-            loadingScreen.style.left = '0';
-            loadingScreen.style.width = '100vw';
-            loadingScreen.style.height = '100vh';
-            loadingScreen.style.zIndex = '99999';
+            // Add to body at the very beginning
+            document.body.insertAdjacentHTML('afterbegin', loadingHTML);
+            console.log('Loading screen HTML inserted');
+            
+            // Add loading class to body and ensure we start at top
+            document.body.classList.add('loading');
+            document.documentElement.classList.add('loading');
+            
+            // Force scroll to top multiple times
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            
+            // Force loading screen to be visible
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.display = 'flex';
+                loadingScreen.style.position = 'fixed';
+                loadingScreen.style.top = '0';
+                loadingScreen.style.left = '0';
+                loadingScreen.style.width = '100vw';
+                loadingScreen.style.height = '100vh';
+                loadingScreen.style.zIndex = '99999';
+                console.log('Loading screen styles applied');
+                
+                // Initialize DecryptedText for elements with data-decrypt
+                setTimeout(() => {
+                    try {
+                        const decryptElements = loadingScreen.querySelectorAll('[data-decrypt]');
+                        decryptElements.forEach(element => {
+                            if (typeof DecryptedText !== 'undefined') {
+                                new DecryptedText(element);
+                            } else {
+                                console.warn('DecryptedText class not available');
+                            }
+                        });
+                    } catch (decryptError) {
+                        console.warn('Error initializing DecryptedText:', decryptError);
+                    }
+                }, 100);
+            } else {
+                throw new Error('Failed to create loading screen element');
+            }
+            
+        } catch (error) {
+            console.error('Error creating loading screen:', error);
+            throw error;
         }
     }
 
     createMatrixEffect() {
-        const matrixBg = document.getElementById('matrixBg');
-        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        
-        const createMatrixChar = () => {
-            const char = document.createElement('div');
-            char.className = 'matrix-char';
-            char.textContent = chars[Math.floor(Math.random() * chars.length)];
-            char.style.left = Math.random() * 100 + '%';
-            char.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            char.style.animationDelay = Math.random() * 2 + 's';
+        try {
+            const matrixBg = document.getElementById('matrixBg');
+            if (!matrixBg) {
+                console.warn('Matrix background element not found, skipping matrix effect');
+                return;
+            }
             
-            matrixBg.appendChild(char);
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
             
-            // Remove char after animation
-            setTimeout(() => {
-                if (char.parentNode) {
-                    char.parentNode.removeChild(char);
+            const createMatrixChar = () => {
+                try {
+                    const char = document.createElement('div');
+                    char.className = 'matrix-char';
+                    char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                    char.style.left = Math.random() * 100 + '%';
+                    char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    char.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    if (matrixBg && matrixBg.appendChild) {
+                        matrixBg.appendChild(char);
+                        
+                        // Remove char after animation
+                        setTimeout(() => {
+                            if (char.parentNode) {
+                                char.parentNode.removeChild(char);
+                            }
+                        }, 5000);
+                    }
+                } catch (charError) {
+                    console.warn('Error creating matrix character:', charError);
                 }
-            }, 5000);
-        };
+            };
 
-        // Create matrix chars periodically
-        this.matrixInterval = setInterval(createMatrixChar, 200);
+            // Create matrix chars periodically
+            this.matrixInterval = setInterval(createMatrixChar, 200);
+            console.log('Matrix effect initialized');
+            
+        } catch (error) {
+            console.warn('Error creating matrix effect:', error);
+        }
     }
 
     startLoading() {
@@ -270,41 +353,79 @@ let globalLoadingScreen = null;
 
 // Create loading screen as soon as this script loads
 (function() {
-    // Create loading screen immediately
-    globalLoadingScreen = new LoadingScreen({
-        duration: 5000,
-        onComplete: () => {
-            console.log('Loading completed - Portfolio ready!');
-            // Initialize any other portfolio functionality here
-        }
-    });
-    
-    // Set up skip functionality immediately
-    const setupSkipHandlers = () => {
-        // Allow users to skip loading by pressing any key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
-                if (globalLoadingScreen) {
-                    globalLoadingScreen.skip();
+    try {
+        console.log('Loading screen script starting...');
+        
+        // Create loading screen immediately
+        globalLoadingScreen = new LoadingScreen({
+            duration: 5000,
+            onComplete: () => {
+                console.log('Loading completed - Portfolio ready!');
+                // Initialize GSAP animations if available
+                if (typeof startGSAPAnimations === 'function') {
+                    startGSAPAnimations();
+                }
+                // Initialize main site functionality
+                if (typeof initMainSite === 'function') {
+                    initMainSite();
                 }
             }
         });
         
-        // Allow clicking to skip
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.loading-screen')) {
-                if (globalLoadingScreen) {
-                    globalLoadingScreen.skip();
+        console.log('Loading screen created successfully');
+        
+        // Set up skip functionality immediately
+        const setupSkipHandlers = () => {
+            console.log('Setting up loading screen skip handlers');
+            
+            // Allow users to skip loading by pressing any key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+                    console.log('Skip key pressed:', e.key);
+                    if (globalLoadingScreen && !globalLoadingScreen.isComplete) {
+                        globalLoadingScreen.skip();
+                    }
+                }
+            });
+            
+            // Allow clicking to skip
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.loading-screen')) {
+                    console.log('Loading screen clicked - skipping');
+                    if (globalLoadingScreen && !globalLoadingScreen.isComplete) {
+                        globalLoadingScreen.skip();
+                    }
+                }
+            });
+        };
+        
+        // Setup handlers immediately or when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupSkipHandlers);
+        } else {
+            setupSkipHandlers();
+        }
+        
+    } catch (error) {
+        console.error('Critical error in loading screen initialization:', error);
+        
+        // Fallback - remove loading class to prevent infinite loading
+        setTimeout(() => {
+            console.log('Fallback: Removing loading class due to error');
+            document.body.classList.remove('loading');
+            document.documentElement.classList.remove('loading');
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            
+            // Try to initialize main site functionality
+            if (typeof initMainSite === 'function') {
+                try {
+                    initMainSite();
+                } catch (mainError) {
+                    console.error('Error initializing main site:', mainError);
                 }
             }
-        });
-    };
-    
-    // Setup handlers immediately or when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupSkipHandlers);
-    } else {
-        setupSkipHandlers();
+        }, 1000);
     }
 })();
 

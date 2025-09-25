@@ -238,22 +238,36 @@ class DecryptedText {
 
 // Auto-initialize elements with data-decrypt attribute
 document.addEventListener('DOMContentLoaded', () => {
-    const elements = document.querySelectorAll('[data-decrypt]');
-    elements.forEach(element => {
-        const options = {};
+    try {
+        console.log('Initializing DecryptedText elements...');
+        const elements = document.querySelectorAll('[data-decrypt]');
+        console.log(`Found ${elements.length} elements with data-decrypt attribute`);
         
-        // Parse data attributes
-        if (element.dataset.speed) options.speed = parseInt(element.dataset.speed);
-        if (element.dataset.maxIterations) options.maxIterations = parseInt(element.dataset.maxIterations);
-        if (element.dataset.sequential) options.sequential = element.dataset.sequential === 'true';
-        if (element.dataset.revealDirection) options.revealDirection = element.dataset.revealDirection;
-        if (element.dataset.characters) options.characters = element.dataset.characters;
-        if (element.dataset.animateOn) options.animateOn = element.dataset.animateOn;
-        if (element.dataset.className) options.className = element.dataset.className;
-        if (element.dataset.encryptedClassName) options.encryptedClassName = element.dataset.encryptedClassName;
+        elements.forEach((element, index) => {
+            try {
+                const options = {};
+                
+                // Parse data attributes
+                if (element.dataset.speed) options.speed = parseInt(element.dataset.speed);
+                if (element.dataset.maxIterations) options.maxIterations = parseInt(element.dataset.maxIterations);
+                if (element.dataset.sequential) options.sequential = element.dataset.sequential === 'true';
+                if (element.dataset.revealDirection) options.revealDirection = element.dataset.revealDirection;
+                if (element.dataset.characters) options.characters = element.dataset.characters;
+                if (element.dataset.animateOn) options.animateOn = element.dataset.animateOn;
+                if (element.dataset.className) options.className = element.dataset.className;
+                if (element.dataset.encryptedClassName) options.encryptedClassName = element.dataset.encryptedClassName;
 
-        new DecryptedText(element, options);
-    });
+                new DecryptedText(element, options);
+                console.log(`DecryptedText initialized for element ${index + 1}`);
+            } catch (elementError) {
+                console.warn(`Error initializing DecryptedText for element ${index + 1}:`, elementError);
+            }
+        });
+        
+        console.log('DecryptedText initialization completed');
+    } catch (error) {
+        console.error('Error during DecryptedText auto-initialization:', error);
+    }
 });
 
 // Export for manual usage
