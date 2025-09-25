@@ -59,53 +59,24 @@ function initLoaderAnimation() {
     updateMessage();
     const messageInterval = setInterval(updateMessage, 1600); // Change message every 1.6 seconds
     
-    // 10-second loading progress - exactly 10 seconds total
-    const loadingSteps = [
-        { duration: 2000, end: 20 },  // 0-2s: 20%
-        { duration: 2000, end: 40 },  // 2-4s: 40%
-        { duration: 2000, end: 60 },  // 4-6s: 60%
-        { duration: 2000, end: 80 },  // 6-8s: 80%
-        { duration: 2000, end: 100 }  // 8-10s: 100%
-    ];
-    
-    let currentStep = 0;
-    let stepStartTime = Date.now();
-    let stepStartProgress = 0;
+    // Simple 10-second loading progress
+    const loadingStartTime = Date.now();
+    const loadingDuration = 10000; // Exactly 10 seconds
     
     function updateProgress() {
         const currentTime = Date.now();
-        const step = loadingSteps[currentStep];
+        const elapsed = currentTime - loadingStartTime;
         
-        if (!step) {
-            clearInterval(messageInterval);
-            // Final message
-            messages.forEach(msg => msg.classList.remove('active'));
-            if (messages[0]) {
-                messages[0].textContent = "Welcome to the Digital Realm! ✨";
-                messages[0].classList.add('active');
-            }
-            // Complete loading
-            setTimeout(() => completeLoading(), 200);
-            return;
-        }
+        // Calculate progress (0-100) over exactly 10 seconds
+        progress = Math.min((elapsed / loadingDuration) * 100, 100);
         
-        const stepElapsed = currentTime - stepStartTime;
-        const stepProgress = Math.min(stepElapsed / step.duration, 1);
-        
-        // Smooth easing
-        const easedProgress = stepProgress < 0.5 
-            ? 2 * stepProgress * stepProgress 
-            : 1 - Math.pow(-2 * stepProgress + 2, 3) / 2;
-        
-        progress = stepStartProgress + (step.end - stepStartProgress) * easedProgress;
-        
-        // Update UI with smooth animations
+        // Update UI
         if (percentageElement) {
             const displayProgress = Math.floor(progress);
             percentageElement.textContent = displayProgress + '%';
             
-            // Add milestone effects
-            if (displayProgress % 25 === 0 && displayProgress > 0) {
+            // Add milestone effects every 20%
+            if (displayProgress % 20 === 0 && displayProgress > 0) {
                 percentageElement.style.transform = 'scale(1.2)';
                 setTimeout(() => {
                     percentageElement.style.transform = 'scale(1)';
@@ -117,17 +88,18 @@ function initLoaderAnimation() {
             progressBar.style.width = progress + '%';
         }
         
-        if (stepProgress >= 1) {
-            currentStep++;
-            stepStartTime = currentTime;
-            stepStartProgress = progress;
-        }
-        
-        if (currentStep < loadingSteps.length) {
+        // Continue animation if not complete
+        if (progress < 100) {
             animationId = requestAnimationFrame(updateProgress);
         } else {
+            // Loading complete after exactly 10 seconds
             clearInterval(messageInterval);
-            setTimeout(() => completeLoading(), 200);
+            messages.forEach(msg => msg.classList.remove('active'));
+            if (messages[0]) {
+                messages[0].textContent = "Welcome! ✨";
+                messages[0].classList.add('active');
+            }
+            setTimeout(() => completeLoading(), 300);
         }
     }
     
@@ -304,12 +276,6 @@ function startWelcomeSequence() {
         setTimeout(() => {
             if (welcomeScreen) welcomeScreen.style.display = 'none';
             initLoaderAnimation();
-            
-            // Automatically complete loading after exactly 10 seconds
-            setTimeout(() => {
-                console.log('10 seconds completed - showing main content');
-                completeLoading();
-            }, 10000); // Exactly 10 seconds
         }, 800);
         
     }, 3000);
