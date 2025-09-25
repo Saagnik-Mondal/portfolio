@@ -1,0 +1,409 @@
+/* ScrollStack CSS - Smooth scrolling card stack effect */
+
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.scroll-stack-inner {
+  padding: 20vh 5rem 50rem;
+  min-height: 100vh;
+}
+
+.scroll-stack-card-wrapper {
+  position: relative;
+}
+
+.scroll-stack-card {
+  transform-origin: top center;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+  height: 20rem;
+  width: 100%;
+  margin: 30px 0;
+  padding: 3rem;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  
+  /* Improve mobile performance */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: relative;
+}
+
+.scroll-stack-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.scroll-stack-card:hover::before {
+  opacity: 1;
+}
+
+.scroll-stack-card h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(45deg, #00ffff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.scroll-stack-card p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 80%;
+}
+
+.scroll-stack-card.variant-1 {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.scroll-stack-card.variant-2 {
+  background: linear-gradient(135deg, #2a1a2a 0%, #3e1634 100%);
+  border-color: rgba(255, 0, 255, 0.3);
+}
+
+.scroll-stack-card.variant-3 {
+  background: linear-gradient(135deg, #1a2a1a 0%, #163e16 100%);
+  border-color: rgba(0, 255, 0, 0.3);
+}
+
+.scroll-stack-card.variant-4 {
+  background: linear-gradient(135deg, #2a2a1a 0%, #3e3e16 100%);
+  border-color: rgba(255, 255, 0, 0.3);
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Portfolio-specific card styles */
+.project-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  position: relative;
+}
+
+.project-card .project-image {
+  width: 100%;
+  height: 60%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card .project-content {
+  padding: 1rem 0;
+}
+
+.project-card .project-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.project-card .project-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.about-card {
+  background: linear-gradient(135deg, #2a1a2a 0%, #3e1634 100%);
+  border: 1px solid rgba(255, 0, 255, 0.2);
+}
+
+.skills-card {
+  background: linear-gradient(135deg, #1a2a2a 0%, #163e3e 100%);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.contact-card {
+  background: linear-gradient(135deg, #2a2a1a 0%, #3e3e16 100%);
+  border: 1px solid rgba(255, 255, 0, 0.2);
+}
+
+/* Art Stack Specific Styles */
+.art-card {
+  position: relative;
+  height: 25rem;
+  background: #000;
+  border-radius: 25px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.art-card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.art-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.6s ease;
+}
+
+.art-card:hover .art-image {
+  transform: scale(1.1);
+}
+
+.art-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.95));
+  padding: 3rem 2rem 2rem;
+  transform: translateY(60%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.art-card:hover .art-overlay {
+  transform: translateY(0);
+}
+
+.art-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(45deg, #00ffff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.art-content h3 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.art-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.art-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: rgba(0, 255, 255, 0.2);
+  color: #00ffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.tag:hover {
+  background: rgba(0, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ScrollStack Section Container */
+.scroll-stack-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  overflow: hidden;
+  padding: 5rem 0;
+}
+
+.stack-title-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.stack-title {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 0 0 1rem 0;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.stack-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-weight: 300;
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+  100% { text-shadow: 0 0 30px rgba(255, 0, 255, 0.8); }
+}
+
+.scroll-stack-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .scroll-stack-inner {
+    padding: 15vh 2rem 30rem;
+  }
+  
+  .scroll-stack-card {
+    height: 16rem;
+    padding: 2rem;
+    margin: 20px 0;
+  }
+  
+  .scroll-stack-card h2 {
+    font-size: 2rem;
+  }
+  
+  .scroll-stack-card p {
+    font-size: 1rem;
+    max-width: 90%;
+  }
+  
+  .stack-title {
+    font-size: 2.5rem;
+  }
+  
+  .stack-subtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .art-card {
+    height: 20rem;
+  }
+  
+  .art-overlay {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+  
+  .art-content h2 {
+    font-size: 1.4rem;
+  }
+  
+  .art-content h3 {
+    font-size: 1.1rem;
+  }
+  
+  .art-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-stack-inner {
+    padding: 10vh 1rem 20rem;
+  }
+  
+  .scroll-stack-card {
+    height: 14rem;
+    padding: 1.5rem;
+  }
+  
+  .scroll-stack-card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .scroll-stack-card p {
+    font-size: 0.9rem;
+  }
+  
+  .stack-title {
+    font-size: 2rem;
+  }
+  
+  .art-card {
+    height: 18rem;
+  }
+  
+  .art-content h2 {
+    font-size: 1.2rem;
+  }
+  
+  .art-content h3 {
+    font-size: 1rem;
+  }
+  
+  .art-content p {
+    font-size: 0.8rem;
+  }
+  
+  .art-tags {
+    gap: 0.3rem;
+  }
+  
+  .tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
