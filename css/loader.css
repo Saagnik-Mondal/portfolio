@@ -136,32 +136,17 @@ body:not(.loaded) .section {
 @keyframes realm-portal-entry {
     0% {
         opacity: 0;
-        transform: perspective(1000px) translateZ(-500px) rotateX(90deg) scale(0.1);
-        filter: blur(50px) brightness(10) contrast(0);
-        letter-spacing: 2em;
-    }
-    25% {
-        opacity: 0.3;
-        transform: perspective(1000px) translateZ(-200px) rotateX(45deg) scale(0.5);
-        filter: blur(20px) brightness(5) contrast(0.5);
+        transform: translateY(50px) scale(0.8);
         letter-spacing: 1em;
     }
     50% {
         opacity: 0.7;
-        transform: perspective(1000px) translateZ(-50px) rotateX(15deg) scale(0.8);
-        filter: blur(10px) brightness(2) contrast(1);
+        transform: translateY(10px) scale(0.95);
         letter-spacing: 0.5em;
-    }
-    75% {
-        opacity: 0.9;
-        transform: perspective(1000px) translateZ(-10px) rotateX(5deg) scale(0.95);
-        filter: blur(5px) brightness(1.5) contrast(1.2);
-        letter-spacing: 0.3em;
     }
     100% {
         opacity: 1;
-        transform: perspective(1000px) translateZ(0px) rotateX(0deg) scale(1);
-        filter: blur(0px) brightness(1) contrast(1);
+        transform: translateY(0) scale(1);
         letter-spacing: 0.2em;
     }
 }
@@ -379,32 +364,17 @@ body:not(.loaded) .section {
 @keyframes consciousness-text-materialize {
     0% {
         opacity: 0;
-        transform: perspective(1000px) translateY(100px) translateZ(-200px) rotateX(60deg) scale(0.1);
-        filter: blur(50px) brightness(5) contrast(0) saturate(0);
-        letter-spacing: 2em;
-    }
-    20% {
-        opacity: 0.3;
-        transform: perspective(1000px) translateY(50px) translateZ(-100px) rotateX(30deg) scale(0.5);
-        filter: blur(25px) brightness(3) contrast(0.5) saturate(0.5);
+        transform: translateY(30px) scale(0.9);
         letter-spacing: 1em;
     }
     50% {
         opacity: 0.7;
-        transform: perspective(1000px) translateY(10px) translateZ(-20px) rotateX(10deg) scale(0.9);
-        filter: blur(10px) brightness(1.5) contrast(1.2) saturate(1.5);
+        transform: translateY(5px) scale(0.98);
         letter-spacing: 0.5em;
-    }
-    80% {
-        opacity: 0.95;
-        transform: perspective(1000px) translateY(-5px) translateZ(10px) rotateX(-2deg) scale(1.02);
-        filter: blur(2px) brightness(1.1) contrast(1.1) saturate(1.2);
-        letter-spacing: 0.35em;
     }
     100% {
         opacity: 1;
-        transform: perspective(1000px) translateY(0) translateZ(0) rotateX(0deg) scale(1);
-        filter: blur(0px) brightness(1) contrast(1) saturate(1);
+        transform: translateY(0) scale(1);
         letter-spacing: 0.3em;
     }
 }
@@ -478,53 +448,45 @@ body:not(.loaded) .section {
     border-radius: 0;
 }
 
-/* REVOLUTIONARY ANIMATIONS - Never Before Seen */
+/* OPTIMIZED ANIMATIONS - High Performance */
 @keyframes neural-network-genesis {
     0% { 
-        transform: perspective(2000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
-        filter: blur(1px) contrast(1.2) hue-rotate(0deg);
-    }
-    25% { 
-        transform: perspective(2000px) rotateX(15deg) rotateY(25deg) rotateZ(10deg) scale(1.1);
-        filter: blur(2px) contrast(1.5) hue-rotate(90deg);
+        transform: rotateZ(0deg) scale(1);
+        opacity: 0.9;
     }
     50% { 
-        transform: perspective(2000px) rotateX(-10deg) rotateY(-15deg) rotateZ(-5deg) scale(0.9);
-        filter: blur(0.5px) contrast(1.8) hue-rotate(180deg);
-    }
-    75% { 
-        transform: perspective(2000px) rotateX(20deg) rotateY(10deg) rotateZ(15deg) scale(1.05);
-        filter: blur(1.5px) contrast(1.3) hue-rotate(270deg);
+        transform: rotateZ(180deg) scale(1.05);
+        opacity: 1;
     }
     100% { 
-        transform: perspective(2000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
-        filter: blur(1px) contrast(1.2) hue-rotate(360deg);
+        transform: rotateZ(360deg) scale(1);
+        opacity: 0.9;
     }
 }
 
 @keyframes consciousness-emergence {
     0% { 
-        transform: perspective(2000px) rotateZ(0deg);
+        transform: rotateZ(0deg);
         opacity: 0.9;
     }
     100% { 
-        transform: perspective(2000px) rotateZ(360deg);
+        transform: rotateZ(360deg);
         opacity: 0.9;
     }
 }
 
 @keyframes quantum-fluctuation {
     0% { 
-        transform: perspective(2000px) scale(1) translateZ(0px);
-        filter: brightness(1) saturate(1);
+        transform: scale(1);
+        opacity: 0.9;
     }
     50% { 
-        transform: perspective(2000px) scale(1.08) translateZ(20px);
-        filter: brightness(1.3) saturate(1.5);
+        transform: scale(1.05);
+        opacity: 1;
     }
     100% { 
-        transform: perspective(2000px) scale(1) translateZ(0px);
-        filter: brightness(1) saturate(1);
+        transform: scale(1);
+        opacity: 0.9;
     }
 }
 
@@ -532,17 +494,14 @@ body:not(.loaded) .section {
     0% { 
         transform: rotateZ(0deg) scale(1);
         opacity: 0.5;
-        filter: hue-rotate(0deg);
     }
     50% { 
-        transform: rotateZ(180deg) scale(1.1);
+        transform: rotateZ(180deg) scale(1.05);
         opacity: 0.8;
-        filter: hue-rotate(180deg);
     }
     100% { 
         transform: rotateZ(360deg) scale(1);
         opacity: 0.5;
-        filter: hue-rotate(360deg);
     }
 }
 
@@ -716,24 +675,34 @@ body:not(.loaded) .section {
     }
 }
 
-/* Mobile Responsive for Welcome/Realm */
+/* Mobile Responsive with Performance Optimizations */
 @media (max-width: 768px) {
     .welcome-text {
         font-size: clamp(2rem, 10vw, 4rem);
+        animation-duration: 2s; /* Faster animation */
     }
     
     .realm-title {
         font-size: clamp(1.8rem, 8vw, 3rem);
         margin-bottom: 1rem;
+        animation-duration: 2s; /* Faster animation */
     }
     
     .realm-subtitle {
         font-size: clamp(1rem, 4vw, 1.5rem);
+        animation-duration: 1.5s; /* Faster animation */
     }
     
     .portal-effect {
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 150px;
+        animation: simple-rotation 4s linear infinite; /* Simplified animation */
+    }
+    
+    /* Disable complex animations on mobile */
+    .portal-effect::before,
+    .portal-effect::after {
+        display: none;
     }
     
     .skip-intro,
@@ -743,6 +712,19 @@ body:not(.loaded) .section {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
     }
+    
+    /* Simplified text shadows on mobile */
+    .welcome-text,
+    .realm-title,
+    .realm-subtitle {
+        text-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+    }
+}
+
+/* Simple rotation for mobile devices */
+@keyframes simple-rotation {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(360deg); }
 }
 
 .loader-content {

@@ -5,9 +5,14 @@
 function initLoaderAnimation() {
     console.log('Digital Canvas Awakening - Initializing...');
     
+    // Performance monitoring
+    const startTime = performance.now();
+    let frameCount = 0;
+    let fps = 60;
+    let lastFPSUpdate = startTime;
+    
     const loader = document.getElementById('loader');
-    const percentageElement = document            // Complete loading after a brief pause
-            setTimeout(() => completeNeuralLoading(laserFlow), 600);uerySelector('.loading-percentage');
+    const percentageElement = document.querySelector('.loading-percentage');
     const progressBar = document.querySelector('.progress-bar');
     const canvas = document.getElementById('loader-canvas');
     const messages = document.querySelectorAll('.message');
@@ -83,16 +88,19 @@ function initLoaderAnimation() {
             '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'
         ];
         
-        // Create fewer, higher quality particles for better performance
-        for (let i = 0; i < 80; i++) {
+        // Optimize particle count based on device capability
+        const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const particleCount = isMobile ? 25 : 50; // Reduced from 80
+        
+        for (let i = 0; i < particleCount; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
-                size: Math.random() * 8 + 3,
+                vx: (Math.random() - 0.5) * 1.5, // Reduced velocity
+                vy: (Math.random() - 0.5) * 1.5,
+                size: Math.random() * 6 + 2, // Smaller particles
                 color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-                alpha: Math.random() * 0.6 + 0.4,
+                alpha: Math.random() * 0.5 + 0.3, // Reduced alpha range
                 life: 1.0
             });
         }
@@ -128,19 +136,47 @@ function initLoaderAnimation() {
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas(); // Initial setup
         
-        function animateDigitalCanvas() {
-            // Create smoother fade effect
-            ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+        // Performance optimization variables
+        let lastFrameTime = 0;
+        const targetFPS = isMobile ? 30 : 60;
+        const frameInterval = 1000 / targetFPS;
+        
+        function animateDigitalCanvas(currentTime) {
+            // FPS monitoring and adaptive quality
+            frameCount++;
+            if (currentTime - lastFPSUpdate > 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastFPSUpdate = currentTime;
+                
+                // Adaptive quality based on performance
+                if (fps < 30 && particles.length > 15) {
+                    particles.splice(15); // Reduce particles if performance is poor
+                    console.log('Reducing particles for better performance');
+                }
+            }
+            
+            // Throttle frame rate for better performance
+            if (currentTime - lastFrameTime < frameInterval) {
+                requestAnimationFrame(animateDigitalCanvas);
+                return;
+            }
+            lastFrameTime = currentTime;
+            
+            // More efficient clearing with composite operation
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            const time = Date.now() * 0.001;
+            const time = currentTime * 0.001;
             const progressNormalized = progress / 100;
             
-            // Animate paint particles
+            // Batch particle operations for better performance
+            ctx.globalCompositeOperation = 'lighter';
             particles.forEach(particle => {
-                // Update position
-                particle.x += particle.vx + Math.sin(time + particle.y * 0.01) * 0.5;
-                particle.y += particle.vy + Math.cos(time + particle.x * 0.01) * 0.5;
+                // Simplified movement calculation
+                particle.x += particle.vx;
+                particle.y += particle.vy;
                 
                 // Wrap around edges
                 if (particle.x < 0) particle.x = canvas.width;
@@ -148,80 +184,85 @@ function initLoaderAnimation() {
                 if (particle.y < 0) particle.y = canvas.height;
                 if (particle.y > canvas.height) particle.y = 0;
                 
-                // Draw particle with enhanced glow
-                ctx.save();
+                // Optimized particle rendering without shadows for mobile
                 ctx.globalAlpha = particle.alpha * Math.max(0.3, progressNormalized);
                 ctx.fillStyle = particle.color;
-                ctx.shadowColor = particle.color;
-                ctx.shadowBlur = 15;
+                
+                if (!isMobile) {
+                    ctx.shadowColor = particle.color;
+                    ctx.shadowBlur = 8; // Reduced blur
+                }
+                
                 ctx.beginPath();
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.restore();
-            });
-            
-            // Animate brush strokes
-            brushStrokes.forEach((stroke, index) => {
-                ctx.save();
-                ctx.globalAlpha = stroke.alpha;
-                ctx.fillStyle = stroke.color;
-                ctx.shadowColor = stroke.color;
-                ctx.shadowBlur = 15;
                 
-                // Create organic brush shape
-                ctx.translate(stroke.x, stroke.y);
-                ctx.rotate(stroke.angle);
-                ctx.fillRect(-stroke.size/2, -stroke.size/4, stroke.size, stroke.size/2);
-                ctx.restore();
-                
-                stroke.alpha -= stroke.decay;
-                if (stroke.alpha <= 0) {
-                    brushStrokes.splice(index, 1);
+                if (!isMobile) {
+                    ctx.shadowBlur = 0; // Reset shadow
                 }
             });
             
-            // Add dynamic brush strokes based on progress - more prominent and visible
-            if (Math.random() < 0.15 + progressNormalized * 0.4) {
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const radius = Math.min(canvas.width, canvas.height) * 0.3;
-                const angle = time + progressNormalized * Math.PI * 4;
-                
-                // Create multiple brush strokes for better visibility
-                for (let i = 0; i < 3; i++) {
-                    const offsetAngle = angle + (i * Math.PI * 2 / 3);
-                    addBrushStroke(
-                        centerX + Math.cos(offsetAngle) * radius * (progressNormalized + 0.2),
-                        centerY + Math.sin(offsetAngle) * radius * (progressNormalized + 0.2),
-                        progressNormalized
-                    );
-                }
+            // Simplified brush stroke animation (only for desktop)
+            if (!isMobile && brushStrokes.length > 0) {
+                ctx.globalCompositeOperation = 'lighter';
+                brushStrokes.forEach((stroke, index) => {
+                    ctx.globalAlpha = stroke.alpha;
+                    ctx.fillStyle = stroke.color;
+                    
+                    // Simplified brush rendering without transforms
+                    ctx.fillRect(stroke.x - stroke.size/2, stroke.y - stroke.size/4, stroke.size, stroke.size/2);
+                    
+                    stroke.alpha -= stroke.decay;
+                    if (stroke.alpha <= 0) {
+                        brushStrokes.splice(index, 1);
+                    }
+                });
             }
             
-            // Draw connecting lines between nearby particles - more visible
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.lineWidth = 1.5;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 120 && Math.random() < 0.15) {
-                        ctx.globalAlpha = (1 - distance / 120) * 0.5 * Math.max(0.3, progressNormalized);
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+            // Add fewer, more efficient brush strokes
+            if (!isMobile && Math.random() < 0.08 + progressNormalized * 0.2) {
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = Math.min(canvas.width, canvas.height) * 0.25;
+                const angle = time + progressNormalized * Math.PI * 2;
+                
+                addBrushStroke(
+                    centerX + Math.cos(angle) * radius * (progressNormalized + 0.2),
+                    centerY + Math.sin(angle) * radius * (progressNormalized + 0.2),
+                    progressNormalized
+                );
+            }
+            
+            // Simplified connecting lines (desktop only)
+            if (!isMobile && particles.length > 10) {
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                
+                // Only check first 20 particles for connections to reduce CPU load
+                const maxConnections = Math.min(particles.length, 20);
+                for (let i = 0; i < maxConnections; i += 2) {
+                    for (let j = i + 2; j < maxConnections; j += 2) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = dx * dx + dy * dy; // Skip sqrt for performance
+                        
+                        if (distance < 14400) { // 120^2 = 14400
+                            ctx.globalAlpha = (1 - distance / 14400) * 0.3 * progressNormalized;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
                     }
                 }
             }
             ctx.globalAlpha = 1;
-            
-            requestAnimationFrame(animateDigitalCanvas);
+            ctx.globalCompositeOperation = 'source-over';            requestAnimationFrame(animateDigitalCanvas);
         }
         
-        animateDigitalCanvas();
+        // Start with current time
+        requestAnimationFrame(animateDigitalCanvas);
         console.log('Digital Canvas Awakening effect initialized');
     }
 
@@ -239,17 +280,19 @@ function initLoaderAnimation() {
         currentMessageIndex = (currentMessageIndex + 1) % canvasMessages.length;
     }
 
-    // Start message cycling with faster updates
+    // Start message cycling with optimized updates
     updateMessage();
-    const messageInterval = setInterval(updateMessage, 800);
+    const messageInterval = setInterval(updateMessage, isMobile ? 600 : 700);
 
-    // Improved loading progress with better timing
+    // Optimized loading progress with faster timing
+    const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const speedMultiplier = isMobile ? 0.6 : 0.8; // Faster on mobile
+    
     const loadingSteps = [
-        { duration: 1500, end: 25, effect: 'beam-intensity' },
-        { duration: 1200, end: 50, effect: 'color-shift' },
-        { duration: 1000, end: 75, effect: 'speed-boost' },
-        { duration: 800, end: 95, effect: 'final-surge' },
-        { duration: 500, end: 100, effect: 'completion' }
+        { duration: Math.round(1000 * speedMultiplier), end: 30, effect: 'beam-intensity' },
+        { duration: Math.round(800 * speedMultiplier), end: 60, effect: 'color-shift' },
+        { duration: Math.round(600 * speedMultiplier), end: 85, effect: 'speed-boost' },
+        { duration: Math.round(400 * speedMultiplier), end: 100, effect: 'completion' }
     ];
 
     let currentStep = 0;
@@ -276,10 +319,8 @@ function initLoaderAnimation() {
         const stepElapsed = currentTime - stepStartTime;
         const stepProgress = Math.min(stepElapsed / step.duration, 1);
         
-        // Smooth easing function
-        const easedProgress = stepProgress < 0.5 
-            ? 2 * stepProgress * stepProgress 
-            : 1 - Math.pow(-2 * stepProgress + 2, 3) / 2;
+        // Simplified linear easing for better performance
+        const easedProgress = stepProgress;
         
         progress = stepStartProgress + (step.end - stepStartProgress) * easedProgress;
         
