@@ -6,6 +6,8 @@
 body:not(.loaded) {
     overflow: hidden !important;
     height: 100vh !important;
+    position: fixed !important;
+    width: 100% !important;
 }
 
 body:not(.loaded) #header,
@@ -13,6 +15,27 @@ body:not(.loaded) .hero,
 body:not(.loaded) .section {
     opacity: 0 !important;
     pointer-events: none !important;
+}
+
+/* Ensure smooth transition to main content */
+body.loaded {
+    overflow: auto !important;
+    height: auto !important;
+    position: static !important;
+}
+
+body.loaded #header,
+body.loaded .hero,
+body.loaded .section {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.5s ease-out !important;
+}
+
+/* Ensure main content starts at top */
+body.loaded .hero {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 /* Main loader container */

@@ -152,38 +152,77 @@ function completeLoading() {
     console.log('Loading complete - transitioning to main site');
     
     const loader = document.getElementById('loader');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    
+    // Hide welcome screen if still visible
+    if (welcomeScreen) {
+        welcomeScreen.style.display = 'none';
+    }
     
     // Initialize main site first
     if (typeof initMainSite === 'function') {
         initMainSite();
     }
     
-    // Smooth fade out
+    // Immediately show main content and enable scrolling
+    document.body.classList.add('loaded');
+    document.body.style.overflow = 'auto';
+    
+    // Scroll to top to ensure main content is visible
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Make main content visible immediately
+    const heroSection = document.querySelector('.hero');
+    const headerSection = document.querySelector('#header');
+    const allSections = document.querySelectorAll('.section');
+    
+    if (headerSection) {
+        headerSection.style.opacity = '1';
+        headerSection.style.pointerEvents = 'auto';
+    }
+    
+    if (heroSection) {
+        heroSection.style.opacity = '1';
+        heroSection.style.pointerEvents = 'auto';
+    }
+    
+    allSections.forEach(section => {
+        section.style.opacity = '1';
+        section.style.pointerEvents = 'auto';
+    });
+    
+    // Smooth fade out loader
     if (typeof gsap !== 'undefined') {
         gsap.to('#loader', {
             opacity: 0,
-            duration: 0.6,
+            duration: 0.8,
             ease: 'power2.out',
             onComplete: () => {
                 if (loader) {
                     loader.style.display = 'none';
                 }
-                document.body.classList.add('loaded');
-                document.body.style.overflow = 'auto';
-                console.log('Site loaded successfully');
+                console.log('Site loaded successfully - content visible at top');
+                
+                // Trigger any awwwards effects
+                if (typeof initAwwwardsEffects === 'function') {
+                    initAwwwardsEffects();
+                }
             }
         });
     } else {
         // Fallback without GSAP
         if (loader) {
-            loader.style.transition = 'opacity 0.6s ease';
+            loader.style.transition = 'opacity 0.8s ease';
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                document.body.classList.add('loaded');
-                document.body.style.overflow = 'auto';
-                console.log('Site loaded successfully (fallback)');
-            }, 600);
+                console.log('Site loaded successfully - content visible at top (fallback)');
+                
+                // Trigger any awwwards effects
+                if (typeof initAwwwardsEffects === 'function') {
+                    initAwwwardsEffects();
+                }
+            }, 800);
         }
     }
 }
@@ -234,6 +273,12 @@ function startWelcomeSequence() {
     const loader = document.getElementById('loader');
     const skipIntro = document.getElementById('skip-intro');
     
+    // Ensure body is locked during sequence
+    document.body.classList.remove('loaded');
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    
     // Ensure proper display
     if (welcomeScreen) welcomeScreen.style.display = 'flex';
     if (loader) loader.style.display = 'flex';
@@ -241,9 +286,10 @@ function startWelcomeSequence() {
     // Skip functionality
     if (skipIntro) {
         skipIntro.addEventListener('click', () => {
-            console.log('Skip intro clicked');
+            console.log('Skip intro clicked - going directly to main content');
             if (welcomeScreen) welcomeScreen.style.display = 'none';
-            initLoaderAnimation();
+            // Skip loader and go directly to main content
+            completeLoading();
         });
     }
     
