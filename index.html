@@ -12,107 +12,18 @@
     <script src="js/tone.min.js"></script>
     <script src="js/lenis.min.js"></script>
     
-    <!-- Loader Script - Load Early -->
-    <script src="js/loader-new.js" defer></script>
+    <!-- ScrollStack Script -->
     <script src="js/ScrollStack.js" defer></script>
     
     <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/loader-new.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/LaserFlow.css">
     <link rel="stylesheet" href="css/awwwards-effects.css">
     <link rel="stylesheet" href="css/ScrollStack.css">
 </head>
-<body class="loaded">
-    <!-- Loading screens disabled -->
-    <div class="welcome-screen" id="welcome-screen" style="display: none;">
-        <div class="realm-particles" id="realm-particles"></div>
-        <div class="welcome-text">Entering the Digital Realm</div>
-        <div class="realm-subtitle">Prepare your consciousness for artistic awakening...</div>
-        <div class="skip-intro" id="skip-intro" data-cursor-hover>
-            <span>Skip Intro</span>
-        </div>
-    </div>
-    
-    <!-- Neural Network Genesis Screen -->
-    <div class="realm-entry" id="realm-entry" style="display: none;">
-        <div class="portal-effect"></div>
-        <div class="realm-title">Consciousness.exe</div>
-        <div class="realm-subtitle">neural_network_genesis_in_progress...</div>
-    </div>
-    
-    <!-- Loading Screen disabled -->
-    <div class="loader" id="loader" style="display: none;">
-        <!-- Loading UI Overlay -->
-        <div class="loading-overlay">
-            <div class="loading-content">
-                <div class="loading-text">
-                    <span class="loading-label">LOADING</span>
-                    <span class="loading-dash">–</span>
-                    <span class="loading-percentage">0%</span>
-                </div>
-                <div class="loading-messages">
-                    <div class="message active">Initializing experience...</div>
-                    <div class="message">Loading creative assets...</div>
-                    <div class="message">Preparing portfolio...</div>
-                    <div class="message">Optimizing performance...</div>
-                    <div class="message">Almost ready...</div>
-                    <div class="message">Welcome! ✨</div>
-                </div>
-                <div class="loading-progress">
-                    <div class="progress-bar"></div>
-                    <div class="progress-shine"></div>
-                </div>
-            </div>
-            <div class="skip-loader" id="skip-loader" data-cursor-hover>
-                <span>Skip</span>
-            </div>
-        </div>
-        
-        <!-- Main Content Inside Loading Screen -->
-        <div class="loading-content-container">
-            <!-- Header (appears progressively) -->
-            <header id="header" class="loading-element" data-load-progress="10">
-                <nav>
-                    <div class="logo">SM</div>
-                    <ul class="nav-links">
-                        <li><a href="#home" data-cursor-hover class="nav-hover-btn magnetic">Home</a></li>
-                        <li><a href="#about" data-cursor-hover class="nav-hover-btn magnetic">About</a></li>
-                        <li><a href="#projects" data-cursor-hover class="nav-hover-btn magnetic">Projects</a></li>
-                        <li><a href="#contact" data-cursor-hover class="nav-hover-btn magnetic">Contact</a></li>
-                    </ul>
-                </nav>
-            </header>
+<body>
 
-            <!-- Hero Section (appears progressively) -->
-            <section id="home" class="hero loading-element" data-load-progress="30">
-                <!-- Dynamic Background Gallery -->
-                <div class="hero__background">
-                    <img class="hero__bg-image active" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Background 1">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Background 2">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Background 3">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Background 4">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Background 5">
-                    <img class="hero__bg-image" src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Background 6">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Background 7">
-                    <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Background 8">
-                </div>
-                <div class="hero__bg-overlay"></div>
-                
-                <div class="hero__content">
-                    <h1 class="hero__title fade-in animated-title magnetic" data-text="SAAGNIK MONDAL">SAAGNIK MONDAL</h1>
-                    <p class="hero__subtitle fade-in scroll-reveal floating-element">DIGITAL ARTIST & CREATIVE SOUL</p>
-                    <button class="hero__cta btn-hover-effect fade-in magnetic" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
-                        <div class="btn-text">
-                            <span>EXPLORE MY UNIVERSE</span>
-                            <span>ENTER THE REALM</span>
-                        </div>
-                    </button>
-                </div>
-            </section>
-        </div>
-    </div>
 
     <!-- Main Content (moved outside loader) -->
     <header id="header">
@@ -1215,24 +1126,6 @@
             console.log('DOM Content Loaded - Initializing systems');
             cursor.init();
             audioSystem.init();
-            
-            // Initialize loader animation immediately
-            if (typeof initLoaderAnimation === 'function') {
-                initLoaderAnimation();
-                console.log('Loader animation initialized');
-            } else {
-                console.log('initLoaderAnimation function not found');
-            }
-            
-            // Ensure loader is visible initially
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.style.display = 'flex';
-                loader.style.opacity = '1';
-                console.log('Loader made visible');
-            } else {
-                console.log('Loader element not found');
-            }
         });
     </script>
 </body>
