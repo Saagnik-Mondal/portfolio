@@ -6,10 +6,12 @@ function initLoaderAnimation() {
     console.log('Digital Canvas Awakening - Initializing...');
     
     const loader = document.getElementById('loader');
-    const percentageElement = document.querySelector('.loading-percentage');
+    const percentageElement = document            // Complete loading after a brief pause
+            setTimeout(() => completeNeuralLoading(laserFlow), 600);uerySelector('.loading-percentage');
     const progressBar = document.querySelector('.progress-bar');
     const canvas = document.getElementById('loader-canvas');
     const messages = document.querySelectorAll('.message');
+    const skipLoader = document.getElementById('skip-loader');
     
     // Create unique digital canvas background
     if (loader) {
@@ -81,16 +83,16 @@ function initLoaderAnimation() {
             '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'
         ];
         
-        // Create paint particles distributed across the entire screen
-        for (let i = 0; i < 200; i++) {
+        // Create fewer, higher quality particles for better performance
+        for (let i = 0; i < 80; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 3,
-                vy: (Math.random() - 0.5) * 3,
-                size: Math.random() * 6 + 2,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                size: Math.random() * 8 + 3,
                 color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-                alpha: Math.random() * 0.8 + 0.3,
+                alpha: Math.random() * 0.6 + 0.4,
                 life: 1.0
             });
         }
@@ -127,8 +129,8 @@ function initLoaderAnimation() {
         resizeCanvas(); // Initial setup
         
         function animateDigitalCanvas() {
-            // Create subtle paint splatter effect
-            ctx.fillStyle = 'rgba(10, 10, 15, 0.03)';
+            // Create smoother fade effect
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             const time = Date.now() * 0.001;
@@ -231,23 +233,23 @@ function initLoaderAnimation() {
     function updateMessage() {
         messages.forEach(msg => msg.classList.remove('active'));
         if (messages[currentMessageIndex]) {
-            messages[currentMessageIndex].textContent = curiousMessages[currentMessageIndex];
+            messages[currentMessageIndex].textContent = canvasMessages[currentMessageIndex];
             messages[currentMessageIndex].classList.add('active');
         }
-        currentMessageIndex = (currentMessageIndex + 1) % curiousMessages.length;
+        currentMessageIndex = (currentMessageIndex + 1) % canvasMessages.length;
     }
 
-    // Start message cycling
+    // Start message cycling with faster updates
     updateMessage();
-    const messageInterval = setInterval(updateMessage, 1200);
+    const messageInterval = setInterval(updateMessage, 800);
 
-    // Simulate loading progress with dynamic laser effects
+    // Improved loading progress with better timing
     const loadingSteps = [
-        { duration: 2200, end: 20, effect: 'beam-intensity' },
-        { duration: 2000, end: 45, effect: 'color-shift' },
-        { duration: 1800, end: 70, effect: 'speed-boost' },
-        { duration: 1500, end: 90, effect: 'final-surge' },
-        { duration: 1000, end: 100, effect: 'completion' }
+        { duration: 1500, end: 25, effect: 'beam-intensity' },
+        { duration: 1200, end: 50, effect: 'color-shift' },
+        { duration: 1000, end: 75, effect: 'speed-boost' },
+        { duration: 800, end: 95, effect: 'final-surge' },
+        { duration: 500, end: 100, effect: 'completion' }
     ];
 
     let currentStep = 0;
@@ -318,7 +320,7 @@ function initLoaderAnimation() {
         } else {
             clearInterval(messageInterval);
             // Complete loading after a brief pause
-            setTimeout(() => completeNeuralLoading(laserFlow), 1500);
+            setTimeout(() => completeNeuralLoading(laserFlow), 800);
         }
     }
 
@@ -348,6 +350,16 @@ function initLoaderAnimation() {
                 laserFlow.options.wispIntensity = 15.0;
                 break;
         }
+    }
+
+    // Add skip loader functionality  
+    if (skipLoader) {
+        skipLoader.addEventListener('click', () => {
+            console.log('Skip loader clicked');
+            clearInterval(messageInterval);
+            if (animationId) cancelAnimationFrame(animationId);
+            completeNeuralLoading(laserFlow);
+        });
     }
 
     // Start progress animation
@@ -510,7 +522,7 @@ function completeNeuralLoading(laserFlow = null) {
     if (typeof gsap !== 'undefined') {
         gsap.to('#loader', {
             opacity: 0,
-            duration: 2.0,
+            duration: 1.2,
             ease: 'power2.out',
             onComplete: () => {
                 const loader = document.getElementById('loader');
@@ -525,13 +537,13 @@ function completeNeuralLoading(laserFlow = null) {
         // Fallback if GSAP is not loaded
         const loader = document.getElementById('loader');
         if (loader) {
-            loader.style.transition = 'opacity 2.0s ease';
+            loader.style.transition = 'opacity 1.2s ease';
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
                 document.body.classList.add('loaded');
                 console.log('Loader hidden (fallback), site loaded');
-            }, 2000);
+            }, 1200);
         }
     }
 }
@@ -579,61 +591,47 @@ window.addEventListener('load', () => {
     };
 });
 
-// Complete Welcome Sequence: Welcome → Realm Entry → Digital Canvas
+// Simplified Welcome Sequence: Welcome → Enhanced Loader
 function startWelcomeSequence() {
-    console.log('Starting Mac-style welcome sequence');
+    console.log('Starting simplified welcome sequence');
     
     const welcomeScreen = document.getElementById('welcome-screen');
     const realmEntry = document.getElementById('realm-entry');
     const loader = document.getElementById('loader');
+    const skipIntro = document.getElementById('skip-intro');
     
-    // Ensure all elements are properly positioned
+    // Ensure proper display
     if (welcomeScreen) welcomeScreen.style.display = 'flex';
-    if (realmEntry) realmEntry.style.display = 'flex';
+    if (realmEntry) realmEntry.style.display = 'none'; // Skip realm entry
     if (loader) loader.style.display = 'flex';
     
-    // Phase 1: Mac Welcome (3 seconds)
-    console.log('Phase 1: Mac Welcome');
+    // Add skip intro functionality
+    if (skipIntro) {
+        skipIntro.addEventListener('click', () => {
+            console.log('Skip intro clicked');
+            if (welcomeScreen) welcomeScreen.style.display = 'none';
+            initLoaderAnimation();
+        });
+    }
+    
+    // Phase 1: Welcome with shorter duration (2 seconds)
+    console.log('Phase 1: Welcome');
     
     setTimeout(() => {
-        // Fade out welcome, show realm entry
-        console.log('Phase 2: Realm Entry');
+        console.log('Phase 2: Enhanced Loader');
+        
+        // Start fade out welcome
         if (welcomeScreen) {
             welcomeScreen.classList.add('fade-out');
         }
         
+        // Start loader after brief overlap
         setTimeout(() => {
-            if (realmEntry) {
-                realmEntry.classList.add('active');
-                
-                // Add multiple portal layers for dimensional effect
-                createDimensionalPortal(realmEntry);
-                
-                // Add magical particle effects for realm entry
-                createRealmParticles(realmEntry);
-            }
-        }, 500);
+            if (welcomeScreen) welcomeScreen.style.display = 'none';
+            initLoaderAnimation();
+        }, 1000);
         
-        // Phase 3: Enter Digital Canvas (after 4 seconds total)
-        setTimeout(() => {
-            console.log('Phase 3: Digital Canvas Awakening');
-            
-            if (realmEntry) {
-                realmEntry.classList.add('fade-out');
-            }
-            
-            setTimeout(() => {
-                // Hide welcome and realm screens completely
-                if (welcomeScreen) welcomeScreen.style.display = 'none';
-                if (realmEntry) realmEntry.style.display = 'none';
-                
-                // Start the Digital Canvas animation
-                initLoaderAnimation();
-            }, 1500);
-            
-        }, 4000);
-        
-    }, 3000);
+    }, 2000);
 }
 
 // Create Revolutionary Neural Network Genesis Effect

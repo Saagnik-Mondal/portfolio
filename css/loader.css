@@ -481,6 +481,66 @@
     }
 }
 
+/* Skip buttons */
+.skip-intro {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: skip-fade-in 0.5s ease-out 2s forwards;
+}
+
+.skip-intro:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.skip-loader {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 121, 198, 0.1);
+    border: 1px solid rgba(255, 121, 198, 0.3);
+    border-radius: 25px;
+    color: #FF79C6;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    opacity: 0.7;
+}
+
+.skip-loader:hover {
+    background: rgba(255, 121, 198, 0.2);
+    border-color: rgba(255, 121, 198, 0.5);
+    transform: translateY(-2px);
+    opacity: 1;
+}
+
+@keyframes skip-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
 /* Mobile Responsive for Welcome/Realm */
 @media (max-width: 768px) {
     .welcome-text {
@@ -499,6 +559,14 @@
     .portal-effect {
         width: 200px;
         height: 200px;
+    }
+    
+    .skip-intro,
+    .skip-loader {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
     }
 }
 
