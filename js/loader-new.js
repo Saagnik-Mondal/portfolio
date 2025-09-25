@@ -136,12 +136,20 @@ function completeLoading() {
         initMainSite();
     }
     
-    // Immediately show main content and enable scrolling
-    document.body.classList.add('loaded');
+    // Force immediate positioning and visibility
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.body.style.position = 'static';
     document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
     
-    // Scroll to top to ensure main content is visible
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Force scroll to absolute top
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // Add loaded class
+    document.body.classList.add('loaded');
     
     // Make main content visible immediately
     const heroSection = document.querySelector('.hero');
@@ -150,18 +158,39 @@ function completeLoading() {
     
     if (headerSection) {
         headerSection.style.opacity = '1';
+        headerSection.style.visibility = 'visible';
         headerSection.style.pointerEvents = 'auto';
+        headerSection.style.position = 'fixed';
+        headerSection.style.top = '0';
+        headerSection.style.left = '0';
+        headerSection.style.width = '100%';
+        headerSection.style.zIndex = '1000';
     }
     
     if (heroSection) {
         heroSection.style.opacity = '1';
+        heroSection.style.visibility = 'visible';
         heroSection.style.pointerEvents = 'auto';
+        heroSection.style.marginTop = '0';
+        heroSection.style.paddingTop = '0';
+        heroSection.style.position = 'relative';
+        heroSection.style.top = '0';
+        heroSection.style.height = '100vh';
+        heroSection.style.minHeight = '100vh';
     }
     
     allSections.forEach(section => {
         section.style.opacity = '1';
+        section.style.visibility = 'visible';
         section.style.pointerEvents = 'auto';
     });
+    
+    // Force another scroll to top after DOM updates
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }, 50);
     
     // Smooth fade out loader
     if (typeof gsap !== 'undefined') {
