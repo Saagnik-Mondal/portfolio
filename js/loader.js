@@ -61,12 +61,13 @@ function initLoaderAnimation() {
         console.log('Initializing Digital Canvas Awakening Effect');
         
         // Setup canvas for digital painting simulation
-        canvas.style.position = 'absolute';
+        canvas.style.position = 'fixed';
         canvas.style.top = '0';
         canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        canvas.style.width = '100vw';
+        canvas.style.height = '100vh';
         canvas.style.zIndex = '1';
+        canvas.style.pointerEvents = 'none';
         
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -80,16 +81,16 @@ function initLoaderAnimation() {
             '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'
         ];
         
-        // Create paint particles
-        for (let i = 0; i < 150; i++) {
+        // Create paint particles distributed across the entire screen
+        for (let i = 0; i < 200; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
-                size: Math.random() * 4 + 1,
+                vx: (Math.random() - 0.5) * 3,
+                vy: (Math.random() - 0.5) * 3,
+                size: Math.random() * 6 + 2,
                 color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-                alpha: Math.random() * 0.8 + 0.2,
+                alpha: Math.random() * 0.8 + 0.3,
                 life: 1.0
             });
         }
@@ -116,9 +117,18 @@ function initLoaderAnimation() {
             }
         }
         
+        // Handle window resize
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initial setup
+        
         function animateDigitalCanvas() {
-            // Create paint splatter effect
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            // Create subtle paint splatter effect
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.03)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             const time = Date.now() * 0.001;
@@ -136,12 +146,12 @@ function initLoaderAnimation() {
                 if (particle.y < 0) particle.y = canvas.height;
                 if (particle.y > canvas.height) particle.y = 0;
                 
-                // Draw particle with glow
+                // Draw particle with enhanced glow
                 ctx.save();
-                ctx.globalAlpha = particle.alpha * progressNormalized;
+                ctx.globalAlpha = particle.alpha * Math.max(0.3, progressNormalized);
                 ctx.fillStyle = particle.color;
                 ctx.shadowColor = particle.color;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 15;
                 ctx.beginPath();
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -168,31 +178,35 @@ function initLoaderAnimation() {
                 }
             });
             
-            // Add dynamic brush strokes based on progress
-            if (Math.random() < 0.1 + progressNormalized * 0.3) {
+            // Add dynamic brush strokes based on progress - more prominent and visible
+            if (Math.random() < 0.15 + progressNormalized * 0.4) {
                 const centerX = canvas.width / 2;
                 const centerY = canvas.height / 2;
-                const radius = 200;
-                const angle = time + progressNormalized * Math.PI * 2;
+                const radius = Math.min(canvas.width, canvas.height) * 0.3;
+                const angle = time + progressNormalized * Math.PI * 4;
                 
-                addBrushStroke(
-                    centerX + Math.cos(angle) * radius * progressNormalized,
-                    centerY + Math.sin(angle) * radius * progressNormalized,
-                    progressNormalized
-                );
+                // Create multiple brush strokes for better visibility
+                for (let i = 0; i < 3; i++) {
+                    const offsetAngle = angle + (i * Math.PI * 2 / 3);
+                    addBrushStroke(
+                        centerX + Math.cos(offsetAngle) * radius * (progressNormalized + 0.2),
+                        centerY + Math.sin(offsetAngle) * radius * (progressNormalized + 0.2),
+                        progressNormalized
+                    );
+                }
             }
             
-            // Draw connecting lines between nearby particles
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1;
+            // Draw connecting lines between nearby particles - more visible
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1.5;
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < 100 && Math.random() < 0.1) {
-                        ctx.globalAlpha = (1 - distance / 100) * 0.3 * progressNormalized;
+                    if (distance < 120 && Math.random() < 0.15) {
+                        ctx.globalAlpha = (1 - distance / 120) * 0.5 * Math.max(0.3, progressNormalized);
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
