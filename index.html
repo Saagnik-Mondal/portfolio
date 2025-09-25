@@ -10,17 +10,14 @@
     <script src="js/ScrollTrigger.min.js"></script>
     <script src="js/three.min.js"></script>
     <script src="js/tone.min.js"></script>
-    <script src="js/lenis.min.js"></script>
-    
-    <!-- ScrollStack Script -->
-    <script src="js/ScrollStack.js" defer></script>
     
     <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/LaserFlow.css">
     <link rel="stylesheet" href="css/awwwards-effects.css">
-    <link rel="stylesheet" href="css/ScrollStack.css">
+    <link rel="stylesheet" href="css/artwork-gallery.css">
+    <link rel="stylesheet" href="css/loading-screen.css">
 </head>
 <body>
 
@@ -180,145 +177,119 @@
         </div>
     </section>
 
-    <!-- Art Stack ScrollStack Section -->
-    <section class="scroll-stack-section">
-        <div class="stack-title-section">
-            <h2 class="stack-title">FEATURED ARTWORK</h2>
-            <p class="stack-subtitle">Experience my digital art journey through interactive storytelling</p>
-        </div>
-        
-        <div id="art-stack" class="scroll-stack-container">
-            <!-- Character Design Sheet - Anaya -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Character Design Sheet</h2>
-                        <h3>Anaya - The Digital Warrior</h3>
-                        <p>Complete character reference showcasing multiple angles, expressions, and design details. This sheet demonstrates technical precision in anime-style character development.</p>
-                        <div class="art-tags">
-                            <span class="tag">Character Design</span>
-                            <span class="tag">Reference Sheet</span>
-                            <span class="tag">Anime Style</span>
+    <!-- Featured Artwork Gallery -->
+    <section id="artwork" class="section artwork-gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">FEATURED ARTWORK</h2>
+                <p class="section-subtitle">Digital art collection showcasing character design and concept art</p>
+            </div>
+            
+            <div class="artwork-grid">
+                <!-- Character Design Sheet - Anaya -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Sheet - Anaya">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Design Sheet</h3>
+                                <p>Anaya - The Digital Warrior</p>
+                                <div class="artwork-tags">
+                                    <span>Character Design</span>
+                                    <span>Reference Sheet</span>
+                                    <span>Anime Style</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Dynamic Warrior Pose -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Dynamic Action Pose</h2>
-                        <h3>Fierce Warrior Stance</h3>
-                        <p>Capturing movement and power through dynamic posing. This piece showcases dramatic lighting and emotional intensity in character portrayal.</p>
-                        <div class="art-tags">
-                            <span class="tag">Action Pose</span>
-                            <span class="tag">Digital Art</span>
-                            <span class="tag">Character Study</span>
+                <!-- Dynamic Warrior Pose -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Action Pose">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Dynamic Action Pose</h3>
+                                <p>Fierce Warrior Stance</p>
+                                <div class="artwork-tags">
+                                    <span>Action Pose</span>
+                                    <span>Digital Art</span>
+                                    <span>Character Study</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Futuristic Battle Design -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Futuristic Mythology</h2>
-                        <h3>Battle Armor Design</h3>
-                        <p>Blending mythological elements with futuristic aesthetics. This design explores the intersection of traditional fantasy and sci-fi concepts.</p>
-                        <div class="art-tags">
-                            <span class="tag">Concept Art</span>
-                            <span class="tag">Futuristic</span>
-                            <span class="tag">Armor Design</span>
+                <!-- Futuristic Battle Design -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Mythology">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Futuristic Mythology</h3>
+                                <p>Battle Armor Design</p>
+                                <div class="artwork-tags">
+                                    <span>Concept Art</span>
+                                    <span>Futuristic</span>
+                                    <span>Armor Design</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Character Turnaround -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Character Turnaround</h2>
-                        <h3>360° Character Study</h3>
-                        <p>Professional turnaround sheet showing character from multiple angles. Essential for animation and 3D modeling reference.</p>
-                        <div class="art-tags">
-                            <span class="tag">Turnaround</span>
-                            <span class="tag">Professional</span>
-                            <span class="tag">Reference</span>
+                <!-- Character Turnaround -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Character Turnaround">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Turnaround</h3>
+                                <p>360° Character Study</p>
+                                <div class="artwork-tags">
+                                    <span>Turnaround</span>
+                                    <span>Professional</span>
+                                    <span>Reference</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Portrait Study -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Character Portrait</h2>
-                        <h3>Emotional Expression Study</h3>
-                        <p>Detailed portrait focusing on facial features, lighting, and emotional depth. Showcasing technical skill in digital painting techniques.</p>
-                        <div class="art-tags">
-                            <span class="tag">Portrait</span>
-                            <span class="tag">Digital Painting</span>
-                            <span class="tag">Expression</span>
+                <!-- Portrait Study -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Character Portrait">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Portrait</h3>
+                                <p>Emotional Expression Study</p>
+                                <div class="artwork-tags">
+                                    <span>Portrait</span>
+                                    <span>Digital Painting</span>
+                                    <span>Expression</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Hand Study -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Anatomical Study</h2>
-                        <h3>Hand Positioning & Detail</h3>
-                        <p>Focused study on hand anatomy and positioning. Demonstrating attention to detail and understanding of human anatomy in art.</p>
-                        <div class="art-tags">
-                            <span class="tag">Anatomy</span>
-                            <span class="tag">Study</span>
-                            <span class="tag">Detail Work</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alternative Design -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Design Variations</h2>
-                        <h3>Character Evolution</h3>
-                        <p>Alternative design exploration showing different artistic approaches to the same character. Demonstrates versatility and creative range.</p>
-                        <div class="art-tags">
-                            <span class="tag">Variations</span>
-                            <span class="tag">Evolution</span>
-                            <span class="tag">Creative Range</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Final Action Piece -->
-            <div class="scroll-stack-card art-card">
-                <div class="art-image" style="background-image: url('images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg')"></div>
-                <div class="art-overlay">
-                    <div class="art-content">
-                        <h2>Master Study</h2>
-                        <h3>Complete Character Artwork</h3>
-                        <p>Final polished artwork combining all elements: dynamic pose, detailed anatomy, atmospheric lighting, and emotional storytelling.</p>
-                        <div class="art-tags">
-                            <span class="tag">Master Piece</span>
-                            <span class="tag">Complete Work</span>
-                            <span class="tag">Portfolio Highlight</span>
+                <!-- Hand Study -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Anatomical Study">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Anatomical Study</h3>
+                                <p>Hand Positioning & Detail</p>
+                                <div class="artwork-tags">
+                                    <span>Anatomy</span>
+                                    <span>Study</span>
+                                    <span>Detail Work</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -407,32 +378,14 @@
     </section>
 
     <!-- Load Scripts -->
+    <script src="js/DecryptedText.js"></script>
+    <script src="js/loading-screen.js"></script>
     <script src="js/LaserFlow.js"></script>
     <script src="js/awwwards-effects.js"></script>
     <script>
-        // Initialize Art ScrollStack immediately
+        // Simple DOM initialization
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize ScrollStack right away (no loader delay)
-            setTimeout(() => {
-                const artStack = new ScrollStack('#art-stack', {
-                    itemDistance: 80,
-                    itemScale: 0.02,
-                    itemStackDistance: 20,
-                    stackPosition: '25%',
-                    scaleEndPosition: '15%',
-                    baseScale: 0.95,
-                    rotationAmount: 0,
-                    blurAmount: 0,
-                    useWindowScroll: true,
-                    onStackComplete: () => {
-                        console.log('Art stack animation completed!');
-                        // Add some visual feedback when stack is complete
-                        document.querySelector('.stack-title').style.textShadow = '0 0 40px rgba(0, 255, 255, 1)';
-                    }
-                });
-                
-                console.log('Art ScrollStack initialized');
-            }, 500); // Reduced delay for faster initialization
+            console.log('Portfolio loaded successfully');
         });
         
         // Basic portfolio functionality
