@@ -460,7 +460,7 @@ function initBackgroundAnimation(canvas) {
 }
 
 function completeNeuralLoading(laserFlow = null) {
-    console.log('Digital Canvas Awakening completed, starting exit animation');
+    console.log('Realm entry completed - materializing in the digital universe');
     
     const loader = document.getElementById('loader');
     const canvas = document.getElementById('loader-canvas');
@@ -468,24 +468,25 @@ function completeNeuralLoading(laserFlow = null) {
     if (canvas) {
         const ctx = canvas.getContext('2d');
         
-        // Create completion burst effect
+        // Create mystical completion portal effect
         let burstProgress = 0;
-        const burstColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFEAA7'];
+        const portalColors = ['#8B5CF6', '#FF79C6', '#4ECDC4', '#F7DC6F'];
         
-        function burstAnimation() {
-            burstProgress += 0.05;
+        function portalAnimation() {
+            burstProgress += 0.03;
             
             ctx.save();
             ctx.globalCompositeOperation = 'lighter';
             
-            // Create expanding rings of color
-            for (let i = 0; i < 5; i++) {
-                const radius = burstProgress * 300 * (i + 1);
-                const alpha = Math.max(0, 1 - burstProgress * 2);
+            // Create mystical portal rings
+            for (let i = 0; i < 8; i++) {
+                const radius = burstProgress * 400 * (i + 1) * 0.8;
+                const alpha = Math.max(0, 1 - burstProgress * 1.5);
                 
-                ctx.globalAlpha = alpha * 0.3;
-                ctx.strokeStyle = burstColors[i % burstColors.length];
-                ctx.lineWidth = 3;
+                ctx.globalAlpha = alpha * 0.4;
+                ctx.strokeStyle = portalColors[i % portalColors.length];
+                ctx.lineWidth = 2;
+                ctx.setLineDash([10, 5]);
                 ctx.beginPath();
                 ctx.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
                 ctx.stroke();
@@ -493,12 +494,12 @@ function completeNeuralLoading(laserFlow = null) {
             
             ctx.restore();
             
-            if (burstProgress < 1) {
-                requestAnimationFrame(burstAnimation);
+            if (burstProgress < 1.2) {
+                requestAnimationFrame(portalAnimation);
             }
         }
         
-        burstAnimation();
+        portalAnimation();
     }
     
     // Trigger completion event to clear fallback timeout
@@ -522,28 +523,31 @@ function completeNeuralLoading(laserFlow = null) {
     if (typeof gsap !== 'undefined') {
         gsap.to('#loader', {
             opacity: 0,
-            duration: 1.2,
+            duration: 1.5,
             ease: 'power2.out',
             onComplete: () => {
                 const loader = document.getElementById('loader');
                 if (loader) {
                     loader.style.display = 'none';
                 }
+                // Reveal the main content with mystical effect
                 document.body.classList.add('loaded');
-                console.log('Loader hidden, site loaded');
+                document.body.style.overflow = 'auto';
+                console.log('Welcome to the Digital Realm - site materialized');
             }
         });
     } else {
         // Fallback if GSAP is not loaded
         const loader = document.getElementById('loader');
         if (loader) {
-            loader.style.transition = 'opacity 1.2s ease';
+            loader.style.transition = 'opacity 1.5s ease';
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
                 document.body.classList.add('loaded');
-                console.log('Loader hidden (fallback), site loaded');
-            }, 1200);
+                document.body.style.overflow = 'auto';
+                console.log('Welcome to the Digital Realm - site materialized (fallback)');
+            }, 1500);
         }
     }
 }
@@ -591,47 +595,94 @@ window.addEventListener('load', () => {
     };
 });
 
-// Simplified Welcome Sequence: Welcome → Enhanced Loader
+// Mystical Realm Entry Sequence: Realm Portal → Enhanced Loader
 function startWelcomeSequence() {
-    console.log('Starting simplified welcome sequence');
+    console.log('Starting mystical realm entry sequence');
     
     const welcomeScreen = document.getElementById('welcome-screen');
     const realmEntry = document.getElementById('realm-entry');
     const loader = document.getElementById('loader');
     const skipIntro = document.getElementById('skip-intro');
+    const realmParticles = document.getElementById('realm-particles');
+    
+    // Ensure body is not loaded initially
+    document.body.classList.remove('loaded');
     
     // Ensure proper display
     if (welcomeScreen) welcomeScreen.style.display = 'flex';
-    if (realmEntry) realmEntry.style.display = 'none'; // Skip realm entry
+    if (realmEntry) realmEntry.style.display = 'none'; // Skip realm entry for now
     if (loader) loader.style.display = 'flex';
+    
+    // Create mystical particles
+    if (realmParticles) {
+        createMysticalParticles(realmParticles);
+    }
     
     // Add skip intro functionality
     if (skipIntro) {
         skipIntro.addEventListener('click', () => {
-            console.log('Skip intro clicked');
+            console.log('Skip intro clicked - entering realm immediately');
             if (welcomeScreen) welcomeScreen.style.display = 'none';
             initLoaderAnimation();
         });
     }
     
-    // Phase 1: Welcome with shorter duration (2 seconds)
-    console.log('Phase 1: Welcome');
+    // Phase 1: Mystical Realm Entry (3 seconds for full effect)
+    console.log('Phase 1: Mystical Portal Opening');
     
     setTimeout(() => {
-        console.log('Phase 2: Enhanced Loader');
+        console.log('Phase 2: Entering Digital Canvas Realm');
         
-        // Start fade out welcome
+        // Start fade out welcome with mystical effect
         if (welcomeScreen) {
             welcomeScreen.classList.add('fade-out');
+            welcomeScreen.style.filter = 'blur(10px) brightness(0.3)';
         }
         
-        // Start loader after brief overlap
+        // Start loader after mystical transition
         setTimeout(() => {
             if (welcomeScreen) welcomeScreen.style.display = 'none';
             initLoaderAnimation();
-        }, 1000);
+        }, 1200);
         
-    }, 2000);
+    }, 3000);
+}
+
+// Create mystical floating particles for realm entry
+function createMysticalParticles(container) {
+    const colors = ['#8B5CF6', '#FF79C6', '#4ECDC4', '#F7DC6F', '#E74C3C'];
+    
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const particle = document.createElement('div');
+            const size = Math.random() * 4 + 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                opacity: ${Math.random() * 0.7 + 0.3};
+                animation: mystical-float ${Math.random() * 8 + 5}s linear infinite;
+                box-shadow: 0 0 ${size * 3}px ${color};
+                pointer-events: none;
+                z-index: 2;
+            `;
+            
+            container.appendChild(particle);
+            
+            // Remove particle after animation cycle
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 13000);
+        }, i * 100);
+    }
 }
 
 // Create Revolutionary Neural Network Genesis Effect
