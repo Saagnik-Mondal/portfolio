@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/loader.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="css/LaserFlow.css">
+    <link rel="stylesheet" href="css/awwwards-effects.css">
 </head>
 <body>
     <!-- Mystical Realm Entry Screen -->
@@ -89,10 +90,10 @@
         <nav>
             <div class="logo">SM</div>
             <ul class="nav-links">
-                <li><a href="#home" data-cursor-hover class="nav-hover-btn">Home</a></li>
-                <li><a href="#about" data-cursor-hover class="nav-hover-btn">About</a></li>
-                <li><a href="#projects" data-cursor-hover class="nav-hover-btn">Work</a></li>
-                <li><a href="#contact" data-cursor-hover class="nav-hover-btn">Contact</a></li>
+                <li><a href="#home" data-cursor-hover class="nav-hover-btn magnetic">Home</a></li>
+                <li><a href="#about" data-cursor-hover class="nav-hover-btn magnetic">About</a></li>
+                <li><a href="#projects" data-cursor-hover class="nav-hover-btn magnetic">Projects</a></li>
+                <li><a href="#contact" data-cursor-hover class="nav-hover-btn magnetic">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -113,9 +114,9 @@
         <div class="hero__bg-overlay"></div>
         
         <div class="hero__content">
-            <h1 class="hero__title fade-in animated-title">SAAGNIK MONDAL</h1>
-            <p class="hero__subtitle fade-in scroll-reveal">DIGITAL ARTIST & CREATIVE SOUL</p>
-            <button class="hero__cta btn-hover-effect fade-in" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
+            <h1 class="hero__title fade-in animated-title magnetic" data-text="SAAGNIK MONDAL">SAAGNIK MONDAL</h1>
+            <p class="hero__subtitle fade-in scroll-reveal floating-element">DIGITAL ARTIST & CREATIVE SOUL</p>
+            <button class="hero__cta btn-hover-effect fade-in magnetic" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
                 <div class="btn-text">
                     <span>EXPLORE MY UNIVERSE</span>
                     <span>ENTER THE REALM</span>
@@ -125,9 +126,9 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section about">
+    <section id="about" class="section about parallax-container">
         <div class="container">
-            <h2 class="section__title fade-in animated-title scroll-reveal">ABOUT SAAGNIK MONDAL</h2>
+            <h2 class="section__title fade-in animated-text scroll-reveal glitch-text" data-text="ABOUT SAAGNIK MONDAL">ABOUT SAAGNIK MONDAL</h2>
             
             <div class="about__content">
                 <!-- About Text -->
@@ -225,20 +226,80 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section contact">
+    <!-- Advanced Projects Section -->
+    <section id="projects" class="section projects parallax-container">
         <div class="container">
-            <h2 class="section__title fade-in animated-title scroll-reveal">GET IN TOUCH</h2>
+            <h2 class="section__title animated-text scroll-reveal">CREATIVE PROJECTS</h2>
+            
+            <div class="projects-grid">
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Character Design Mastery</h3>
+                        <p>Complete character development from concept to final design</p>
+                        <div class="project-tags">
+                            <span>Character Design</span>
+                            <span>Digital Art</span>
+                            <span>Concept Art</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Poses Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Dynamic Action Poses</h3>
+                        <p>Capturing movement and emotion in powerful character poses</p>
+                        <div class="project-tags">
+                            <span>Action Design</span>
+                            <span>Animation</span>
+                            <span>Storytelling</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Design Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Futuristic Mythology</h3>
+                        <p>Blending ancient mythology with futuristic design elements</p>
+                        <div class="project-tags">
+                            <span>Sci-Fi</span>
+                            <span>Mythology</span>
+                            <span>Concept Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact parallax-container">
+        <div class="container">
+            <h2 class="section__title fade-in animated-text scroll-reveal">GET IN TOUCH</h2>
             <div class="contact__content">
-                <p class="contact__text fade-in">
+                <p class="contact__text fade-in floating-element">
                     Ready to bring your characters to life? Let's collaborate and create something amazing together!
                 </p>
                 <div class="contact__links fade-in">
-                    <a href="mailto:saagnik@example.com" class="contact__link" data-cursor-hover>
-                        📧 Email Me
+                    <a href="mailto:saagnik@example.com" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">📧</span>
+                        <span>Email Me</span>
                     </a>
-                    <a href="#" class="contact__link" data-cursor-hover>
-                        🎨 View Portfolio
+                    <a href="#projects" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">🎨</span>
+                        <span>View Projects</span>
+                    </a>
+                    <a href="https://github.com" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">💻</span>
+                        <span>GitHub</span>
                     </a>
                 </div>
             </div>
@@ -247,6 +308,7 @@
 
     <!-- Load Scripts -->
     <script src="js/LaserFlow.js"></script>
+    <script src="js/awwwards-effects.js"></script>
     <script src="js/loader.js"></script>
     <script>
         // Basic portfolio functionality
