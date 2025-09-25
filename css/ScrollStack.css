@@ -28,10 +28,12 @@
   will-change: transform, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 8px 40px rgba(0, 0, 0, 0.15);
   height: 20rem;
   width: 100%;
-  margin: 30px 0;
+  margin: 25px 0;
   padding: 3rem;
   border-radius: 20px;
   box-sizing: border-box;
@@ -168,17 +170,28 @@
 /* Art Stack Specific Styles */
 .art-card {
   position: relative;
-  height: 25rem;
-  background: #000;
-  border-radius: 25px;
+  height: 28rem;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 8px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .art-card:hover {
-  transform: translateY(-10px) !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px) !important;
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 16px 80px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(0, 255, 255, 0.15);
 }
 
 .art-image {
@@ -202,14 +215,26 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.95));
+  background: linear-gradient(
+    transparent 0%, 
+    rgba(0, 0, 0, 0.4) 20%,
+    rgba(0, 0, 0, 0.8) 60%, 
+    rgba(0, 0, 0, 0.95) 100%
+  );
   padding: 3rem 2rem 2rem;
-  transform: translateY(60%);
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(70%);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(10px);
 }
 
 .art-card:hover .art-overlay {
   transform: translateY(0);
+  background: linear-gradient(
+    transparent 0%, 
+    rgba(0, 0, 0, 0.6) 20%,
+    rgba(0, 0, 0, 0.85) 60%, 
+    rgba(0, 0, 0, 0.98) 100%
+  );
 }
 
 .art-content h2 {
@@ -246,19 +271,24 @@
 }
 
 .tag {
-  background: rgba(0, 255, 255, 0.2);
+  background: rgba(0, 255, 255, 0.15);
   color: #00ffff;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.25);
   transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .tag:hover {
-  background: rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.25);
   transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.4);
 }
 
 /* ScrollStack Section Container */
@@ -312,13 +342,13 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .scroll-stack-inner {
-    padding: 15vh 2rem 30rem;
+    padding: 10vh 1.5rem 25rem;
   }
   
   .scroll-stack-card {
     height: 16rem;
     padding: 2rem;
-    margin: 20px 0;
+    margin: 15px 0;
   }
   
   .scroll-stack-card h2 {
@@ -331,7 +361,8 @@
   }
   
   .stack-title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+    letter-spacing: 1px;
   }
   
   .stack-subtitle {
@@ -340,7 +371,8 @@
   }
   
   .art-card {
-    height: 20rem;
+    height: 22rem;
+    border-radius: 15px;
   }
   
   .art-overlay {
@@ -348,15 +380,17 @@
   }
   
   .art-content h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
   }
   
   .art-content h3 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   
   .art-content p {
     font-size: 0.9rem;
+    line-height: 1.5;
   }
 }
 

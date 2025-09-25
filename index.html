@@ -415,14 +415,14 @@
             // Initialize ScrollStack right away (no loader delay)
             setTimeout(() => {
                 const artStack = new ScrollStack('#art-stack', {
-                    itemDistance: 120,
-                    itemScale: 0.04,
-                    itemStackDistance: 35,
-                    stackPosition: '30%',
-                    scaleEndPosition: '10%',
-                    baseScale: 0.88,
-                    rotationAmount: 1.5,
-                    blurAmount: 0.5,
+                    itemDistance: 80,
+                    itemScale: 0.02,
+                    itemStackDistance: 20,
+                    stackPosition: '25%',
+                    scaleEndPosition: '15%',
+                    baseScale: 0.95,
+                    rotationAmount: 0,
+                    blurAmount: 0,
                     useWindowScroll: true,
                     onStackComplete: () => {
                         console.log('Art stack animation completed!');
@@ -432,7 +432,7 @@
                 });
                 
                 console.log('Art ScrollStack initialized');
-            }, 1000); // Just a small delay to ensure DOM is ready
+            }, 500); // Reduced delay for faster initialization
         });
         
         // Basic portfolio functionality
