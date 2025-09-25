@@ -212,6 +212,37 @@
   100% { opacity: 0; visibility: hidden; }
 }
 
+/* Ensure body starts at top after loading */
+body {
+  scroll-behavior: smooth;
+}
+
+/* Loading state class for body */
+body.loading {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+body.loading main,
+body.loading header,
+body.loading section:not(.loading-screen),
+body.loading .artwork-gallery {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Content visible after loading */
+body:not(.loading) main,
+body:not(.loading) header,
+body:not(.loading) section:not(.loading-screen),
+body:not(.loading) .artwork-gallery {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
 /* Responsive design */
 @media screen and (max-width: 768px) {
   .loading-title {

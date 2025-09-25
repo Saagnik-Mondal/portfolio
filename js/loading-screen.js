@@ -80,8 +80,11 @@ class LoadingScreen {
         // Add to body
         document.body.insertAdjacentHTML('afterbegin', loadingHTML);
         
-        // Prevent body scrolling
-        document.body.style.overflow = 'hidden';
+        // Add loading class to body and ensure we start at top
+        document.body.classList.add('loading');
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
     }
 
     createMatrixEffect() {
@@ -204,12 +207,23 @@ class LoadingScreen {
         const loadingScreen = document.getElementById('loadingScreen');
         loadingScreen.classList.add('fade-out');
         
-        // Remove loading screen and restore scrolling
+        // Remove loading screen and restore normal state
         setTimeout(() => {
             if (loadingScreen && loadingScreen.parentNode) {
                 loadingScreen.parentNode.removeChild(loadingScreen);
             }
+            
+            // Remove loading class and restore normal scrolling
+            document.body.classList.remove('loading');
             document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.height = '';
+            
+            // Ensure page starts at top after loading
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
             
             // Call completion callback
             if (this.options.onComplete && typeof this.options.onComplete === 'function') {
