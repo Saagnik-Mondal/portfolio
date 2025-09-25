@@ -55,17 +55,17 @@ function initLoaderAnimation() {
         currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
     }
     
-    // Start message cycling
+    // Start message cycling - slower for 10-second duration
     updateMessage();
-    const messageInterval = setInterval(updateMessage, 800);
+    const messageInterval = setInterval(updateMessage, 1600); // Change message every 1.6 seconds
     
-    // Modern loading progress - smooth and fast
+    // 10-second loading progress - exactly 10 seconds total
     const loadingSteps = [
-        { duration: 800, end: 25 },
-        { duration: 600, end: 50 },
-        { duration: 500, end: 75 },
-        { duration: 400, end: 95 },
-        { duration: 300, end: 100 }
+        { duration: 2000, end: 20 },  // 0-2s: 20%
+        { duration: 2000, end: 40 },  // 2-4s: 40%
+        { duration: 2000, end: 60 },  // 4-6s: 60%
+        { duration: 2000, end: 80 },  // 6-8s: 80%
+        { duration: 2000, end: 100 }  // 8-10s: 100%
     ];
     
     let currentStep = 0;
@@ -243,11 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('load', () => {
     console.log('Page fully loaded - Starting premium sequence');
     
-    // Fallback timeout
+    // Fallback timeout - 15 seconds total (3s welcome + 10s loading + 2s buffer)
     const fallbackTimeout = setTimeout(() => {
-        console.log('Loading fallback triggered');
+        console.log('Loading fallback triggered after 15 seconds');
         completeLoading();
-    }, 10000);
+    }, 15000);
     
     // Clear fallback when complete
     window.addEventListener('loaderComplete', () => {
@@ -293,9 +293,9 @@ function startWelcomeSequence() {
         });
     }
     
-    // Auto transition after welcome
+    // Auto transition after welcome - then exactly 10 seconds of loading
     setTimeout(() => {
-        console.log('Transitioning to loader');
+        console.log('Transitioning to 10-second loader');
         
         if (welcomeScreen) {
             welcomeScreen.classList.add('fade-out');
@@ -304,6 +304,12 @@ function startWelcomeSequence() {
         setTimeout(() => {
             if (welcomeScreen) welcomeScreen.style.display = 'none';
             initLoaderAnimation();
+            
+            // Automatically complete loading after exactly 10 seconds
+            setTimeout(() => {
+                console.log('10 seconds completed - showing main content');
+                completeLoading();
+            }, 10000); // Exactly 10 seconds
         }, 800);
         
     }, 3000);
