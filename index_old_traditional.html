@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saagnik Mondal - Digital Artist Portfolio</title>
+    
+    <!-- External Libraries -->
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/tone.min.js"></script>
+    
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="css/simple-loader.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/LaserFlow.css">
+    <link rel="stylesheet" href="css/awwwards-effects.css">
+    <link rel="stylesheet" href="css/artwork-gallery.css">
+    
+    <!-- Simple Loading Screen Script -->
+    <script src="js/simple-loader.js"></script>
+</head>
+<body>
+
+    <!-- Main Content (hidden during loading) -->
+    <header id="header">
+        <nav>
+            <div class="logo">SM</div>
+            <ul class="nav-links">
+                <li><a href="#home" data-cursor-hover class="nav-hover-btn magnetic">Home</a></li>
+                <li><a href="#about" data-cursor-hover class="nav-hover-btn magnetic">About</a></li>
+                <li><a href="#projects" data-cursor-hover class="nav-hover-btn magnetic">Projects</a></li>
+                <li><a href="#contact" data-cursor-hover class="nav-hover-btn magnetic">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <!-- Dynamic Background Gallery -->
+        <div class="hero__background">
+            <img class="hero__bg-image active" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Background 1">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Background 2">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Background 3">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Background 4">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Background 5">
+            <img class="hero__bg-image" src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Background 6">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Background 7">
+            <img class="hero__bg-image" src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Background 8">
+        </div>
+        <div class="hero__bg-overlay"></div>
+        
+        <div class="hero__content">
+            <h1 class="hero__title fade-in animated-title magnetic" data-text="SAAGNIK MONDAL">SAAGNIK MONDAL</h1>
+            <p class="hero__subtitle fade-in scroll-reveal floating-element">DIGITAL ARTIST & CREATIVE SOUL</p>
+            <button class="hero__cta btn-hover-effect fade-in magnetic" data-cursor-hover onclick="document.getElementById('about').scrollIntoView()">
+                <div class="btn-text">
+                    <span>EXPLORE MY UNIVERSE</span>
+                    <span>ENTER THE REALM</span>
+                </div>
+            </button>
+        </div>
+    </section>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Audio Elements -->
+    <audio id="ambient-audio" loop preload="auto">
+        <source src="ancient-spirit-echoes-om-chanting-234045.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Audio Control Button -->
+    <button id="audio-toggle" class="audio-control muted" data-cursor-hover>
+        <span class="audio-icon">🔊</span>
+        <span class="audio-text">Sound Off</span>
+    </button>
+
+    <!-- About Section -->
+    <section id="about" class="section about parallax-container">
+        <div class="container">
+            <h2 class="section__title fade-in animated-text scroll-reveal glitch-text" data-text="ABOUT SAAGNIK MONDAL">ABOUT SAAGNIK MONDAL</h2>
+            
+            <div class="about__content">
+                <!-- About Text -->
+                <div class="about__text-content slide-in-left">
+                    <div class="about__description">
+                        <h3>Digital Artist & Creative Visionary</h3>
+                        <p>
+                            Welcome to my creative universe! I'm Saagnik Mondal, a passionate digital artist specializing in 
+                            anime-style character design and illustration. My journey began with a love for storytelling through 
+                            visual art, and has evolved into a dedication to bringing characters to life with depth, emotion, and detail.
+                        </p>
+                        
+                        <h4>My Artistic Philosophy</h4>
+                        <p>
+                            Every character I create carries a story. I believe in the power of visual narrative to connect with 
+                            audiences on an emotional level. My work focuses on capturing the essence of personality through 
+                            carefully crafted expressions, dynamic poses, and intricate design details.
+                        </p>
+                        
+                        <h4>Specializations</h4>
+                        <ul class="about__skills">
+                            <li>🎨 Character Design & Development</li>
+                            <li>📐 Technical Reference Sheets</li>
+                            <li>⚔️ Fantasy & Mythological Characters</li>
+                            <li>💫 Anime & Manga Style Illustration</li>
+                            <li>🎭 Expression & Emotion Studies</li>
+                            <li>🎯 Concept Art for Games & Animation</li>
+                        </ul>
+                        
+                        <h4>Creative Process</h4>
+                        <p>
+                            My approach combines traditional art fundamentals with modern digital techniques. I start with 
+                            understanding the character's personality and story, then develop their visual representation 
+                            through iterative design, ensuring every detail serves the narrative purpose.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Image Slider -->
+                <div class="about__slider-container slide-in-right">
+                    <div class="image-slider">
+                        <div class="slider-track">
+                            <div class="slide active">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Sheet">
+                                <div class="slide-caption">Character Design Sheet - Anaya</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Warrior Pose">
+                                <div class="slide-caption">Dynamic Warrior Pose</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Battle Design">
+                                <div class="slide-caption">Futuristic Mythology Design</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Character Turnaround">
+                                <div class="slide-caption">Character Turnaround Reference</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Portrait Study">
+                                <div class="slide-caption">Detailed Portrait Study</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Character Refinement">
+                                <div class="slide-caption">Iterative Character Refinement</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_3.jpg" alt="Advanced Character Sheet">
+                                <div class="slide-caption">Advanced Character Development</div>
+                            </div>
+                            <div class="slide">
+                                <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_2.jpg" alt="Warrior Spirit">
+                                <div class="slide-caption">Warrior Spirit Study</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slider Controls -->
+                        <button class="slider-btn prev-btn" onclick="portfolio.previousSlide()">‹</button>
+                        <button class="slider-btn next-btn" onclick="portfolio.nextSlide()">›</button>
+                        
+                        <!-- Slider Indicators -->
+                        <div class="slider-indicators">
+                            <span class="indicator active" onclick="portfolio.goToSlide(0)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(1)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(2)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(3)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(4)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(5)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(6)"></span>
+                            <span class="indicator" onclick="portfolio.goToSlide(7)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artwork Gallery -->
+    <section id="artwork" class="section artwork-gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">FEATURED ARTWORK</h2>
+                <p class="section-subtitle">Digital art collection showcasing character design and concept art</p>
+            </div>
+            
+            <div class="artwork-grid">
+                <!-- Character Design Sheet - Anaya -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Sheet - Anaya">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Design Sheet</h3>
+                                <p>Anaya - The Digital Warrior</p>
+                                <div class="artwork-tags">
+                                    <span>Character Design</span>
+                                    <span>Reference Sheet</span>
+                                    <span>Anime Style</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Warrior Pose -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Action Pose">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Dynamic Action Pose</h3>
+                                <p>Fierce Warrior Stance</p>
+                                <div class="artwork-tags">
+                                    <span>Action Pose</span>
+                                    <span>Digital Art</span>
+                                    <span>Character Study</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Futuristic Battle Design -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Mythology">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Futuristic Mythology</h3>
+                                <p>Battle Armor Design</p>
+                                <div class="artwork-tags">
+                                    <span>Concept Art</span>
+                                    <span>Futuristic</span>
+                                    <span>Armor Design</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Turnaround -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Character_turnaround_sheet_of_Anaya_a_21year_1.jpg" alt="Character Turnaround">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Turnaround</h3>
+                                <p>360° Character Study</p>
+                                <div class="artwork-tags">
+                                    <span>Turnaround</span>
+                                    <span>Professional</span>
+                                    <span>Reference</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portrait Study -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/Leonardo_Anime_XL_Closeup_anime_portrait_of_Anaya_21yearold_In_1.jpg" alt="Character Portrait">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Character Portrait</h3>
+                                <p>Emotional Expression Study</p>
+                                <div class="artwork-tags">
+                                    <span>Portrait</span>
+                                    <span>Digital Painting</span>
+                                    <span>Expression</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hand Study -->
+                <div class="artwork-card">
+                    <div class="artwork-image">
+                        <img src="images/GPT_Image_1_give_same_pic_but_she_should_have_two_hands_not_on_0.png" alt="Anatomical Study">
+                        <div class="artwork-overlay">
+                            <div class="artwork-content">
+                                <h3>Anatomical Study</h3>
+                                <p>Hand Positioning & Detail</p>
+                                <div class="artwork-tags">
+                                    <span>Anatomy</span>
+                                    <span>Study</span>
+                                    <span>Detail Work</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Projects Section -->
+    <section id="projects" class="section projects parallax-container">
+        <div class="container">
+            <h2 class="section__title animated-text scroll-reveal">CREATIVE PROJECTS</h2>
+            
+            <div class="projects-grid">
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_Character_design_sheet_of_Anaya_a_21yearold_2.jpg" alt="Character Design Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Character Design Mastery</h3>
+                        <p>Complete character development from concept to final design</p>
+                        <div class="project-tags">
+                            <span>Character Design</span>
+                            <span>Digital Art</span>
+                            <span>Concept Art</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_A_fierce_young_woman_kneeling_on_one_knee_on_0.jpg" alt="Dynamic Poses Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Dynamic Action Poses</h3>
+                        <p>Capturing movement and emotion in powerful character poses</p>
+                        <div class="project-tags">
+                            <span>Action Design</span>
+                            <span>Animation</span>
+                            <span>Storytelling</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card magnetic" data-cursor-hover>
+                    <div class="project-image">
+                        <img src="images/Leonardo_Anime_XL_Futuristic_mythological_battle_outfit_inspir_2.jpg" alt="Futuristic Design Project" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Futuristic Mythology</h3>
+                        <p>Blending ancient mythology with futuristic design elements</p>
+                        <div class="project-tags">
+                            <span>Sci-Fi</span>
+                            <span>Mythology</span>
+                            <span>Concept Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact parallax-container">
+        <div class="container">
+            <h2 class="section__title fade-in animated-text scroll-reveal">GET IN TOUCH</h2>
+            <div class="contact__content">
+                <p class="contact__text fade-in floating-element">
+                    Ready to bring your characters to life? Let's collaborate and create something amazing together!
+                </p>
+                <div class="contact__links fade-in">
+                    <a href="mailto:saagnik@example.com" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">📧</span>
+                        <span>Email Me</span>
+                    </a>
+                    <a href="#projects" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">🎨</span>
+                        <span>View Projects</span>
+                    </a>
+                    <a href="https://github.com" class="contact__link magnetic" data-cursor-hover>
+                        <span class="contact__icon">💻</span>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Load Scripts -->
+    <script src="js/LaserFlow.js"></script>
+    <script src="js/awwwards-effects.js"></script>
+    <script>
+        // Simple DOM initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Portfolio loaded successfully');
+        });
+        
+        // Basic portfolio functionality
+        const portfolio = {
+            currentSlide: 0,
+            slides: [],
+            indicators: [],
+            
+            init() {
+                this.slides = document.querySelectorAll('.slide');
+                this.indicators = document.querySelectorAll('.indicator');
+                this.startAutoSlide();
+            },
+            
+            goToSlide(index) {
+                this.slides[this.currentSlide].classList.remove('active');
+                this.indicators[this.currentSlide].classList.remove('active');
+                this.currentSlide = index;
+                this.slides[this.currentSlide].classList.add('active');
+                this.indicators[this.currentSlide].classList.add('active');
+            },
+            
+            nextSlide() {
+                this.goToSlide((this.currentSlide + 1) % this.slides.length);
+            },
+            
+            previousSlide() {
+                this.goToSlide((this.currentSlide - 1 + this.slides.length) % this.slides.length);
+            },
+            
+            startAutoSlide() {
+                setInterval(() => this.nextSlide(), 4000);
+            }
+        };
+        
+        // Audio System
+        const audioSystem = {
+            ambientAudio: document.getElementById('ambient-audio'),
+            toggleButton: document.getElementById('audio-toggle'),
+            isPlaying: false,
+            isInitialized: false,
+            audioContext: null,
+            
+            init() {
+                if (!this.ambientAudio || !this.toggleButton) return;
+                
+                console.log('Initializing audio system');
+                
+                // Initialize Web Audio Context for sound effects
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (error) {
+                    console.log('Web Audio API not supported:', error);
+                }
+                
+                // Set initial volume and button state
+                this.ambientAudio.volume = 0.3;
+                this.ambientAudio.loop = true;
+                this.updateButton(); // Set initial button state (muted)
+                
+                // Add click handler for audio toggle
+                this.toggleButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Audio toggle clicked, current state:', this.isPlaying);
+                    this.toggle();
+                });
+                
+                // Auto-start audio on first user interaction
+                document.addEventListener('click', () => {
+                    if (!this.isInitialized) {
+                        console.log('First click detected, initializing audio');
+                        this.startAmbient();
+                        this.isInitialized = true;
+                        
+                        // Resume audio context if needed
+                        if (this.audioContext && this.audioContext.state === 'suspended') {
+                            this.audioContext.resume();
+                        }
+                    }
+                }, { once: true });
+                
+                // Add hover sound effects
+                const hoverElements = document.querySelectorAll('a, button, [data-cursor-hover]');
+                hoverElements.forEach(el => {
+                    if (el !== this.toggleButton) { // Don't add to audio button
+                        el.addEventListener('mouseenter', () => {
+                            this.playHoverSound();
+                        });
+                        
+                        el.addEventListener('click', () => {
+                            this.playClickSound();
+                        });
+                    }
+                });
+                
+                // Handle audio events
+                this.ambientAudio.addEventListener('ended', () => {
+                    console.log('Audio ended');
+                    this.isPlaying = false;
+                    this.updateButton();
+                });
+                
+                this.ambientAudio.addEventListener('pause', () => {
+                    console.log('Audio paused');
+                    this.isPlaying = false;
+                    this.updateButton();
+                });
+                
+                this.ambientAudio.addEventListener('play', () => {
+                    console.log('Audio playing');
+                    this.isPlaying = true;
+                    this.updateButton();
+                });
+                
+                // Handle audio loading
+                this.ambientAudio.addEventListener('canplaythrough', () => {
+                    console.log('Audio loaded and ready to play');
+                });
+                
+                this.ambientAudio.addEventListener('error', (e) => {
+                    console.log('Audio loading error:', e);
+                });
+            },
+            
+            // Create hover sound effect
+            playHoverSound() {
+                if (!this.audioContext || !this.isPlaying) return;
+                
+                try {
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(this.audioContext.currentTime);
+                    oscillator.stop(this.audioContext.currentTime + 0.1);
+                } catch (error) {
+                    console.log('Hover sound error:', error);
+                }
+            },
+            
+            // Create click sound effect
+            playClickSound() {
+                if (!this.audioContext || !this.isPlaying) return;
+                
+                try {
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(600, this.audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, this.audioContext.currentTime + 0.2);
+                    
+                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.15, this.audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.2);
+                    
+                    oscillator.start(this.audioContext.currentTime);
+                    oscillator.stop(this.audioContext.currentTime + 0.2);
+                } catch (error) {
+                    console.log('Click sound error:', error);
+                }
+            },
+            
+            async startAmbient() {
+                try {
+                    // Make sure audio element is properly loaded
+                    if (!this.ambientAudio.src) {
+                        this.ambientAudio.src = 'ancient-spirit-echoes-om-chanting-234045.mp3';
+                    }
+                    
+                    this.ambientAudio.currentTime = 0; // Start from beginning
+                    this.ambientAudio.volume = 0.3; // Set appropriate volume
+                    this.ambientAudio.loop = true; // Make sure looping is enabled
+                    
+                    console.log('Attempting to play ambient audio...');
+                    await this.ambientAudio.play();
+                    this.isPlaying = true;
+                    this.updateButton();
+                    console.log('Successfully playing ambient audio');
+                } catch (error) {
+                    console.log('Audio autoplay prevented:', error);
+                    this.isPlaying = false;
+                    this.updateButton();
+                    
+                    // Show a message to the user
+                    alert('Please click the Sound button to enable audio');
+                }
+            },
+            
+            toggle() {
+                console.log('Toggle called, current playing state:', this.isPlaying);
+                
+                if (this.isPlaying) {
+                    // Stop and reset audio
+                    this.ambientAudio.pause();
+                    this.isPlaying = false;
+                    console.log('Audio stopped');
+                } else {
+                    // Start audio
+                    try {
+                        const playPromise = this.ambientAudio.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                this.isPlaying = true;
+                                console.log('Audio started successfully');
+                                this.updateButton(); // Update button after successful play
+                            }).catch(error => {
+                                console.error('Audio play failed:', error);
+                                this.isPlaying = false;
+                                this.updateButton(); // Update button to reflect failed state
+                                
+                                // Show user feedback
+                                alert('Please try clicking the sound button again. Audio playback was blocked by browser.');
+                            });
+                        } else {
+                            this.isPlaying = true;
+                        }
+                    } catch (error) {
+                        console.error('Toggle audio error:', error);
+                        this.isPlaying = false;
+                    }
+                }
+                
+                // Update button immediately for feedback
+                this.updateButton();
+                
+                // Play click sound if audio context is available
+                if (this.audioContext && this.audioContext.state === 'running') {
+                    this.playClickSound();
+                }
+            },
+            
+            updateButton() {
+                const iconElement = this.toggleButton.querySelector('.audio-icon');
+                const textElement = this.toggleButton.querySelector('.audio-text');
+                
+                console.log('Updating button, isPlaying:', this.isPlaying);
+                
+                if (this.isPlaying) {
+                    this.toggleButton.classList.remove('muted');
+                    iconElement.textContent = '🔊';
+                    textElement.textContent = 'Sound On';
+                    console.log('Button set to Sound On state');
+                } else {
+                    this.toggleButton.classList.add('muted');
+                    iconElement.textContent = '🔇';
+                    textElement.textContent = 'Sound Off';
+                    console.log('Button set to Sound Off state');
+                }
+            }
+        };
+
+        // Custom Cursor Functionality
+        const cursor = {
+            element: document.querySelector('.cursor'),
+            
+            init() {
+                if (!this.element) return;
+                
+                // Show cursor immediately
+                this.element.style.opacity = '1';
+                
+                // Follow mouse movement with offset for centering
+                document.addEventListener('mousemove', (e) => {
+                    this.element.style.left = (e.clientX - 12) + 'px';
+                    this.element.style.top = (e.clientY - 12) + 'px';
+                });
+                
+                // Add hover effects for all interactive elements
+                const hoverElements = document.querySelectorAll('a, button, [data-cursor-hover], .slider-btn, .indicator');
+                hoverElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        this.element.style.transform = 'scale(1.5)';
+                        this.element.style.background = 'rgba(139, 92, 246, 0.8)';
+                        this.element.style.borderColor = 'rgba(139, 92, 246, 1)';
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        this.element.style.transform = 'scale(1)';
+                        this.element.style.background = 'rgba(74, 158, 255, 0.8)';
+                        this.element.style.borderColor = 'rgba(74, 158, 255, 1)';
+                    });
+                });
+                
+                // Hide cursor when leaving window
+                document.addEventListener('mouseleave', () => {
+                    this.element.style.opacity = '0';
+                });
+                
+                document.addEventListener('mouseenter', () => {
+                    this.element.style.opacity = '1';
+                });
+                
+                // Click animation
+                document.addEventListener('mousedown', () => {
+                    this.element.style.transform += ' scale(0.8)';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    this.element.style.transform = this.element.style.transform.replace(' scale(0.8)', '');
+                });
+            }
+        };
+        
+        // GSAP Masterpiece Animations - Inspired by GSAP's best demos
+        const gsapAnimations = {
+            init() {
+                if (typeof gsap === 'undefined') return;
+                
+                // Register GSAP plugins
+                gsap.registerPlugin(ScrollTrigger);
+                
+                this.setupMasterTimeline();
+                this.setupScrollAnimations();
+                this.setupHeroAnimations();
+                this.setupImageSliderAnimations();
+                this.setupInteractiveAnimations();
+            },
+            
+            setupMasterTimeline() {
+                // Create a master timeline for the entrance sequence
+                const masterTL = gsap.timeline({ paused: true });
+                
+                // Set initial states
+                gsap.set("header", { y: -100, opacity: 0 });
+                gsap.set(".hero__title", { scale: 0.8, opacity: 0, rotationX: -90 });
+                gsap.set(".hero__subtitle", { y: 50, opacity: 0 });
+                gsap.set(".hero__cta", { scale: 0, rotation: 180, opacity: 0 });
+                gsap.set(".hero__bg-image", { scale: 1.3, opacity: 0 });
+                
+                // Epic entrance sequence
+                masterTL
+                    .to("header", {
+                        duration: 1.2,
+                        y: 0,
+                        opacity: 1,
+                        ease: "back.out(1.7)"
+                    })
+                    .to(".hero__bg-image.active", {
+                        duration: 1.5,
+                        scale: 1,
+                        opacity: 1,
+                        ease: "power3.out"
+                    }, "-=0.8")
+                    .to(".hero__title", {
+                        duration: 1.5,
+                        scale: 1,
+                        opacity: 1,
+                        rotationX: 0,
+                        ease: "power4.out",
+                        transformOrigin: "center center"
+                    }, "-=1")
+                    .to(".hero__subtitle", {
+                        duration: 1.2,
+                        y: 0,
+                        opacity: 1,
+                        ease: "power3.out"
+                    }, "-=0.8")
+                    .to(".hero__cta", {
+                        duration: 1,
+                        scale: 1,
+                        rotation: 0,
+                        opacity: 1,
+                        ease: "elastic.out(1, 0.5)"
+                    }, "-=0.5");
+                
+                // Store timeline for later use
+                this.masterTimeline = masterTL;
+                
+                // Start the animation when called
+                window.startGSAPAnimations = () => masterTL.play();
+            },
+            
+            setupScrollAnimations() {
+                // Parallax background images
+                gsap.utils.toArray(".hero__bg-image").forEach(img => {
+                    gsap.to(img, {
+                        yPercent: -50,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: img,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    });
+                });
+                
+                // Section reveals with different effects
+                gsap.utils.toArray(".section").forEach((section, i) => {
+                    const direction = i % 2 === 0 ? -100 : 100;
+                    
+                    gsap.fromTo(section, {
+                        x: direction,
+                        opacity: 0,
+                        rotationY: direction > 0 ? 45 : -45
+                    }, {
+                        x: 0,
+                        opacity: 1,
+                        rotationY: 0,
+                        duration: 1.5,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            end: "top 20%",
+                            scrub: 1
+                        }
+                    });
+                });
+                
+                // Text animations
+                gsap.utils.toArray(".section__title").forEach(title => {
+                    const chars = title.textContent.split('');
+                    title.innerHTML = chars.map(char => 
+                        char === ' ' ? ' ' : `<span class="char">${char}</span>`
+                    ).join('');
+                    
+                    gsap.fromTo(title.querySelectorAll('.char'), {
+                        y: 100,
+                        opacity: 0,
+                        rotationX: -90
+                    }, {
+                        y: 0,
+                        opacity: 1,
+                        rotationX: 0,
+                        duration: 0.8,
+                        ease: "back.out(1.7)",
+                        stagger: 0.05,
+                        scrollTrigger: {
+                            trigger: title,
+                            start: "top 90%",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+                });
+            },
+            
+            setupHeroAnimations() {
+                // Continuous hero title animation
+                const heroTitle = document.querySelector('.hero__title');
+                if (heroTitle) {
+                    gsap.to(heroTitle, {
+                        textShadow: "0 0 20px #4a9eff, 0 0 40px #4a9eff, 0 0 60px #4a9eff",
+                        duration: 2,
+                        ease: "power2.inOut",
+                        yoyo: true,
+                        repeat: -1
+                    });
+                }
+                
+                // Hero background rotation
+                const heroBackground = document.querySelector('.hero__background');
+                if (heroBackground) {
+                    gsap.to(heroBackground, {
+                        rotation: 0.5,
+                        duration: 20,
+                        ease: "none",
+                        repeat: -1,
+                        yoyo: true
+                    });
+                }
+                
+                // CTA button hover animations
+                const ctaButton = document.querySelector('.hero__cta');
+                if (ctaButton) {
+                    ctaButton.addEventListener('mouseenter', () => {
+                        gsap.to(ctaButton, {
+                            scale: 1.1,
+                            rotation: 5,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    ctaButton.addEventListener('mouseleave', () => {
+                        gsap.to(ctaButton, {
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                }
+            },
+            
+            setupImageSliderAnimations() {
+                // Enhanced slider transitions
+                const slides = document.querySelectorAll('.slide');
+                const indicators = document.querySelectorAll('.indicator');
+                
+                // Override portfolio slider with GSAP animations
+                if (window.portfolio) {
+                    const originalGoToSlide = window.portfolio.goToSlide;
+                    window.portfolio.goToSlide = function(index) {
+                        const currentSlide = slides[this.currentSlide];
+                        const nextSlide = slides[index];
+                        const currentIndicator = indicators[this.currentSlide];
+                        const nextIndicator = indicators[index];
+                        
+                        // Animate out current slide
+                        gsap.to(currentSlide, {
+                            scale: 0.8,
+                            opacity: 0,
+                            rotationY: -90,
+                            duration: 0.5,
+                            ease: "power2.in",
+                            onComplete: () => {
+                                currentSlide.classList.remove('active');
+                                nextSlide.classList.add('active');
+                                
+                                // Animate in next slide
+                                gsap.fromTo(nextSlide, {
+                                    scale: 1.2,
+                                    opacity: 0,
+                                    rotationY: 90
+                                }, {
+                                    scale: 1,
+                                    opacity: 1,
+                                    rotationY: 0,
+                                    duration: 0.6,
+                                    ease: "power2.out"
+                                });
+                            }
+                        });
+                        
+                        // Update indicators with animation
+                        gsap.to(currentIndicator, {
+                            scale: 1,
+                            duration: 0.3
+                        });
+                        gsap.to(nextIndicator, {
+                            scale: 1.3,
+                            duration: 0.3
+                        });
+                        
+                        currentIndicator.classList.remove('active');
+                        nextIndicator.classList.add('active');
+                        this.currentSlide = index;
+                    };
+                }
+                
+                // Slider button animations
+                document.querySelectorAll('.slider-btn').forEach(btn => {
+                    btn.addEventListener('mouseenter', () => {
+                        gsap.to(btn, {
+                            scale: 1.2,
+                            backgroundColor: "#8B5CF6",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, {
+                            scale: 1,
+                            backgroundColor: "rgba(74, 158, 255, 0.8)",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+            },
+            
+            setupInteractiveAnimations() {
+                // Magnetic effect for buttons and links
+                document.querySelectorAll('a, button, [data-cursor-hover]').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        gsap.to(el, {
+                            scale: 1.05,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        gsap.to(el, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        gsap.to(el, {
+                            x: x * 0.1,
+                            y: y * 0.1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        gsap.to(el, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+                
+                // Contact links with special effects
+                document.querySelectorAll('.contact__link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Create ripple effect
+                        const ripple = document.createElement('div');
+                        ripple.style.position = 'absolute';
+                        ripple.style.borderRadius = '50%';
+                        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                        ripple.style.transform = 'scale(0)';
+                        ripple.style.left = '50%';
+                        ripple.style.top = '50%';
+                        ripple.style.width = '10px';
+                        ripple.style.height = '10px';
+                        ripple.style.marginLeft = '-5px';
+                        ripple.style.marginTop = '-5px';
+                        ripple.style.pointerEvents = 'none';
+                        
+                        link.style.position = 'relative';
+                        link.appendChild(ripple);
+                        
+                        gsap.to(ripple, {
+                            scale: 20,
+                            opacity: 0,
+                            duration: 0.6,
+                            ease: "power2.out",
+                            onComplete: () => ripple.remove()
+                        });
+                        
+                        // Execute original link action after animation
+                        setTimeout(() => {
+                            if (link.href && link.href !== '#') {
+                                window.location.href = link.href;
+                            }
+                        }, 300);
+                    });
+                });
+            }
+        };
+
+        function initMainSite() {
+            portfolio.init();
+            cursor.init();
+            audioSystem.init();
+            gsapAnimations.init();
+            
+            // Start the epic GSAP entrance animations
+            if (typeof startGSAPAnimations === 'function') {
+                startGSAPAnimations();
+            }
+            
+            // Initialize scroll animations
+            const scrollElements = document.querySelectorAll('.scroll-reveal');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, observerOptions);
+            
+            scrollElements.forEach(el => observer.observe(el));
+        }
+        
+        // Initialize cursor and audio immediately when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Initializing systems');
+            cursor.init();
+            audioSystem.init();
+        });
+    </script>
+</body>
+</html>
