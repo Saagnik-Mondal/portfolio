@@ -949,50 +949,167 @@
         // Modal handling with genie animation
         let modalZIndex = 200;
 
+        // Easing function for bezier curve (quadratic ease in-out)
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
         function closeModal(modal) {
             const content = modal.querySelector('.modal-content');
             const rect = content.getBoundingClientRect();
             
-            // Calculate target position (bottom center of screen)
-            const targetX = (window.innerWidth / 2) - (rect.width / 2);
-            const targetY = window.innerHeight - 50;
+            // Target: bottom center of screen
+            const targetX = window.innerWidth / 2;
+            const targetY = window.innerHeight;
+            const targetWidth = 4;
             
-            // Get current position
-            const currentX = rect.left;
-            const currentY = rect.top;
+            // Initial position
+            const initialLeft = rect.left;
+            const initialRight = rect.right;
+            const initialTop = rect.top;
+            const initialBottom = rect.bottom;
+            const initialWidth = rect.width;
+            const initialHeight = rect.height;
             
-            // Set fixed position for animation
+            // Animation settings
+            const duration = 500;
+            const fps = 60;
+            const frameTime = 1000 / fps;
+            const slideEndFraction = 0.5;
+            const translateStartFraction = 0.4;
+            
+            let startTime = null;
+            
+            // Hide the original content
+            content.style.visibility = 'hidden';
+            
+            // Create canvas for genie effect
+            const canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            
+            // Capture modal content as image
+            import('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.esm.js')
+                .catch(() => {
+                    // Fallback: use simple CSS animation if html2canvas fails
+                    canvas.remove();
+                    content.style.visibility = '';
+                    fallbackGenieClose(modal, content, rect);
+                    return;
+                });
+            
+            // Simple fallback genie using CSS
+            fallbackGenieClose(modal, content, rect);
+            canvas.remove();
+        }
+        
+        function fallbackGenieClose(modal, content, rect) {
+            const duration = 500;
+            const targetX = window.innerWidth / 2;
+            const targetY = window.innerHeight;
+            
+            const initialCenterX = rect.left + rect.width / 2;
+            const initialTop = rect.top;
+            const initialBottom = rect.bottom;
+            const initialWidth = rect.width;
+            const initialHeight = rect.height;
+            
+            let startTime = null;
+            
             content.style.position = 'fixed';
-            content.style.left = currentX + 'px';
-            content.style.top = currentY + 'px';
+            content.style.left = rect.left + 'px';
+            content.style.top = rect.top + 'px';
             content.style.width = rect.width + 'px';
-            content.classList.add('genie-animating');
-            
-            // Animate position to bottom center
-            content.style.transition = 'left 0.55s cubic-bezier(0.4, 0, 0.6, 0.1), top 0.55s cubic-bezier(0.4, 0, 0.6, 0.1), width 0.55s cubic-bezier(0.4, 0, 0.6, 0.1)';
-            
-            // Trigger reflow
-            content.offsetHeight;
-            
-            // Move to bottom center while shrinking
-            content.style.left = targetX + 'px';
-            content.style.top = targetY + 'px';
-            content.style.width = '0px';
+            content.style.transition = 'none';
+            content.style.transformOrigin = 'bottom center';
             
             modal.classList.add('closing');
             modal.classList.remove('open');
             
-            setTimeout(() => {
-                modal.classList.remove('closing');
-                content.classList.remove('genie-animating');
-                content.classList.remove('dragged');
-                content.style.position = '';
-                content.style.left = '';
-                content.style.top = '';
-                content.style.width = '';
-                content.style.zIndex = '';
-                content.style.transition = '';
-            }, 550);
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Two-phase animation like real genie
+                const slideEndFraction = 0.5;
+                const translateStartFraction = 0.35;
+                
+                // Slide progress: bottom pinches first
+                const slideProgress = Math.min(1, progress / slideEndFraction);
+                // Translate progress: whole thing moves down
+                const translateProgress = Math.max(0, Math.min(1, (progress - translateStartFraction) / (1 - translateStartFraction)));
+                
+                // Calculate bezier curve positions
+                const bezierProgress = easeInOutQuad(slideProgress);
+                
+                // Bottom width shrinks with bezier curve
+                const bottomWidth = initialWidth * (1 - bezierProgress * 0.98);
+                // Top width shrinks later
+                const topShrink = Math.max(0, (progress - 0.3) / 0.7);
+                const topWidth = initialWidth * (1 - easeInOutQuad(topShrink) * 0.98);
+                
+                // Bottom moves toward center
+                const bottomCenterX = initialCenterX + (targetX - initialCenterX) * bezierProgress;
+                // Top moves toward center later
+                const topCenterX = initialCenterX + (targetX - initialCenterX) * easeInOutQuad(topShrink);
+                
+                // Vertical translation - bottom reaches target first
+                const bottomY = initialBottom + (targetY - initialBottom) * easeInOutQuad(translateProgress);
+                const topY = initialTop + (targetY - initialTop) * easeInOutQuad(Math.max(0, translateProgress - 0.15) / 0.85);
+                
+                // Height shrinks as it compresses
+                const currentHeight = Math.max(0, bottomY - topY);
+                
+                // Calculate clip-path for funnel shape
+                const topLeftX = ((topCenterX - topWidth/2) / window.innerWidth) * 100;
+                const topRightX = ((topCenterX + topWidth/2) / window.innerWidth) * 100;
+                const bottomLeftX = ((bottomCenterX - bottomWidth/2) / window.innerWidth) * 100;
+                const bottomRightX = ((bottomCenterX + bottomWidth/2) / window.innerWidth) * 100;
+                
+                // Apply transforms
+                const scaleX = (topWidth + bottomWidth) / 2 / initialWidth;
+                const scaleY = currentHeight / initialHeight;
+                const translateYAmount = (topY - initialTop) + (currentHeight - initialHeight) / 2;
+                const translateXAmount = (topCenterX + bottomCenterX) / 2 - initialCenterX;
+                
+                content.style.transform = `translate(${translateXAmount}px, ${translateYAmount}px) scale(${Math.max(0.01, scaleX)}, ${Math.max(0.01, scaleY)})`;
+                
+                // Funnel clip-path (normalized to element)
+                const clipTop = 0;
+                const clipBottom = 100;
+                const relTopLeft = 50 - (topWidth / initialWidth) * 50;
+                const relTopRight = 50 + (topWidth / initialWidth) * 50;
+                const relBottomLeft = 50 - (bottomWidth / initialWidth) * 50 + (bottomCenterX - topCenterX) / initialWidth * 100;
+                const relBottomRight = 50 + (bottomWidth / initialWidth) * 50 + (bottomCenterX - topCenterX) / initialWidth * 100;
+                
+                content.style.clipPath = `polygon(${relTopLeft}% 0%, ${relTopRight}% 0%, ${relBottomRight}% 100%, ${relBottomLeft}% 100%)`;
+                content.style.opacity = 1 - progress * progress;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Cleanup
+                    modal.classList.remove('closing');
+                    content.classList.remove('genie-animating');
+                    content.classList.remove('dragged');
+                    content.style.position = '';
+                    content.style.left = '';
+                    content.style.top = '';
+                    content.style.width = '';
+                    content.style.zIndex = '';
+                    content.style.transition = '';
+                    content.style.transform = '';
+                    content.style.clipPath = '';
+                    content.style.opacity = '';
+                    content.style.transformOrigin = '';
+                }
+            }
+            
+            requestAnimationFrame(animate);
         }
 
         document.querySelectorAll('.icon-item').forEach(item => {
