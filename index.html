@@ -72,7 +72,7 @@
 
         .main-content {
             text-align: center;
-            max-width: 400px;
+            max-width: 440px;
             width: 100%;
             background: var(--card-bg);
             border-radius: 16px;
@@ -83,7 +83,7 @@
 
         .window-bar {
             background: var(--icon-bg);
-            padding: 12px 16px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--card-border);
             display: flex;
             align-items: center;
@@ -91,7 +91,7 @@
         }
 
         .window-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-light);
             letter-spacing: 0.5px;
@@ -173,8 +173,8 @@
         .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -190,46 +190,41 @@
         .modal-content {
             background: var(--card-bg);
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             max-height: 80vh;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.95);
+            transition: transform 0.3s;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .modal.open .modal-content { transform: scale(1) translateY(0); }
+        .modal.open .modal-content { transform: scale(1); }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            padding: 20px 24px;
+            background: var(--icon-bg);
+            color: var(--text);
+            padding: 14px 20px;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            text-transform: capitalize;
+            border-bottom: 1px solid var(--card-border);
         }
 
         .modal-close {
-            background: rgba(255,255,255,0.2);
+            background: none;
             border: none;
-            color: white;
-            font-size: 20px;
+            color: var(--text-light);
+            font-size: 22px;
             cursor: pointer;
             line-height: 1;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
+            padding: 4px;
+            transition: color 0.2s;
         }
 
-        .modal-close:hover { background: rgba(255,255,255,0.3); }
+        .modal-close:hover { color: var(--primary); }
 
         .modal-body {
             padding: 24px;
@@ -247,42 +242,42 @@
         }
 
         .about-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: white;
         }
 
         .about-name {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text);
         }
 
         .about-role {
             color: var(--text-light);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .about-text {
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.7;
             margin-bottom: 12px;
             color: var(--text-light);
         }
 
         .section-label {
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 20px 0 10px;
+            letter-spacing: 1px;
+            margin: 18px 0 8px;
             color: var(--primary);
         }
 
@@ -404,21 +399,22 @@
         }
 
         .submit-btn {
-            width: 100%;
-            padding: 14px;
+            display: inline-block;
+            padding: 14px 28px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s;
+            text-decoration: none;
         }
 
         .submit-btn:hover {
-            opacity: 0.9;
+            opacity: 0.85;
             transform: translateY(-2px);
         }
 
@@ -512,41 +508,38 @@
     </div>
 
     <main class="main-content">
-        <div class="card-accent"></div>
+        <div class="window-bar">
+            <span class="window-title">home</span>
+        </div>
         <div class="card-body">
-            <div class="avatar-section">
-                <div class="avatar-ring">
-                    <div class="avatar-inner">S</div>
-                </div>
-            </div>
-            <p class="greeting">Hello, I'm</p>
-            <h1 class="title"><span class="name">Saagnik Mondal</span></h1>
-            <p class="subtitle">Animator & AI/ML Developer</p>
+            <p class="greeting">hello, i'm</p>
+            <h1 class="title"><span class="name">saagnik mondal</span></h1>
+            <p class="subtitle">animator & ai/ml developer</p>
 
             <nav class="icon-grid">
                 <div class="icon-item" data-modal="about">
                     <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
                     </div>
-                    <span class="icon-label">About</span>
+                    <span class="icon-label">about</span>
                 </div>
                 <div class="icon-item" data-modal="links">
                     <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                     </div>
-                    <span class="icon-label">Links</span>
+                    <span class="icon-label">links</span>
                 </div>
                 <div class="icon-item" data-modal="work">
                     <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
                     </div>
-                    <span class="icon-label">Work</span>
+                    <span class="icon-label">work</span>
                 </div>
                 <div class="icon-item" data-modal="contact">
                     <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
                     </div>
-                    <span class="icon-label">Contact</span>
+                    <span class="icon-label">contact</span>
                 </div>
             </nav>
         </div>
