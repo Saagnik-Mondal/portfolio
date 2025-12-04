@@ -223,6 +223,7 @@
         .modal-content.dragged {
             position: fixed;
             opacity: 1;
+            max-width: none;
         }
 
         .modal.open .modal-content:not(.dragged) { 
@@ -232,15 +233,11 @@
 
         .modal.open .modal-content.dragged {
             opacity: 1;
+            transform: none;
         }
 
-        .modal.closing .modal-content:not(.dragged) {
+        .modal.closing .modal-content {
             animation: genieClose 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
-            transform-origin: bottom center;
-        }
-
-        .modal.closing .modal-content.dragged {
-            animation: genieCloseDragged 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
             transform-origin: bottom center;
         }
 
@@ -251,196 +248,109 @@
 
         @keyframes genieClose {
             0% {
-                transform: translateY(0);
                 opacity: 1;
                 clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-            }
-            5% {
-                transform: translateY(0);
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 8% 100%);
-            }
-            10% {
-                transform: translateY(0);
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
-            }
-            15% {
-                transform: translateY(2vh);
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
-            }
-            20% {
-                transform: translateY(5vh);
-                opacity: 1;
-                clip-path: polygon(1% 0%, 99% 0%, 65% 100%, 35% 100%);
-            }
-            25% {
-                transform: translateY(10vh);
-                opacity: 1;
-                clip-path: polygon(2% 0%, 98% 0%, 60% 100%, 40% 100%);
-            }
-            30% {
-                transform: translateY(16vh);
-                opacity: 1;
-                clip-path: polygon(4% 0%, 96% 0%, 56% 100%, 44% 100%);
-            }
-            35% {
-                transform: translateY(23vh);
-                opacity: 1;
-                clip-path: polygon(6% 0%, 94% 0%, 54% 100%, 46% 100%);
-            }
-            40% {
-                transform: translateY(30vh);
-                opacity: 0.98;
-                clip-path: polygon(9% 0%, 91% 0%, 52% 100%, 48% 100%);
-            }
-            45% {
-                transform: translateY(38vh);
-                opacity: 0.95;
-                clip-path: polygon(13% 0%, 87% 0%, 51% 100%, 49% 100%);
-            }
-            50% {
-                transform: translateY(46vh);
-                opacity: 0.9;
-                clip-path: polygon(18% 0%, 82% 0%, 50.5% 100%, 49.5% 100%);
-            }
-            55% {
-                transform: translateY(54vh);
-                opacity: 0.82;
-                clip-path: polygon(24% 0%, 76% 0%, 50.3% 100%, 49.7% 100%);
-            }
-            60% {
-                transform: translateY(62vh);
-                opacity: 0.72;
-                clip-path: polygon(30% 0%, 70% 0%, 50.2% 100%, 49.8% 100%);
-            }
-            65% {
-                transform: translateY(70vh);
-                opacity: 0.6;
-                clip-path: polygon(36% 0%, 64% 0%, 50.15% 100%, 49.85% 100%);
-            }
-            70% {
-                transform: translateY(77vh);
-                opacity: 0.48;
-                clip-path: polygon(41% 0%, 59% 0%, 50.1% 100%, 49.9% 100%);
-            }
-            75% {
-                transform: translateY(83vh);
-                opacity: 0.35;
-                clip-path: polygon(45% 0%, 55% 0%, 50.08% 100%, 49.92% 100%);
-            }
-            80% {
-                transform: translateY(88vh);
-                opacity: 0.24;
-                clip-path: polygon(47% 0%, 53% 0%, 50.05% 100%, 49.95% 100%);
-            }
-            85% {
-                transform: translateY(92vh);
-                opacity: 0.15;
-                clip-path: polygon(48.5% 0%, 51.5% 0%, 50.03% 100%, 49.97% 100%);
-            }
-            90% {
-                transform: translateY(95vh);
-                opacity: 0.08;
-                clip-path: polygon(49.2% 0%, 50.8% 0%, 50.01% 100%, 49.99% 100%);
-            }
-            95% {
-                transform: translateY(97vh);
-                opacity: 0.03;
-                clip-path: polygon(49.7% 0%, 50.3% 0%, 50% 100%, 50% 100%);
-            }
-            100% {
-                transform: translateY(calc(100vh - 30px));
-                opacity: 0;
-                clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
-            }
-        }
-
-        @keyframes genieCloseDragged {
-            0% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+                transform: scale(1);
             }
             5% {
                 opacity: 1;
                 clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 8% 100%);
+                transform: scale(1) scaleY(0.98);
             }
             10% {
                 opacity: 1;
                 clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
+                transform: scale(1) scaleY(0.95);
             }
             15% {
                 opacity: 1;
                 clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
+                transform: scale(1) scaleY(0.9);
             }
             20% {
                 opacity: 1;
                 clip-path: polygon(1% 0%, 99% 0%, 65% 100%, 35% 100%);
+                transform: scale(0.98) scaleY(0.85);
             }
             25% {
                 opacity: 1;
                 clip-path: polygon(2% 0%, 98% 0%, 60% 100%, 40% 100%);
+                transform: scale(0.95) scaleY(0.78);
             }
             30% {
                 opacity: 1;
                 clip-path: polygon(4% 0%, 96% 0%, 56% 100%, 44% 100%);
+                transform: scale(0.9) scaleY(0.7);
             }
             35% {
                 opacity: 1;
                 clip-path: polygon(6% 0%, 94% 0%, 54% 100%, 46% 100%);
+                transform: scale(0.85) scaleY(0.6);
             }
             40% {
                 opacity: 0.98;
                 clip-path: polygon(9% 0%, 91% 0%, 52% 100%, 48% 100%);
+                transform: scale(0.78) scaleY(0.5);
             }
             45% {
                 opacity: 0.95;
                 clip-path: polygon(13% 0%, 87% 0%, 51% 100%, 49% 100%);
+                transform: scale(0.7) scaleY(0.4);
             }
             50% {
                 opacity: 0.9;
                 clip-path: polygon(18% 0%, 82% 0%, 50.5% 100%, 49.5% 100%);
+                transform: scale(0.6) scaleY(0.32);
             }
             55% {
                 opacity: 0.82;
                 clip-path: polygon(24% 0%, 76% 0%, 50.3% 100%, 49.7% 100%);
+                transform: scale(0.5) scaleY(0.25);
             }
             60% {
                 opacity: 0.72;
                 clip-path: polygon(30% 0%, 70% 0%, 50.2% 100%, 49.8% 100%);
+                transform: scale(0.4) scaleY(0.18);
             }
             65% {
                 opacity: 0.6;
                 clip-path: polygon(36% 0%, 64% 0%, 50.15% 100%, 49.85% 100%);
+                transform: scale(0.32) scaleY(0.12);
             }
             70% {
                 opacity: 0.48;
                 clip-path: polygon(41% 0%, 59% 0%, 50.1% 100%, 49.9% 100%);
+                transform: scale(0.24) scaleY(0.08);
             }
             75% {
                 opacity: 0.35;
                 clip-path: polygon(45% 0%, 55% 0%, 50.08% 100%, 49.92% 100%);
+                transform: scale(0.18) scaleY(0.05);
             }
             80% {
                 opacity: 0.24;
                 clip-path: polygon(47% 0%, 53% 0%, 50.05% 100%, 49.95% 100%);
+                transform: scale(0.12) scaleY(0.03);
             }
             85% {
                 opacity: 0.15;
                 clip-path: polygon(48.5% 0%, 51.5% 0%, 50.03% 100%, 49.97% 100%);
+                transform: scale(0.08) scaleY(0.02);
             }
             90% {
                 opacity: 0.08;
                 clip-path: polygon(49.2% 0%, 50.8% 0%, 50.01% 100%, 49.99% 100%);
+                transform: scale(0.04) scaleY(0.01);
             }
             95% {
                 opacity: 0.03;
                 clip-path: polygon(49.7% 0%, 50.3% 0%, 50% 100%, 50% 100%);
+                transform: scale(0.02) scaleY(0.005);
             }
             100% {
                 opacity: 0;
                 clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+                transform: scale(0) scaleY(0);
             }
         }
 
