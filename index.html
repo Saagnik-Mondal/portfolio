@@ -70,8 +70,52 @@
 
         .main-content {
             text-align: center;
-            max-width: 400px;
+            max-width: 440px;
             width: 100%;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid var(--card-border);
+        }
+
+        .window-header {
+            background: linear-gradient(180deg, #e8e8e8 0%, #d4d4d4 100%);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .dark .window-header {
+            background: linear-gradient(180deg, #3d3d5c 0%, #2d2d4a 100%);
+            border-bottom: 1px solid #4d4d6c;
+        }
+
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            cursor: default;
+        }
+
+        .window-btn.red { background: #ff5f57; }
+        .window-btn.yellow { background: #febc2e; }
+        .window-btn.green { background: #28c840; }
+
+        .window-title {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-right: 44px;
+        }
+
+        .window-body {
+            padding: 32px 28px 28px;
         }
 
         .title {
@@ -95,7 +139,6 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 16px;
-            margin-bottom: 40px;
         }
 
         .icon-item {
@@ -447,35 +490,43 @@
     </div>
 
     <main class="main-content">
-        <h1 class="title">hi! i'm <span class="name">saagnik</span></h1>
-        <p class="subtitle">animator & ai/ml developer</p>
+        <div class="window-header">
+            <div class="window-btn red"></div>
+            <div class="window-btn yellow"></div>
+            <div class="window-btn green"></div>
+            <span class="window-title">saagnik.app</span>
+        </div>
+        <div class="window-body">
+            <h1 class="title">hi! i'm <span class="name">saagnik</span></h1>
+            <p class="subtitle">animator & ai/ml developer</p>
 
-        <nav class="icon-grid">
-            <div class="icon-item" data-modal="about">
-                <div class="icon-box">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+            <nav class="icon-grid">
+                <div class="icon-item" data-modal="about">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+                    </div>
+                    <span class="icon-label">about</span>
                 </div>
-                <span class="icon-label">about</span>
-            </div>
-            <div class="icon-item" data-modal="links">
-                <div class="icon-box">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <div class="icon-item" data-modal="links">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </div>
+                    <span class="icon-label">links</span>
                 </div>
-                <span class="icon-label">links</span>
-            </div>
-            <div class="icon-item" data-modal="work">
-                <div class="icon-box">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                <div class="icon-item" data-modal="work">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                    </div>
+                    <span class="icon-label">work</span>
                 </div>
-                <span class="icon-label">work</span>
-            </div>
-            <div class="icon-item" data-modal="contact">
-                <div class="icon-box">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                <div class="icon-item" data-modal="contact">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                    </div>
+                    <span class="icon-label">contact</span>
                 </div>
-                <span class="icon-label">contact</span>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </main>
 
     <!-- About Modal -->
