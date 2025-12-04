@@ -232,7 +232,7 @@
         }
 
         .modal.closing .modal-content {
-            animation: genieClose 0.65s cubic-bezier(0.4, 0, 0.6, 0.05) forwards;
+            animation: genieClose 0.7s cubic-bezier(0.4, 0, 0.7, 0.2) forwards;
             transform-origin: bottom center;
         }
 
@@ -242,84 +242,94 @@
         }
 
         @keyframes genieClose {
+            /* Frame 0 - Start */
             0% {
-                transform: translateY(0) scaleX(1) scaleY(1);
+                transform: translateY(0);
                 opacity: 1;
                 clip-path: polygon(
                     0% 0%, 100% 0%,
                     100% 100%, 0% 100%
                 );
             }
-            8% {
-                transform: translateY(5vh) scaleX(0.95) scaleY(0.92);
+            /* Frame 1 - Bottom starts pinching, top stays wide */
+            12% {
+                transform: translateY(0);
                 opacity: 1;
                 clip-path: polygon(
-                    2% 0%, 98% 0%,
-                    96% 100%, 4% 100%
-                );
-            }
-            20% {
-                transform: translateY(15vh) scaleX(0.82) scaleY(0.78);
-                opacity: 1;
-                clip-path: polygon(
-                    8% 0%, 92% 0%,
+                    0% 0%, 100% 0%,
                     85% 100%, 15% 100%
                 );
             }
-            35% {
-                transform: translateY(30vh) scaleX(0.6) scaleY(0.55);
+            /* Frame 2 - Bottom pinches more */
+            24% {
+                transform: translateY(5vh);
+                opacity: 1;
+                clip-path: polygon(
+                    2% 0%, 98% 0%,
+                    70% 100%, 30% 100%
+                );
+            }
+            /* Frame 3 - Genie waist forming */
+            36% {
+                transform: translateY(15vh);
+                opacity: 1;
+                clip-path: polygon(
+                    5% 0%, 95% 0%,
+                    58% 100%, 42% 100%
+                );
+            }
+            /* Frame 4 - Deep curve */
+            48% {
+                transform: translateY(30vh);
                 opacity: 0.95;
                 clip-path: polygon(
-                    18% 0%, 82% 0%,
-                    72% 100%, 28% 100%
-                );
-            }
-            50% {
-                transform: translateY(45vh) scaleX(0.4) scaleY(0.38);
-                opacity: 0.85;
-                clip-path: polygon(
-                    28% 0%, 72% 0%,
-                    62% 100%, 38% 100%
-                );
-            }
-            65% {
-                transform: translateY(60vh) scaleX(0.22) scaleY(0.22);
-                opacity: 0.7;
-                clip-path: polygon(
-                    36% 0%, 64% 0%,
-                    56% 100%, 44% 100%
-                );
-            }
-            78% {
-                transform: translateY(75vh) scaleX(0.1) scaleY(0.12);
-                opacity: 0.5;
-                clip-path: polygon(
-                    43% 0%, 57% 0%,
+                    10% 0%, 90% 0%,
                     52% 100%, 48% 100%
                 );
             }
-            88% {
-                transform: translateY(88vh) scaleX(0.04) scaleY(0.06);
-                opacity: 0.3;
+            /* Frame 5 - Top starts catching up */
+            60% {
+                transform: translateY(50vh);
+                opacity: 0.85;
                 clip-path: polygon(
-                    47% 0%, 53% 0%,
+                    20% 0%, 80% 0%,
                     51% 100%, 49% 100%
                 );
             }
-            95% {
-                transform: translateY(95vh) scaleX(0.015) scaleY(0.025);
-                opacity: 0.15;
+            /* Frame 6 - Narrowing */
+            72% {
+                transform: translateY(70vh);
+                opacity: 0.65;
                 clip-path: polygon(
-                    49% 0%, 51% 0%,
-                    50.3% 100%, 49.7% 100%
+                    35% 0%, 65% 0%,
+                    50.5% 100%, 49.5% 100%
                 );
             }
+            /* Frame 7 - Almost there */
+            84% {
+                transform: translateY(85vh);
+                opacity: 0.4;
+                clip-path: polygon(
+                    44% 0%, 56% 0%,
+                    50.2% 100%, 49.8% 100%
+                );
+            }
+            /* Frame 8 - Final squeeze */
+            94% {
+                transform: translateY(95vh);
+                opacity: 0.15;
+                clip-path: polygon(
+                    48% 0%, 52% 0%,
+                    50.05% 100%, 49.95% 100%
+                );
+            }
+            /* Frame 9 - Gone */
             100% {
-                transform: translateY(calc(100vh - 40px)) scaleX(0.005) scaleY(0.008);
+                transform: translateY(calc(100vh - 30px));
                 opacity: 0;
                 clip-path: polygon(
-                    49.8% 0%, 50.2% 0%,
-                    50.1% 100%, 49.9% 100%
+                    50% 0%, 50% 0%,
+                    50% 100%, 50% 100%
                 );
             }
         }
