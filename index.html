@@ -222,18 +222,21 @@
 
         .modal-content.dragged {
             position: fixed;
-            transform: none !important;
             opacity: 1;
         }
 
-        .modal.open .modal-content { 
+        .modal.open .modal-content:not(.dragged) { 
             transform: scale(1) translateY(0); 
             opacity: 1;
         }
 
+        .modal.open .modal-content.dragged {
+            opacity: 1;
+        }
+
         .modal.closing .modal-content {
-            animation: genieClose 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
-            transform-origin: bottom center;
+            animation: genieClose 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards !important;
+            transform-origin: bottom center !important;
         }
 
         @keyframes modalOpen {
@@ -849,18 +852,22 @@
         let modalZIndex = 200;
 
         function closeModal(modal) {
-            modal.classList.add('closing');
-            modal.classList.remove('open');
-            setTimeout(() => {
-                modal.classList.remove('closing');
-                // Reset position after close animation
-                const content = modal.querySelector('.modal-content');
+            const content = modal.querySelector('.modal-content');
+            
+            // If modal was dragged, reset position for consistent animation
+            if (content.classList.contains('dragged')) {
                 content.classList.remove('dragged');
                 content.style.left = '';
                 content.style.top = '';
                 content.style.width = '';
+            }
+            
+            modal.classList.add('closing');
+            modal.classList.remove('open');
+            setTimeout(() => {
+                modal.classList.remove('closing');
                 content.style.zIndex = '';
-            }, 500);
+            }, 550);
         }
 
         document.querySelectorAll('.icon-item').forEach(item => {
