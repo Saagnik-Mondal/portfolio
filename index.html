@@ -242,37 +242,38 @@
         }
 
         @keyframes genieClose {
-            0% { 
-                transform: translateY(0) scaleX(1) scaleY(1);
+            0% {
+                transform: translateY(0) scale(1);
                 opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-                filter: blur(0px);
+                clip-path: path("M0 0 H1 V1 H0 Z");
             }
-            15% {
-                transform: translateY(5vh) scaleX(0.95) scaleY(0.9);
+
+            20% {
+                transform: translateY(10vh) scale(0.95);
                 opacity: 1;
-                clip-path: polygon(5% 0%, 95% 0%, 92% 100%, 8% 100%);
+                /* subtle inward curves */
+                clip-path: path("M0.05 0 Q0.15 0.35 0.10 1 H0.90 Q0.85 0.35 0.95 0 Z");
             }
-            35% {
-                transform: translateY(25vh) scaleX(0.7) scaleY(0.6);
-                opacity: 1;
-                clip-path: polygon(15% 0%, 85% 0%, 75% 100%, 25% 100%);
-            }
-            55% {
-                transform: translateY(50vh) scaleX(0.4) scaleY(0.35);
+
+            45% {
+                transform: translateY(30vh) scaleY(0.75) scaleX(0.65);
                 opacity: 0.9;
-                clip-path: polygon(25% 0%, 75% 0%, 62% 100%, 38% 100%);
+                /* stronger hourglass squeeze */
+                clip-path: path("M0.18 0 Q0.32 0.45 0.30 1 H0.70 Q0.68 0.45 0.82 0 Z");
             }
+
             75% {
-                transform: translateY(75vh) scaleX(0.15) scaleY(0.15);
-                opacity: 0.6;
-                clip-path: polygon(38% 0%, 62% 0%, 54% 100%, 46% 100%);
+                transform: translateY(65vh) scaleY(0.35) scaleX(0.25);
+                opacity: 0.5;
+                /* deep genie 'waist' like macOS */
+                clip-path: path("M0.42 0 Q0.48 0.50 0.46 1 H0.54 Q0.52 0.50 0.58 0 Z");
             }
-            100% { 
-                transform: translateY(calc(100vh - 40px)) scaleX(0.02) scaleY(0.02);
+
+            100% {
+                transform: translateY(calc(100vh - 40px)) scale(0.03);
                 opacity: 0;
-                clip-path: polygon(48% 0%, 52% 0%, 51% 100%, 49% 100%);
-                filter: blur(2px);
+                /* final slit collapse */
+                clip-path: path("M0.49 0 L0.51 0 L0.51 1 L0.49 1 Z");
             }
         }
 
