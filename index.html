@@ -200,6 +200,11 @@
             pointer-events: none;
         }
 
+        .modal.closing .modal-content.genie-animating {
+            position: fixed !important;
+            pointer-events: none;
+        }
+
         .modal-content {
             background: var(--card-bg);
             width: 100%;
@@ -239,6 +244,10 @@
         .modal.closing .modal-content {
             animation: genieClose 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
             transform-origin: bottom center;
+        }
+
+        .modal.closing .modal-content.genie-animating {
+            animation: genieCloseToCenter 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
         }
 
         @keyframes modalOpen {
@@ -351,6 +360,93 @@
                 opacity: 0;
                 clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
                 transform: scale(0) scaleY(0);
+            }
+        }
+
+        @keyframes genieCloseToCenter {
+            0% {
+                opacity: 1;
+                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+            }
+            5% {
+                opacity: 1;
+                clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 8% 100%);
+            }
+            10% {
+                opacity: 1;
+                clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
+            }
+            15% {
+                opacity: 1;
+                clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
+            }
+            20% {
+                opacity: 1;
+                clip-path: polygon(1% 0%, 99% 0%, 65% 100%, 35% 100%);
+            }
+            25% {
+                opacity: 1;
+                clip-path: polygon(2% 0%, 98% 0%, 60% 100%, 40% 100%);
+            }
+            30% {
+                opacity: 1;
+                clip-path: polygon(4% 0%, 96% 0%, 56% 100%, 44% 100%);
+            }
+            35% {
+                opacity: 1;
+                clip-path: polygon(6% 0%, 94% 0%, 54% 100%, 46% 100%);
+            }
+            40% {
+                opacity: 0.98;
+                clip-path: polygon(9% 0%, 91% 0%, 52% 100%, 48% 100%);
+            }
+            45% {
+                opacity: 0.95;
+                clip-path: polygon(13% 0%, 87% 0%, 51% 100%, 49% 100%);
+            }
+            50% {
+                opacity: 0.9;
+                clip-path: polygon(18% 0%, 82% 0%, 50.5% 100%, 49.5% 100%);
+            }
+            55% {
+                opacity: 0.82;
+                clip-path: polygon(24% 0%, 76% 0%, 50.3% 100%, 49.7% 100%);
+            }
+            60% {
+                opacity: 0.72;
+                clip-path: polygon(30% 0%, 70% 0%, 50.2% 100%, 49.8% 100%);
+            }
+            65% {
+                opacity: 0.6;
+                clip-path: polygon(36% 0%, 64% 0%, 50.15% 100%, 49.85% 100%);
+            }
+            70% {
+                opacity: 0.48;
+                clip-path: polygon(41% 0%, 59% 0%, 50.1% 100%, 49.9% 100%);
+            }
+            75% {
+                opacity: 0.35;
+                clip-path: polygon(45% 0%, 55% 0%, 50.08% 100%, 49.92% 100%);
+            }
+            80% {
+                opacity: 0.24;
+                clip-path: polygon(47% 0%, 53% 0%, 50.05% 100%, 49.95% 100%);
+            }
+            85% {
+                opacity: 0.15;
+                clip-path: polygon(48.5% 0%, 51.5% 0%, 50.03% 100%, 49.97% 100%);
+            }
+            90% {
+                opacity: 0.08;
+                clip-path: polygon(49.2% 0%, 50.8% 0%, 50.01% 100%, 49.99% 100%);
+            }
+            95% {
+                opacity: 0.03;
+                clip-path: polygon(49.7% 0%, 50.3% 0%, 50% 100%, 50% 100%);
+            }
+            100% {
+                opacity: 0;
+                clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
             }
         }
 
@@ -855,18 +951,47 @@
 
         function closeModal(modal) {
             const content = modal.querySelector('.modal-content');
+            const rect = content.getBoundingClientRect();
+            
+            // Calculate target position (bottom center of screen)
+            const targetX = (window.innerWidth / 2) - (rect.width / 2);
+            const targetY = window.innerHeight - 50;
+            
+            // Get current position
+            const currentX = rect.left;
+            const currentY = rect.top;
+            
+            // Set fixed position for animation
+            content.style.position = 'fixed';
+            content.style.left = currentX + 'px';
+            content.style.top = currentY + 'px';
+            content.style.width = rect.width + 'px';
+            content.classList.add('genie-animating');
+            
+            // Animate position to bottom center
+            content.style.transition = 'left 0.55s cubic-bezier(0.4, 0, 0.6, 0.1), top 0.55s cubic-bezier(0.4, 0, 0.6, 0.1), width 0.55s cubic-bezier(0.4, 0, 0.6, 0.1)';
+            
+            // Trigger reflow
+            content.offsetHeight;
+            
+            // Move to bottom center while shrinking
+            content.style.left = targetX + 'px';
+            content.style.top = targetY + 'px';
+            content.style.width = '0px';
             
             modal.classList.add('closing');
             modal.classList.remove('open');
             
             setTimeout(() => {
                 modal.classList.remove('closing');
-                // Reset position after animation completes
+                content.classList.remove('genie-animating');
                 content.classList.remove('dragged');
+                content.style.position = '';
                 content.style.left = '';
                 content.style.top = '';
                 content.style.width = '';
                 content.style.zIndex = '';
+                content.style.transition = '';
             }, 550);
         }
 
