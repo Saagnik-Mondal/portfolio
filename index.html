@@ -242,212 +242,8 @@
         }
 
         .modal.closing .modal-content {
-            animation: genieClose 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
-            transform-origin: bottom center;
-        }
-
-        .modal.closing .modal-content.genie-animating {
-            animation: genieCloseToCenter 0.55s cubic-bezier(0.4, 0, 0.6, 0.1) forwards;
-        }
-
-        @keyframes modalOpen {
-            0% { transform: scale(0.8) translateY(-40px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        @keyframes genieClose {
-            0% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-                transform: scale(1);
-            }
-            5% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 8% 100%);
-                transform: scale(1) scaleY(0.98);
-            }
-            10% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
-                transform: scale(1) scaleY(0.95);
-            }
-            15% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
-                transform: scale(1) scaleY(0.9);
-            }
-            20% {
-                opacity: 1;
-                clip-path: polygon(1% 0%, 99% 0%, 65% 100%, 35% 100%);
-                transform: scale(0.98) scaleY(0.85);
-            }
-            25% {
-                opacity: 1;
-                clip-path: polygon(2% 0%, 98% 0%, 60% 100%, 40% 100%);
-                transform: scale(0.95) scaleY(0.78);
-            }
-            30% {
-                opacity: 1;
-                clip-path: polygon(4% 0%, 96% 0%, 56% 100%, 44% 100%);
-                transform: scale(0.9) scaleY(0.7);
-            }
-            35% {
-                opacity: 1;
-                clip-path: polygon(6% 0%, 94% 0%, 54% 100%, 46% 100%);
-                transform: scale(0.85) scaleY(0.6);
-            }
-            40% {
-                opacity: 0.98;
-                clip-path: polygon(9% 0%, 91% 0%, 52% 100%, 48% 100%);
-                transform: scale(0.78) scaleY(0.5);
-            }
-            45% {
-                opacity: 0.95;
-                clip-path: polygon(13% 0%, 87% 0%, 51% 100%, 49% 100%);
-                transform: scale(0.7) scaleY(0.4);
-            }
-            50% {
-                opacity: 0.9;
-                clip-path: polygon(18% 0%, 82% 0%, 50.5% 100%, 49.5% 100%);
-                transform: scale(0.6) scaleY(0.32);
-            }
-            55% {
-                opacity: 0.82;
-                clip-path: polygon(24% 0%, 76% 0%, 50.3% 100%, 49.7% 100%);
-                transform: scale(0.5) scaleY(0.25);
-            }
-            60% {
-                opacity: 0.72;
-                clip-path: polygon(30% 0%, 70% 0%, 50.2% 100%, 49.8% 100%);
-                transform: scale(0.4) scaleY(0.18);
-            }
-            65% {
-                opacity: 0.6;
-                clip-path: polygon(36% 0%, 64% 0%, 50.15% 100%, 49.85% 100%);
-                transform: scale(0.32) scaleY(0.12);
-            }
-            70% {
-                opacity: 0.48;
-                clip-path: polygon(41% 0%, 59% 0%, 50.1% 100%, 49.9% 100%);
-                transform: scale(0.24) scaleY(0.08);
-            }
-            75% {
-                opacity: 0.35;
-                clip-path: polygon(45% 0%, 55% 0%, 50.08% 100%, 49.92% 100%);
-                transform: scale(0.18) scaleY(0.05);
-            }
-            80% {
-                opacity: 0.24;
-                clip-path: polygon(47% 0%, 53% 0%, 50.05% 100%, 49.95% 100%);
-                transform: scale(0.12) scaleY(0.03);
-            }
-            85% {
-                opacity: 0.15;
-                clip-path: polygon(48.5% 0%, 51.5% 0%, 50.03% 100%, 49.97% 100%);
-                transform: scale(0.08) scaleY(0.02);
-            }
-            90% {
-                opacity: 0.08;
-                clip-path: polygon(49.2% 0%, 50.8% 0%, 50.01% 100%, 49.99% 100%);
-                transform: scale(0.04) scaleY(0.01);
-            }
-            95% {
-                opacity: 0.03;
-                clip-path: polygon(49.7% 0%, 50.3% 0%, 50% 100%, 50% 100%);
-                transform: scale(0.02) scaleY(0.005);
-            }
-            100% {
-                opacity: 0;
-                clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
-                transform: scale(0) scaleY(0);
-            }
-        }
-
-        @keyframes genieCloseToCenter {
-            0% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-            }
-            5% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 8% 100%);
-            }
-            10% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
-            }
-            15% {
-                opacity: 1;
-                clip-path: polygon(0% 0%, 100% 0%, 72% 100%, 28% 100%);
-            }
-            20% {
-                opacity: 1;
-                clip-path: polygon(1% 0%, 99% 0%, 65% 100%, 35% 100%);
-            }
-            25% {
-                opacity: 1;
-                clip-path: polygon(2% 0%, 98% 0%, 60% 100%, 40% 100%);
-            }
-            30% {
-                opacity: 1;
-                clip-path: polygon(4% 0%, 96% 0%, 56% 100%, 44% 100%);
-            }
-            35% {
-                opacity: 1;
-                clip-path: polygon(6% 0%, 94% 0%, 54% 100%, 46% 100%);
-            }
-            40% {
-                opacity: 0.98;
-                clip-path: polygon(9% 0%, 91% 0%, 52% 100%, 48% 100%);
-            }
-            45% {
-                opacity: 0.95;
-                clip-path: polygon(13% 0%, 87% 0%, 51% 100%, 49% 100%);
-            }
-            50% {
-                opacity: 0.9;
-                clip-path: polygon(18% 0%, 82% 0%, 50.5% 100%, 49.5% 100%);
-            }
-            55% {
-                opacity: 0.82;
-                clip-path: polygon(24% 0%, 76% 0%, 50.3% 100%, 49.7% 100%);
-            }
-            60% {
-                opacity: 0.72;
-                clip-path: polygon(30% 0%, 70% 0%, 50.2% 100%, 49.8% 100%);
-            }
-            65% {
-                opacity: 0.6;
-                clip-path: polygon(36% 0%, 64% 0%, 50.15% 100%, 49.85% 100%);
-            }
-            70% {
-                opacity: 0.48;
-                clip-path: polygon(41% 0%, 59% 0%, 50.1% 100%, 49.9% 100%);
-            }
-            75% {
-                opacity: 0.35;
-                clip-path: polygon(45% 0%, 55% 0%, 50.08% 100%, 49.92% 100%);
-            }
-            80% {
-                opacity: 0.24;
-                clip-path: polygon(47% 0%, 53% 0%, 50.05% 100%, 49.95% 100%);
-            }
-            85% {
-                opacity: 0.15;
-                clip-path: polygon(48.5% 0%, 51.5% 0%, 50.03% 100%, 49.97% 100%);
-            }
-            90% {
-                opacity: 0.08;
-                clip-path: polygon(49.2% 0%, 50.8% 0%, 50.01% 100%, 49.99% 100%);
-            }
-            95% {
-                opacity: 0.03;
-                clip-path: polygon(49.7% 0%, 50.3% 0%, 50% 100%, 50% 100%);
-            }
-            100% {
-                opacity: 0;
-                clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
-            }
+            /* Animation handled by JavaScript */
+            pointer-events: none;
         }
 
         .modal-header {
@@ -958,56 +754,7 @@
             const content = modal.querySelector('.modal-content');
             const rect = content.getBoundingClientRect();
             
-            // Target: bottom center of screen
-            const targetX = window.innerWidth / 2;
-            const targetY = window.innerHeight;
-            const targetWidth = 4;
-            
-            // Initial position
-            const initialLeft = rect.left;
-            const initialRight = rect.right;
-            const initialTop = rect.top;
-            const initialBottom = rect.bottom;
-            const initialWidth = rect.width;
-            const initialHeight = rect.height;
-            
-            // Animation settings
-            const duration = 500;
-            const fps = 60;
-            const frameTime = 1000 / fps;
-            const slideEndFraction = 0.5;
-            const translateStartFraction = 0.4;
-            
-            let startTime = null;
-            
-            // Hide the original content
-            content.style.visibility = 'hidden';
-            
-            // Create canvas for genie effect
-            const canvas = document.createElement('canvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;';
-            document.body.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            
-            // Capture modal content as image
-            import('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.esm.js')
-                .catch(() => {
-                    // Fallback: use simple CSS animation if html2canvas fails
-                    canvas.remove();
-                    content.style.visibility = '';
-                    fallbackGenieClose(modal, content, rect);
-                    return;
-                });
-            
-            // Simple fallback genie using CSS
-            fallbackGenieClose(modal, content, rect);
-            canvas.remove();
-        }
-        
-        function fallbackGenieClose(modal, content, rect) {
-            const duration = 500;
+            const duration = 450;
             const targetX = window.innerWidth / 2;
             const targetY = window.innerHeight;
             
@@ -1034,60 +781,66 @@
                 const elapsed = timestamp - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 
-                // Two-phase animation like real genie
-                const slideEndFraction = 0.5;
-                const translateStartFraction = 0.35;
+                // Two-phase animation like real macOS genie
+                // Phase 1: Bottom edge shears/pinches toward target (0 to 50%)
+                // Phase 2: Whole window translates down following the curve (starts at 35%)
+                const slideProgress = Math.min(1, progress / 0.5);
+                const translateProgress = Math.max(0, Math.min(1, (progress - 0.35) / 0.65));
                 
-                // Slide progress: bottom pinches first
-                const slideProgress = Math.min(1, progress / slideEndFraction);
-                // Translate progress: whole thing moves down
-                const translateProgress = Math.max(0, Math.min(1, (progress - translateStartFraction) / (1 - translateStartFraction)));
+                // Apply easing for smooth bezier-like curve
+                const easedSlide = easeInOutQuad(slideProgress);
+                const easedTranslate = easeInOutQuad(translateProgress);
                 
-                // Calculate bezier curve positions
-                const bezierProgress = easeInOutQuad(slideProgress);
+                // Bottom width shrinks first (funnel effect)
+                const bottomWidthRatio = 1 - easedSlide * 0.98;
+                const bottomWidth = initialWidth * bottomWidthRatio;
                 
-                // Bottom width shrinks with bezier curve
-                const bottomWidth = initialWidth * (1 - bezierProgress * 0.98);
-                // Top width shrinks later
-                const topShrink = Math.max(0, (progress - 0.3) / 0.7);
-                const topWidth = initialWidth * (1 - easeInOutQuad(topShrink) * 0.98);
+                // Top width shrinks later (delayed)
+                const topShrinkProgress = Math.max(0, (progress - 0.25) / 0.75);
+                const topWidthRatio = 1 - easeInOutQuad(topShrinkProgress) * 0.98;
+                const topWidth = initialWidth * topWidthRatio;
                 
-                // Bottom moves toward center
-                const bottomCenterX = initialCenterX + (targetX - initialCenterX) * bezierProgress;
-                // Top moves toward center later
-                const topCenterX = initialCenterX + (targetX - initialCenterX) * easeInOutQuad(topShrink);
+                // Bottom edge moves toward center first
+                const bottomCenterX = initialCenterX + (targetX - initialCenterX) * easedSlide;
                 
-                // Vertical translation - bottom reaches target first
-                const bottomY = initialBottom + (targetY - initialBottom) * easeInOutQuad(translateProgress);
-                const topY = initialTop + (targetY - initialTop) * easeInOutQuad(Math.max(0, translateProgress - 0.15) / 0.85);
+                // Top edge moves toward center later
+                const topCenterX = initialCenterX + (targetX - initialCenterX) * easeInOutQuad(topShrinkProgress);
                 
-                // Height shrinks as it compresses
-                const currentHeight = Math.max(0, bottomY - topY);
+                // Vertical translation - bottom reaches target first, creating the "flow" effect
+                const bottomY = initialBottom + (targetY - initialBottom) * easedTranslate;
+                const topTranslateProgress = Math.max(0, (translateProgress - 0.15) / 0.85);
+                const topY = initialTop + (targetY - initialTop) * easeInOutQuad(topTranslateProgress);
                 
-                // Calculate clip-path for funnel shape
-                const topLeftX = ((topCenterX - topWidth/2) / window.innerWidth) * 100;
-                const topRightX = ((topCenterX + topWidth/2) / window.innerWidth) * 100;
-                const bottomLeftX = ((bottomCenterX - bottomWidth/2) / window.innerWidth) * 100;
-                const bottomRightX = ((bottomCenterX + bottomWidth/2) / window.innerWidth) * 100;
+                // Current dimensions
+                const currentHeight = Math.max(1, bottomY - topY);
                 
-                // Apply transforms
-                const scaleX = (topWidth + bottomWidth) / 2 / initialWidth;
-                const scaleY = currentHeight / initialHeight;
-                const translateYAmount = (topY - initialTop) + (currentHeight - initialHeight) / 2;
-                const translateXAmount = (topCenterX + bottomCenterX) / 2 - initialCenterX;
+                // Scale factors
+                const avgWidth = (topWidth + bottomWidth) / 2;
+                const scaleX = Math.max(0.001, avgWidth / initialWidth);
+                const scaleY = Math.max(0.001, currentHeight / initialHeight);
                 
-                content.style.transform = `translate(${translateXAmount}px, ${translateYAmount}px) scale(${Math.max(0.01, scaleX)}, ${Math.max(0.01, scaleY)})`;
+                // Translation to move toward target
+                const avgCenterX = (topCenterX + bottomCenterX) / 2;
+                const translateXAmount = avgCenterX - initialCenterX;
+                const translateYAmount = ((topY + bottomY) / 2) - ((initialTop + initialBottom) / 2);
                 
-                // Funnel clip-path (normalized to element)
-                const clipTop = 0;
-                const clipBottom = 100;
-                const relTopLeft = 50 - (topWidth / initialWidth) * 50;
-                const relTopRight = 50 + (topWidth / initialWidth) * 50;
-                const relBottomLeft = 50 - (bottomWidth / initialWidth) * 50 + (bottomCenterX - topCenterX) / initialWidth * 100;
-                const relBottomRight = 50 + (bottomWidth / initialWidth) * 50 + (bottomCenterX - topCenterX) / initialWidth * 100;
+                // Apply transform
+                content.style.transform = `translate(${translateXAmount}px, ${translateYAmount}px) scale(${scaleX}, ${scaleY})`;
                 
-                content.style.clipPath = `polygon(${relTopLeft}% 0%, ${relTopRight}% 0%, ${relBottomRight}% 100%, ${relBottomLeft}% 100%)`;
-                content.style.opacity = 1 - progress * progress;
+                // Funnel-shaped clip-path (the key to the genie look)
+                // Calculate the skew of bottom relative to top for the pinched funnel shape
+                const topLeftPct = 50 - (topWidthRatio * 50);
+                const topRightPct = 50 + (topWidthRatio * 50);
+                
+                // Bottom offset based on where it's moving relative to top
+                const bottomOffset = ((bottomCenterX - topCenterX) / initialWidth) * 100;
+                const bottomLeftPct = 50 - (bottomWidthRatio * 50) + bottomOffset;
+                const bottomRightPct = 50 + (bottomWidthRatio * 50) + bottomOffset;
+                
+                content.style.clipPath = `polygon(${topLeftPct}% 0%, ${topRightPct}% 0%, ${bottomRightPct}% 100%, ${bottomLeftPct}% 100%)`;
+                
+                // Fade out near the end
+                content.style.opacity = Math.max(0, 1 - progress * progress * progress);
                 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
