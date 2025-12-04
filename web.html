@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>saagnik's space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --muted: #71717a;
+            --accent: #6366f1;
+            --accent-soft: #e0e7ff;
+            --border: #e4e4e7;
+            --surface: #f4f4f5;
+        }
+
+        .dark {
+            --bg: #0a0a0b;
+            --card: #141416;
+            --text: #fafafa;
+            --muted: #a1a1aa;
+            --accent: #818cf8;
+            --accent-soft: #1e1b4b;
+            --border: #27272a;
+            --surface: #18181b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Top Bar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: color-mix(in srgb, var(--bg) 80%, transparent);
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .topbar-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Main Layout */
+        .main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px 60px;
+        }
+
+        /* Hero Card */
+        .hero-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.04);
+        }
+
+        .avatar-container {
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 36px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px -8px rgba(99, 102, 241, 0.4);
+        }
+
+        .avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .title .highlight {
+            color: var(--accent);
+            position: relative;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        /* Nav Icons */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 12px 8px;
+            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        /* Content Sections */
+        .content-area {
+            display: none;
+            text-align: left;
+            animation: slideUp 0.3s ease;
+        }
+
+        .content-area.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        /* About Content */
+        .about-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .about-text p {
+            margin-bottom: 12px;
+        }
+
+        .status-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--surface);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .status-icon {
+            font-size: 18px;
+        }
+
+        .status-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Links */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--surface);
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .link-item:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .link-arrow {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* Work Grid */
+        .work-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .work-item {
+            padding: 18px;
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .work-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+
+        .work-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .work-arrow {
+            color: var(--muted);
+        }
+
+        .work-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: var(--card);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* FAQ */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            padding: 16px;
+            background: var(--surface);
+            border-radius: 14px;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-a {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+            padding-left: 24px;
+        }
+
+        /* Contact */
+        .contact-intro {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--surface);
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            padding: 14px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -8px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer Social */
+        .social-footer {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .social-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Character */
+        .mascot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            z-index: 50;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+        }
+
+        .mascot img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.05s;
+        }
+
+        .mascot img.visible {
+            opacity: 1;
+        }
+
+        .mascot:hover {
+            animation-play-state: paused;
+            transform: scale(1.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Copyright */
+        .copyright {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .hero-card {
+                padding: 32px 24px;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+
+            .nav-grid {
+                gap: 8px;
+            }
+
+            .nav-item {
+                padding: 10px 4px;
+            }
+
+            .nav-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .nav-label {
+                font-size: 10px;
+            }
+
+            .mascot {
+                font-size: 36px;
+                bottom: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topbar">
+        <a href="#" class="logo">@saagnik</a>
+        <div class="topbar-controls">
+            <button class="icon-btn" id="themeBtn">☀️</button>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="hero-card">
+            <div class="avatar-container">
+                <div class="avatar" id="avatar">✦</div>
+            </div>
+            
+            <h1 class="title">hey, i'm <span class="highlight">saagnik</span></h1>
+            <p class="subtitle">animator & ai/ml developer</p>
+
+            <nav class="nav-grid">
+                <div class="nav-item active" data-section="about">
+                    <div class="nav-icon">👤</div>
+                    <span class="nav-label">about</span>
+                </div>
+                <div class="nav-item" data-section="links">
+                    <div class="nav-icon">🔗</div>
+                    <span class="nav-label">links</span>
+                </div>
+                <div class="nav-item" data-section="work">
+                    <div class="nav-icon">💼</div>
+                    <span class="nav-label">work</span>
+                </div>
+                <div class="nav-item" data-section="faq">
+                    <div class="nav-icon">❓</div>
+                    <span class="nav-label">faq</span>
+                </div>
+                <div class="nav-item" data-section="contact">
+                    <div class="nav-icon">✉️</div>
+                    <span class="nav-label">contact</span>
+                </div>
+            </nav>
+
+            <!-- About -->
+            <section class="content-area active" id="about">
+                <p class="section-title">about me</p>
+                <div class="about-text">
+                    <p>i'm a creative technologist who brings stories to life through animation while building intelligent systems with machine learning.</p>
+                    <p>currently exploring the space where art and ai intersect — making machines that can dream.</p>
+                </div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <span class="status-icon">🎬</span>
+                        <div>
+                            <div class="status-label">creating</div>
+                            <span>animated short film</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">🧠</span>
+                        <div>
+                            <div class="status-label">learning</div>
+                            <span>diffusion models</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">🎧</span>
+                        <div>
+                            <div class="status-label">listening</div>
+                            <span>tycho, bonobo</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Links -->
+            <section class="content-area" id="links">
+                <p class="section-title">find me online</p>
+                <div class="links-grid">
+                    <a href="https://github.com/Saagnik-Mondal" target="_blank" class="link-item">
+                        <div class="link-icon">⌘</div>
+                        <span>GitHub</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://youtube.com/@saagnik" target="_blank" class="link-item">
+                        <div class="link-icon">▶</div>
+                        <span>YouTube</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://twitter.com/saagnik" target="_blank" class="link-item">
+                        <div class="link-icon">✦</div>
+                        <span>Twitter / X</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://instagram.com/saagnik" target="_blank" class="link-item">
+                        <div class="link-icon">◐</div>
+                        <span>Instagram</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                    <a href="https://linkedin.com/in/saagnik" target="_blank" class="link-item">
+                        <div class="link-icon">◉</div>
+                        <span>LinkedIn</span>
+                        <span class="link-arrow">↗</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Work -->
+            <section class="content-area" id="work">
+                <p class="section-title">selected projects</p>
+                <div class="work-list">
+                    <article class="work-item">
+                        <div class="work-header">
+                            <span class="work-title">Neural Style Transfer</span>
+                            <span class="work-arrow">↗</span>
+                        </div>
+                        <p class="work-desc">Real-time art style transformation using deep learning. PyTorch-based web application.</p>
+                        <div class="tags">
+                            <span class="tag">python</span>
+                            <span class="tag">pytorch</span>
+                            <span class="tag">cv</span>
+                        </div>
+                    </article>
+                    <article class="work-item">
+                        <div class="work-header">
+                            <span class="work-title">Character Animation Reel</span>
+                            <span class="work-arrow">↗</span>
+                        </div>
+                        <p class="work-desc">Frame-by-frame animations exploring emotion through movement and timing.</p>
+                        <div class="tags">
+                            <span class="tag">animation</span>
+                            <span class="tag">after effects</span>
+                        </div>
+                    </article>
+                    <article class="work-item">
+                        <div class="work-header">
+                            <span class="work-title">Generative Art Engine</span>
+                            <span class="work-arrow">↗</span>
+                        </div>
+                        <p class="work-desc">Procedural artwork using custom algorithms. Exploring randomness and patterns.</p>
+                        <div class="tags">
+                            <span class="tag">p5.js</span>
+                            <span class="tag">creative coding</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="content-area" id="faq">
+                <p class="section-title">questions</p>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <p class="faq-q">✦ are you available for work?</p>
+                        <p class="faq-a">yes! i'm open to freelance animation projects and ml consulting. reach out via the contact form.</p>
+                    </div>
+                    <div class="faq-item">
+                        <p class="faq-q">✦ what tools do you use?</p>
+                        <p class="faq-a">for animation: after effects, blender, procreate. for ml: python, pytorch, tensorflow. for design: figma.</p>
+                    </div>
+                    <div class="faq-item">
+                        <p class="faq-q">✦ can i collaborate with you?</p>
+                        <p class="faq-a">absolutely! i love working on creative projects that blend art and technology. let's chat.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section class="content-area" id="contact">
+                <p class="section-title">get in touch</p>
+                <p class="contact-intro">have a project in mind? let's create something together.</p>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="your name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="your email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="your message..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">send message</button>
+                </form>
+            </section>
+
+            <div class="social-footer">
+                <a href="https://github.com/Saagnik-Mondal" target="_blank" class="social-link">⌘</a>
+                <a href="https://twitter.com/saagnik" target="_blank" class="social-link">✦</a>
+                <a href="https://youtube.com/@saagnik" target="_blank" class="social-link">▶</a>
+                <a href="https://instagram.com/saagnik" target="_blank" class="social-link">◐</a>
+            </div>
+        </div>
+    </main>
+
+    <div class="mascot" id="mascot">
+        <img src="Chibi_1-removebg-preview.png" alt="mascot" class="chibi-frame visible" data-frame="1">
+        <img src="Chibi_2-removebg-preview.png" alt="mascot" class="chibi-frame" data-frame="2">
+        <img src="Chibi_3-removebg-preview.png" alt="mascot" class="chibi-frame" data-frame="3">
+    </div>
+    <div class="copyright">© 2025 saagnik mondal</div>
+
+    <script>
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.content-area');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const target = item.dataset.section;
+                
+                navItems.forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+                
+                sections.forEach(s => {
+                    s.classList.remove('active');
+                    if (s.id === target) s.classList.add('active');
+                });
+            });
+        });
+
+        // Theme toggle
+        const themeBtn = document.getElementById('themeBtn');
+        let dark = false;
+
+        themeBtn.addEventListener('click', () => {
+            dark = !dark;
+            document.body.classList.toggle('dark', dark);
+            themeBtn.textContent = dark ? '🌙' : '☀️';
+        });
+
+        // Avatar click animation
+        const avatar = document.getElementById('avatar');
+        const avatarEmojis = ['✦', '◆', '★', '◈', '❋', '✧'];
+        let emojiIndex = 0;
+
+        avatar.addEventListener('click', () => {
+            emojiIndex = (emojiIndex + 1) % avatarEmojis.length;
+            avatar.textContent = avatarEmojis[emojiIndex];
+            avatar.style.transform = 'scale(1.2) rotate(360deg)';
+            setTimeout(() => avatar.style.transform = '', 300);
+        });
+
+        // Mascot blink animation
+        const chibiFrames = document.querySelectorAll('.chibi-frame');
+        let isBlinking = false;
+
+        function showFrame(frameNum) {
+            chibiFrames.forEach(f => f.classList.remove('visible'));
+            document.querySelector(`[data-frame="${frameNum}"]`).classList.add('visible');
+        }
+
+        function blink() {
+            if (isBlinking) return;
+            isBlinking = true;
+            
+            // Open -> Half closed
+            showFrame(2);
+            setTimeout(() => {
+                // Half closed -> Closed
+                showFrame(3);
+                setTimeout(() => {
+                    // Closed -> Half closed
+                    showFrame(2);
+                    setTimeout(() => {
+                        // Half closed -> Open
+                        showFrame(1);
+                        isBlinking = false;
+                    }, 60);
+                }, 80);
+            }, 60);
+        }
+
+        // Random blink interval (2-4 seconds)
+        function scheduleBlink() {
+            const delay = 2000 + Math.random() * 2000;
+            setTimeout(() => {
+                blink();
+                scheduleBlink();
+            }, delay);
+        }
+        scheduleBlink();
+
+        // Click to force blink
+        document.getElementById('mascot').addEventListener('click', blink);
+
+        // Form submit
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.submit-btn');
+            btn.textContent = 'sent! ✓';
+            btn.style.background = '#22c55e';
+            setTimeout(() => {
+                btn.textContent = 'send message';
+                btn.style.background = '';
+                e.target.reset();
+            }, 2000);
+        });
+
+        // Keyboard shortcuts (1-5)
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '1' && e.key <= '5') {
+                navItems[parseInt(e.key) - 1]?.click();
+            }
+        });
+    </script>
+</body>
+</html>
