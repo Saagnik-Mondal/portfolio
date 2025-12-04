@@ -72,46 +72,63 @@
 
         .main-content {
             text-align: center;
-            max-width: 440px;
-            width: 100%;
+            max-width: 580px;
+            width: 90%;
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--card-border);
         }
 
         .window-bar {
-            background: var(--icon-bg);
-            padding: 14px 20px;
+            background: linear-gradient(180deg, var(--icon-bg) 0%, var(--card-border) 100%);
+            padding: 10px 16px;
             border-bottom: 1px solid var(--card-border);
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
         }
 
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .window-dot.red { background: #ff5f57; }
+        .window-dot.yellow { background: #febc2e; }
+        .window-dot.green { background: #28c840; }
+
         .window-title {
-            font-size: 14px;
-            font-weight: 700;
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text-light);
-            letter-spacing: 0.5px;
+            margin-right: 54px;
         }
 
         .card-body {
-            padding: 36px 28px 28px;
+            padding: 48px 40px 40px;
         }
 
         .greeting {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-light);
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .title {
-            font-size: 28px;
+            font-size: 36px;
             font-weight: 800;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: var(--text);
         }
 
@@ -120,26 +137,26 @@
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-light);
             font-weight: 500;
-            margin-bottom: 28px;
+            margin-bottom: 36px;
         }
 
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 16px;
         }
 
         .icon-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
             cursor: pointer;
-            padding: 10px 6px;
-            border-radius: 12px;
+            padding: 16px 12px;
+            border-radius: 14px;
             transition: all 0.2s;
         }
 
@@ -148,10 +165,10 @@
         }
 
         .icon-box {
-            width: 52px;
-            height: 52px;
+            width: 64px;
+            height: 64px;
             background: var(--icon-bg);
-            border-radius: 14px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -165,7 +182,7 @@
         }
 
         .icon-label {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-light);
         }
@@ -509,6 +526,11 @@
 
     <main class="main-content">
         <div class="window-bar">
+            <div class="window-dots">
+                <div class="window-dot red"></div>
+                <div class="window-dot yellow"></div>
+                <div class="window-dot green"></div>
+            </div>
             <span class="window-title">home</span>
         </div>
         <div class="card-body">
@@ -519,25 +541,25 @@
             <nav class="icon-grid">
                 <div class="icon-item" data-modal="about">
                     <div class="icon-box">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
                     </div>
                     <span class="icon-label">about</span>
                 </div>
                 <div class="icon-item" data-modal="links">
                     <div class="icon-box">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                     </div>
                     <span class="icon-label">links</span>
                 </div>
                 <div class="icon-item" data-modal="work">
                     <div class="icon-box">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
                     </div>
                     <span class="icon-label">work</span>
                 </div>
                 <div class="icon-item" data-modal="contact">
                     <div class="icon-box">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
                     </div>
                     <span class="icon-label">contact</span>
                 </div>
