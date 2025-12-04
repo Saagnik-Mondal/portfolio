@@ -72,7 +72,7 @@
 
         .main-content {
             text-align: center;
-            max-width: 580px;
+            max-width: 640px;
             width: 90%;
             background: var(--card-bg);
             border-radius: 12px;
@@ -83,39 +83,21 @@
 
         .window-bar {
             background: linear-gradient(180deg, var(--icon-bg) 0%, var(--card-border) 100%);
-            padding: 10px 16px;
+            padding: 12px 20px;
             border-bottom: 1px solid var(--card-border);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
         }
-
-        .window-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .window-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .window-dot.red { background: #ff5f57; }
-        .window-dot.yellow { background: #febc2e; }
-        .window-dot.green { background: #28c840; }
 
         .window-title {
-            flex: 1;
-            text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-light);
-            margin-right: 54px;
         }
 
         .card-body {
-            padding: 48px 40px 40px;
+            padding: 52px 48px 48px;
         }
 
         .greeting {
@@ -526,11 +508,6 @@
 
     <main class="main-content">
         <div class="window-bar">
-            <div class="window-dots">
-                <div class="window-dot red"></div>
-                <div class="window-dot yellow"></div>
-                <div class="window-dot green"></div>
-            </div>
             <span class="window-title">home</span>
         </div>
         <div class="card-body">
