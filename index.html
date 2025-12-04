@@ -20,14 +20,14 @@
         }
 
         .dark {
-            --bg: #1a1d23;
-            --text: #ecf0f1;
-            --text-light: #95a5a6;
-            --primary: #5dade2;
-            --card-bg: #242830;
-            --card-border: #343a45;
-            --icon-bg: #2d323c;
-            --accent: #58d68d;
+            --bg: #24283b;
+            --text: #c0caf5;
+            --text-light: #7982a9;
+            --primary: #7aa2f7;
+            --card-bg: #1f2335;
+            --card-border: #3b4261;
+            --icon-bg: #292e42;
+            --accent: #9ece6a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -187,6 +187,10 @@
         .modal.open { 
             opacity: 1; 
             visibility: visible;
+            pointer-events: none;
+        }
+
+        .modal.open .modal-content {
             pointer-events: auto;
         }
 
@@ -228,9 +232,7 @@
         }
 
         .modal.closing .modal-content {
-            transform: scale(0.5) translateY(100vh);
-            opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 1, 1), opacity 0.3s ease;
+            animation: genieClose 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
         }
 
         @keyframes modalOpen {
@@ -238,9 +240,27 @@
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
-        @keyframes modalClose {
-            0% { transform: scale(1) translateY(0); opacity: 1; }
-            100% { transform: scale(0.3) translateY(100vh); opacity: 0; }
+        @keyframes genieClose {
+            0% { 
+                transform: scale(1) translateY(0) perspective(800px) rotateX(0deg);
+                opacity: 1;
+                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+            }
+            30% {
+                transform: scale(0.9) translateY(20px) perspective(800px) rotateX(5deg);
+                opacity: 1;
+                clip-path: polygon(10% 0%, 90% 0%, 95% 100%, 5% 100%);
+            }
+            60% {
+                transform: scale(0.5) translateY(60vh) perspective(800px) rotateX(15deg);
+                opacity: 0.8;
+                clip-path: polygon(25% 0%, 75% 0%, 85% 100%, 15% 100%);
+            }
+            100% { 
+                transform: scale(0.1) translateY(100vh) perspective(800px) rotateX(30deg);
+                opacity: 0;
+                clip-path: polygon(45% 0%, 55% 0%, 60% 100%, 40% 100%);
+            }
         }
 
         .modal-header {
@@ -739,7 +759,9 @@
             localStorage.setItem('dark', dark);
         });
 
-        // Modal handling with minimize animation
+        // Modal handling with genie animation
+        let modalZIndex = 200;
+
         function closeModal(modal) {
             modal.classList.add('closing');
             modal.classList.remove('open');
@@ -751,7 +773,8 @@
                 content.style.left = '';
                 content.style.top = '';
                 content.style.width = '';
-            }, 400);
+                content.style.zIndex = '';
+            }, 500);
         }
 
         document.querySelectorAll('.icon-item').forEach(item => {
@@ -759,16 +782,21 @@
                 const modal = document.getElementById('modal-' + item.dataset.modal);
                 modal.classList.remove('closing');
                 modal.classList.add('open');
+                // Bring to front
+                modalZIndex++;
+                modal.querySelector('.modal-content').style.zIndex = modalZIndex;
             });
         });
 
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
+        // Click on modal content brings it to front
+        document.querySelectorAll('.modal-content').forEach(content => {
+            content.addEventListener('mousedown', () => {
+                modalZIndex++;
+                content.style.zIndex = modalZIndex;
             });
         });
+
+        // Removed click-outside-to-close since multiple modals can be open
 
         document.querySelectorAll('.modal-close').forEach(btn => {
             btn.addEventListener('click', (e) => {
