@@ -232,7 +232,8 @@
         }
 
         .modal.closing .modal-content {
-            animation: genieClose 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
+            animation: genieClose 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform-origin: bottom center;
         }
 
         @keyframes modalOpen {
@@ -242,24 +243,36 @@
 
         @keyframes genieClose {
             0% { 
-                transform: scale(1) translateY(0) perspective(800px) rotateX(0deg);
+                transform: translateY(0) scaleX(1) scaleY(1);
                 opacity: 1;
                 clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+                filter: blur(0px);
             }
-            30% {
-                transform: scale(0.9) translateY(20px) perspective(800px) rotateX(5deg);
+            15% {
+                transform: translateY(5vh) scaleX(0.95) scaleY(0.9);
                 opacity: 1;
-                clip-path: polygon(10% 0%, 90% 0%, 95% 100%, 5% 100%);
+                clip-path: polygon(5% 0%, 95% 0%, 92% 100%, 8% 100%);
             }
-            60% {
-                transform: scale(0.5) translateY(60vh) perspective(800px) rotateX(15deg);
-                opacity: 0.8;
-                clip-path: polygon(25% 0%, 75% 0%, 85% 100%, 15% 100%);
+            35% {
+                transform: translateY(25vh) scaleX(0.7) scaleY(0.6);
+                opacity: 1;
+                clip-path: polygon(15% 0%, 85% 0%, 75% 100%, 25% 100%);
+            }
+            55% {
+                transform: translateY(50vh) scaleX(0.4) scaleY(0.35);
+                opacity: 0.9;
+                clip-path: polygon(25% 0%, 75% 0%, 62% 100%, 38% 100%);
+            }
+            75% {
+                transform: translateY(75vh) scaleX(0.15) scaleY(0.15);
+                opacity: 0.6;
+                clip-path: polygon(38% 0%, 62% 0%, 54% 100%, 46% 100%);
             }
             100% { 
-                transform: scale(0.1) translateY(100vh) perspective(800px) rotateX(30deg);
+                transform: translateY(calc(100vh - 40px)) scaleX(0.02) scaleY(0.02);
                 opacity: 0;
-                clip-path: polygon(45% 0%, 55% 0%, 60% 100%, 40% 100%);
+                clip-path: polygon(48% 0%, 52% 0%, 51% 100%, 49% 100%);
+                filter: blur(2px);
             }
         }
 
