@@ -686,14 +686,13 @@
     <div class="modal" id="modal-contact">
         <div class="modal-content">
             <div class="modal-header">contact<button class="modal-close">&times;</button></div>
-            <div class="modal-body">
-                <p class="contact-intro">have a project in mind or just want to say hi? drop me a message!</p>
-                <form id="contactForm">
-                    <div class="form-group"><input type="text" placeholder="your name" required></div>
-                    <div class="form-group"><input type="email" placeholder="your email" required></div>
-                    <div class="form-group"><textarea placeholder="your message..." required></textarea></div>
-                    <button type="submit" class="submit-btn">send message</button>
-                </form>
+            <div class="modal-body" style="text-align: center;">
+                <p class="contact-intro">want to reach out? i'd love to hear from you!</p>
+                <img src="Chibi_Mail-removebg-preview.png" alt="Mail Chibi" style="width: 140px; height: auto; margin: 16px auto;">
+                <p style="font-size: 14px; color: var(--text); margin-bottom: 8px;">email me at:</p>
+                <p style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 20px;">sm2744@cse.jgec.ac.in</p>
+                <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">or press the button below to open your mail app.</p>
+                <a href="mailto:sm2744@cse.jgec.ac.in" class="submit-btn" style="display: inline-block; text-decoration: none; padding: 14px 32px;">Open Mail App</a>
             </div>
         </div>
     </div>
@@ -746,20 +745,6 @@
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
             }
-        });
-
-        // Form
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.textContent = 'sent!';
-            btn.style.background = '#22c55e';
-            setTimeout(() => {
-                btn.textContent = 'send message';
-                btn.style.background = '';
-                e.target.reset();
-                document.getElementById('modal-contact').classList.remove('open');
-            }, 1500);
         });
 
         // Mascot blinking
