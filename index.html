@@ -232,7 +232,7 @@
         }
 
         .modal.closing .modal-content {
-            animation: genieClose 0.55s cubic-bezier(0.32, 0, 0.67, 0) forwards;
+            animation: genieClose 0.65s cubic-bezier(0.4, 0, 0.6, 0.05) forwards;
             transform-origin: bottom center;
         }
 
@@ -250,52 +250,76 @@
                     100% 100%, 0% 100%
                 );
             }
-            10% {
-                transform: translateY(8vh) scaleX(0.92) scaleY(0.88);
+            8% {
+                transform: translateY(5vh) scaleX(0.95) scaleY(0.92);
                 opacity: 1;
                 clip-path: polygon(
-                    3% 0%, 97% 0%,
-                    94% 100%, 6% 100%
+                    2% 0%, 98% 0%,
+                    96% 100%, 4% 100%
                 );
             }
-            25% {
-                transform: translateY(22vh) scaleX(0.75) scaleY(0.68);
+            20% {
+                transform: translateY(15vh) scaleX(0.82) scaleY(0.78);
                 opacity: 1;
                 clip-path: polygon(
-                    12% 0%, 88% 0%,
-                    78% 100%, 22% 100%
+                    8% 0%, 92% 0%,
+                    85% 100%, 15% 100%
                 );
             }
-            45% {
-                transform: translateY(42vh) scaleX(0.48) scaleY(0.45);
+            35% {
+                transform: translateY(30vh) scaleX(0.6) scaleY(0.55);
                 opacity: 0.95;
                 clip-path: polygon(
-                    22% 0%, 78% 0%,
+                    18% 0%, 82% 0%,
+                    72% 100%, 28% 100%
+                );
+            }
+            50% {
+                transform: translateY(45vh) scaleX(0.4) scaleY(0.38);
+                opacity: 0.85;
+                clip-path: polygon(
+                    28% 0%, 72% 0%,
                     62% 100%, 38% 100%
                 );
             }
             65% {
-                transform: translateY(62vh) scaleX(0.25) scaleY(0.25);
+                transform: translateY(60vh) scaleX(0.22) scaleY(0.22);
                 opacity: 0.7;
                 clip-path: polygon(
-                    32% 0%, 68% 0%,
+                    36% 0%, 64% 0%,
                     56% 100%, 44% 100%
                 );
             }
-            82% {
-                transform: translateY(80vh) scaleX(0.1) scaleY(0.1);
-                opacity: 0.4;
+            78% {
+                transform: translateY(75vh) scaleX(0.1) scaleY(0.12);
+                opacity: 0.5;
                 clip-path: polygon(
-                    42% 0%, 58% 0%,
+                    43% 0%, 57% 0%,
                     52% 100%, 48% 100%
                 );
             }
-            100% {
-                transform: translateY(calc(100vh - 50px)) scaleX(0.02) scaleY(0.02);
-                opacity: 0;
+            88% {
+                transform: translateY(88vh) scaleX(0.04) scaleY(0.06);
+                opacity: 0.3;
+                clip-path: polygon(
+                    47% 0%, 53% 0%,
+                    51% 100%, 49% 100%
+                );
+            }
+            95% {
+                transform: translateY(95vh) scaleX(0.015) scaleY(0.025);
+                opacity: 0.15;
                 clip-path: polygon(
                     49% 0%, 51% 0%,
-                    50.5% 100%, 49.5% 100%
+                    50.3% 100%, 49.7% 100%
+                );
+            }
+            100% {
+                transform: translateY(calc(100vh - 40px)) scaleX(0.005) scaleY(0.008);
+                opacity: 0;
+                clip-path: polygon(
+                    49.8% 0%, 50.2% 0%,
+                    50.1% 100%, 49.9% 100%
                 );
             }
         }
