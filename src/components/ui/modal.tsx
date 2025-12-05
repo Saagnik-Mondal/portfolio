@@ -14,7 +14,16 @@ interface ModalProps {
 
 export function Modal({ isOpen, onClose, title, children, initialPosition = { x: 0, y: 0 } }: ModalProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const constraintsRef = useRef<HTMLDivElement>(null);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 500);
+  };
 
   return (
     <AnimatePresence>
@@ -24,9 +33,10 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
           <motion.div
             className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: isClosing ? 0 : 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
+            transition={{ duration: 0.3 }}
           />
           
           <motion.div
@@ -36,7 +46,8 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
             <motion.div
               className={cn(
                 "pointer-events-auto modal-window",
-                isDragging && "cursor-grabbing"
+                isDragging && "cursor-grabbing",
+                isClosing && "genie-closing"
               )}
               style={{ 
                 background: 'var(--card-bg)',
@@ -47,32 +58,27 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
                 maxWidth: '450px',
                 width: '90%',
                 maxHeight: '80vh',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                transformOrigin: 'bottom center',
               }}
-              initial={{ scale: 0.8, y: -40, opacity: 0, x: initialPosition.x }}
+              initial={{ scale: 0.8, y: -40, opacity: 0 }}
               animate={{ 
-                scale: 1, 
-                y: initialPosition.y, 
-                opacity: 1,
-                x: initialPosition.x,
-                scaleX: 1,
-                transition: {
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25
-                }
+                scale: isClosing ? 0 : 1, 
+                y: isClosing ? 800 : initialPosition.y, 
+                opacity: isClosing ? 0 : 1,
+                scaleX: isClosing ? 0.1 : 1,
+                scaleY: isClosing ? 0.1 : 1,
               }}
-              exit={{ 
-                scale: 0.1,
-                scaleX: 0.3,
-                y: "100vh",
-                opacity: 0,
-                transition: {
-                  duration: 0.4,
-                  ease: [0.32, 0, 0.67, 0]
-                }
+              transition={isClosing ? {
+                duration: 0.5,
+                ease: [0.32, 0, 0.67, 0],
+                scaleX: { duration: 0.3, delay: 0.1 },
+              } : {
+                type: "spring",
+                stiffness: 300,
+                damping: 25
               }}
-              drag
+              drag={!isClosing}
               dragConstraints={constraintsRef}
               dragElastic={0.1}
               onDragStart={() => setIsDragging(true)}
@@ -96,7 +102,7 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
                 
                 {/* Close Button - Double Arrow */}
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-[var(--icon-bg)]"
                   style={{ color: 'var(--text-light)' }}
                   aria-label="Close"

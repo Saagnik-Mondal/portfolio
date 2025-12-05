@@ -614,3 +614,27 @@ body {
     height: 64px;
   }
 }
+
+/* Genie effect animation */
+.genie-closing {
+  animation: genieEffect 0.5s ease-in forwards;
+}
+
+@keyframes genieEffect {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(0.8, 0.9) translateY(100px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(0.4, 0.6) translateY(300px);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(0.05, 0.1) translateY(100vh);
+    opacity: 0;
+  }
+}
