@@ -1,34 +1,36 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Wave from 'react-wavify'
+import { Moon } from 'lucide-react'
 
-// Click sound using jsfxr
-function useClickSound() {
-  const audioUrlRef = useRef(null)
+// Sound effects hook
+function useSounds() {
+  const sounds = useRef({})
   
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://cdn.jsdelivr.net/npm/jsfxr@0.4.0/jsfxr.min.js'
-    document.head.appendChild(script)
-    
-    script.onload = () => {
-      // Select/click sound parameters - jsfxr returns a data URL
-      audioUrlRef.current = window.jsfxr([0,,0.1,,0.12,0.5,0.47,,,,,,0.48,,,,,0.4,-0.1,,,,0.2])
+    sounds.current = {
+      click: new Audio('/click_general.mp3'),
+      close: new Audio('/click_close.mp3'),
+      mascot: new Audio('/mascotsound.mp3')
     }
-    
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script)
-      }
-    }
+    // Set volumes
+    sounds.current.click.volume = 0.4
+    sounds.current.close.volume = 0.4
+    sounds.current.mascot.volume = 0.5
   }, [])
   
-  return () => {
-    if (audioUrlRef.current) {
-      const audio = new Audio(audioUrlRef.current)
-      audio.volume = 0.3
-      audio.play().catch(() => {})
+  const play = (type) => {
+    const sound = sounds.current[type]
+    if (sound) {
+      sound.currentTime = 0
+      sound.play().catch(() => {})
     }
+  }
+  
+  return {
+    playClick: () => play('click'),
+    playClose: () => play('close'),
+    playMascot: () => play('mascot')
   }
 }
 
@@ -248,7 +250,7 @@ function ContactContent() {
 }
 
 // Modal Component with Genie Effect
-function Modal({ id, title, children, onClose, zIndex, onBringToFront }) {
+function Modal({ id, title, children, onClose, zIndex, onBringToFront, playClose }) {
   const contentRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
   const [position, setPosition] = useState(null)
@@ -260,6 +262,7 @@ function Modal({ id, title, children, onClose, zIndex, onBringToFront }) {
   const handleClose = useCallback(() => {
     if (isClosing) return
     setIsClosing(true)
+    playClose?.()
     
     const content = contentRef.current
     if (!content) return
@@ -496,7 +499,7 @@ function Modal({ id, title, children, onClose, zIndex, onBringToFront }) {
 }
 
 // Mascot Component
-function Mascot() {
+function Mascot({ playMascot }) {
   const [frame, setFrame] = useState(1)
   const blinkingRef = useRef(false)
 
@@ -517,6 +520,11 @@ function Mascot() {
     }, 50)
   }, [])
 
+  const handleClick = () => {
+    blink()
+    playMascot?.()
+  }
+
   useEffect(() => {
     const scheduleBlink = () => {
       setTimeout(() => {
@@ -528,7 +536,7 @@ function Mascot() {
   }, [blink])
 
   return (
-    <div className="mascot" onClick={blink}>
+    <div className="mascot" onClick={handleClick}>
       <img src="/Chibi_1-removebg-preview.png" alt="mascot" className={frame === 1 ? 'visible' : ''} />
       <img src="/Chibi_2-removebg-preview.png" alt="mascot" className={frame === 2 ? 'visible' : ''} />
       <img src="/Chibi_3-removebg-preview.png" alt="mascot" className={frame === 3 ? 'visible' : ''} />
@@ -576,7 +584,7 @@ export default function App() {
   const [openModals, setOpenModals] = useState([])
   const [modalZIndexes, setModalZIndexes] = useState({})
   const baseZIndex = useRef(200)
-  const playClick = useClickSound()
+  const { playClick, playClose, playMascot } = useSounds()
 
   useEffect(() => {
     document.body.classList.toggle('dark', dark)
@@ -606,7 +614,7 @@ export default function App() {
       
       <div className="top-controls">
         <button className="control-btn" onClick={() => setDark(!dark)} title="Toggle theme">
-          <SunIcon />
+          {dark ? <SunIcon /> : <Moon />}
         </button>
       </div>
 
@@ -640,6 +648,7 @@ export default function App() {
               onClose={() => closeModal(id)}
               zIndex={modalZIndexes[id] || 200}
               onBringToFront={() => bringToFront(id)}
+              playClose={playClose}
             >
               {modal.content}
             </Modal>
@@ -647,7 +656,7 @@ export default function App() {
         })}
       </AnimatePresence>
 
-      <Mascot />
+      <Mascot playMascot={playMascot} />
       <Footer />
     </>
   )
