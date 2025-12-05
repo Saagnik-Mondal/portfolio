@@ -4,7 +4,7 @@ import Wave from 'react-wavify'
 
 // Click sound using jsfxr
 function useClickSound() {
-  const playRef = useRef(null)
+  const audioUrlRef = useRef(null)
   
   useEffect(() => {
     const script = document.createElement('script')
@@ -12,8 +12,8 @@ function useClickSound() {
     document.head.appendChild(script)
     
     script.onload = () => {
-      // Select/click sound parameters
-      playRef.current = window.jsfxr([0,,0.1,,0.12,0.5,0.47,,,,,,0.48,,,,,0.4,-0.1,,,,0.2])
+      // Select/click sound parameters - jsfxr returns a data URL
+      audioUrlRef.current = window.jsfxr([0,,0.1,,0.12,0.5,0.47,,,,,,0.48,,,,,0.4,-0.1,,,,0.2])
     }
     
     return () => {
@@ -23,7 +23,13 @@ function useClickSound() {
     }
   }, [])
   
-  return () => playRef.current?.play()
+  return () => {
+    if (audioUrlRef.current) {
+      const audio = new Audio(audioUrlRef.current)
+      audio.volume = 0.3
+      audio.play().catch(() => {})
+    }
+  }
 }
 
 // Icons as SVG components
