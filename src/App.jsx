@@ -86,16 +86,16 @@ function DesktopBackground() {
         <div className="aurora-blob aurora-3"></div>
       </div>
       
-      {/* Soft wave accent at bottom - very subtle */}
+      {/* Wave accent at bottom - contrasting colors */}
       <Wave
         className="desktop-wave"
         fill="url(#waveGradient)"
         paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px', opacity: 0.4 }}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '220px', opacity: 0.7 }}
         options={{
-          height: 20,
-          amplitude: 15,
-          speed: 0.1,
+          height: 25,
+          amplitude: 20,
+          speed: 0.12,
           points: 4
         }}
       />
@@ -103,10 +103,10 @@ function DesktopBackground() {
         className="desktop-wave-2"
         fill="url(#waveGradient2)"
         paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '180px', opacity: 0.3 }}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '180px', opacity: 0.5 }}
         options={{
-          height: 30,
-          amplitude: 12,
+          height: 35,
+          amplitude: 15,
           speed: 0.08,
           points: 3
         }}
