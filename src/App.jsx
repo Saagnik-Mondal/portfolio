@@ -1,17 +1,29 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Wave from 'react-wavify'
-import { Howl } from 'howler'
 
-// Click sound using Howler.js
-const clickSound = new Howl({
-  src: ['/click.mp3', '/click.wav', 'https://cdn.freesound.org/previews/256/256116_3263906-lq.mp3'],
-  volume: 0.3,
-  preload: true
-})
-
-const playClickSound = () => {
-  clickSound.play()
+// Click sound using jsfxr
+function useClickSound() {
+  const playRef = useRef(null)
+  
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/jsfxr@0.4.0/jsfxr.min.js'
+    document.head.appendChild(script)
+    
+    script.onload = () => {
+      // Select/click sound parameters
+      playRef.current = window.jsfxr([0,,0.1,,0.12,0.5,0.47,,,,,,0.48,,,,,0.4,-0.1,,,,0.2])
+    }
+    
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
+    }
+  }, [])
+  
+  return () => playRef.current?.play()
 }
 
 // Icons as SVG components
@@ -558,6 +570,7 @@ export default function App() {
   const [openModals, setOpenModals] = useState([])
   const [modalZIndexes, setModalZIndexes] = useState({})
   const baseZIndex = useRef(200)
+  const playClick = useClickSound()
 
   useEffect(() => {
     document.body.classList.toggle('dark', dark)
@@ -601,7 +614,7 @@ export default function App() {
 
           <nav className="icon-grid">
             {apps.map((app) => (
-              <button key={app.id} className="icon-item" onClick={() => { playClickSound(); openModal(app.id); }}>
+              <button key={app.id} className="icon-item" onClick={() => { playClick(); openModal(app.id); }}>
                 <div className="icon-box">{app.icon}</div>
                 <span className="icon-label">{app.label}</span>
               </button>

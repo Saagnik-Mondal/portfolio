@@ -418,6 +418,7 @@ body, #root {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  pointer-events: none;
 }
 
 .modal-content {
@@ -428,6 +429,7 @@ body, #root {
   max-width: 480px;
   max-height: 80vh;
   border-radius: 12px;
+  pointer-events: auto;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--card-border);
   position: relative;
