@@ -2,50 +2,29 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Wave from 'react-wavify'
 
-// Preload and cache audio for instant playback
-const audioCache = {
-  click: null,
-  close: null,
-  mascot: null
-}
-
-// Preload all sounds immediately
-if (typeof window !== 'undefined') {
-  audioCache.click = new Audio('/click_general.mp3')
-  audioCache.close = new Audio('/click_close.mp3')
-  audioCache.mascot = new Audio('/mascotsound.mp3')
-  
-  // Preload by loading metadata
-  Object.values(audioCache).forEach(audio => {
+// Audio pool for reliable playback (prevents issues with rapid clicks)
+const createAudioPool = (src, poolSize = 3) => {
+  const pool = []
+  for (let i = 0; i < poolSize; i++) {
+    const audio = new Audio(src)
     audio.preload = 'auto'
     audio.load()
-  })
-}
-
-// Sound play functions
-const playClick = () => {
-  if (audioCache.click) {
-    audioCache.click.currentTime = 0
-    audioCache.click.volume = 0.4
-    audioCache.click.play().catch(() => {})
+    pool.push(audio)
+  }
+  let index = 0
+  return (volume = 0.4) => {
+    const audio = pool[index]
+    index = (index + 1) % poolSize
+    audio.currentTime = 0
+    audio.volume = volume
+    audio.play().catch(() => {})
   }
 }
 
-const playClose = () => {
-  if (audioCache.close) {
-    audioCache.close.currentTime = 0
-    audioCache.close.volume = 0.4
-    audioCache.close.play().catch(() => {})
-  }
-}
-
-const playMascot = () => {
-  if (audioCache.mascot) {
-    audioCache.mascot.currentTime = 0
-    audioCache.mascot.volume = 0.5
-    audioCache.mascot.play().catch(() => {})
-  }
-}
+// Initialize audio pools
+const playClick = typeof window !== 'undefined' ? createAudioPool('/click_general.mp3', 4) : () => {}
+const playClose = typeof window !== 'undefined' ? createAudioPool('/click_close.mp3', 3) : () => {}
+const playMascot = typeof window !== 'undefined' ? createAudioPool('/mascotsound.mp3', 2) : () => {}
 
 // Icons as SVG components
 const UserIcon = () => (
