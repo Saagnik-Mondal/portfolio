@@ -754,101 +754,179 @@
             const content = modal.querySelector('.modal-content');
             const rect = content.getBoundingClientRect();
             
-            const duration = 450;
+            // Animation parameters (matching Harshil Shah's implementation)
+            const duration = 500; // 0.5s like macOS
+            const rowCount = 20; // Number of mesh rows for smooth curve
+            const slideAnimationEndFraction = 0.5;
+            const translateAnimationStartFraction = 0.4;
+            
+            // Target: bottom center of screen (like dock)
             const targetX = window.innerWidth / 2;
             const targetY = window.innerHeight;
+            const targetWidth = 50;
             
-            const initialCenterX = rect.left + rect.width / 2;
+            // Initial state
+            const initialLeft = rect.left;
+            const initialRight = rect.right;
             const initialTop = rect.top;
             const initialBottom = rect.bottom;
             const initialWidth = rect.width;
             const initialHeight = rect.height;
+            const initialCenterX = rect.left + rect.width / 2;
             
-            let startTime = null;
+            // Bezier curve parameters
+            const leftBezierTopX = initialLeft;
+            const rightBezierTopX = initialRight;
+            const leftEdgeDistanceToMove = (targetX - targetWidth/2) - initialLeft;
+            const rightEdgeDistanceToMove = (targetX + targetWidth/2) - initialRight;
+            const verticalDistanceToMove = targetY - initialTop;
             
-            content.style.position = 'fixed';
-            content.style.left = rect.left + 'px';
-            content.style.top = rect.top + 'px';
-            content.style.width = rect.width + 'px';
-            content.style.transition = 'none';
-            content.style.transformOrigin = 'bottom center';
+            const bezierTopY = initialTop;
+            const bezierBottomY = targetY;
+            const bezierHeight = bezierBottomY - bezierTopY;
             
+            // Create a canvas overlay for the genie effect
+            const canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth * window.devicePixelRatio;
+            canvas.height = window.innerHeight * window.devicePixelRatio;
+            canvas.style.cssText = `position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:${parseInt(content.style.zIndex || 200) + 1};pointer-events:none;`;
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            
+            // Hide original content
+            content.style.visibility = 'hidden';
             modal.classList.add('closing');
             modal.classList.remove('open');
+            
+            // Use html2canvas-like approach: draw the modal to canvas
+            // For simplicity, we'll capture as an image-like representation
+            // Since we can't easily do html2canvas, we'll use a colored rectangle simulation
+            // In production, you'd use html2canvas library
+            
+            let startTime = null;
             
             function animate(timestamp) {
                 if (!startTime) startTime = timestamp;
                 const elapsed = timestamp - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+                const fraction = Math.min(elapsed / duration, 1);
                 
-                // Two-phase animation like real macOS genie
-                // Phase 1: Bottom edge shears/pinches toward target (0 to 50%)
-                // Phase 2: Whole window translates down following the curve (starts at 35%)
-                const slideProgress = Math.min(1, progress / 0.5);
-                const translateProgress = Math.max(0, Math.min(1, (progress - 0.35) / 0.65));
+                // Calculate sub-animation progress (matching Harshil's code)
+                const slideProgress = Math.max(0, Math.min(1, fraction / slideAnimationEndFraction));
+                const translateProgress = Math.max(0, Math.min(1, 
+                    (fraction - translateAnimationStartFraction) / (1 - translateAnimationStartFraction)));
                 
-                // Apply easing for smooth bezier-like curve
-                const easedSlide = easeInOutQuad(slideProgress);
-                const easedTranslate = easeInOutQuad(translateProgress);
+                // Translation of top and bottom edges
+                const translation = easeInOutQuad(translateProgress) * verticalDistanceToMove;
+                const topEdgeY = initialTop + translation;
+                const bottomEdgeY = Math.max(
+                    initialBottom + translation,
+                    targetY
+                );
                 
-                // Bottom width shrinks first (funnel effect)
-                const bottomWidthRatio = 1 - easedSlide * 0.98;
-                const bottomWidth = initialWidth * bottomWidthRatio;
+                // Bezier bottom X positions (shearing)
+                const leftBezierBottomX = leftBezierTopX + (easeInOutQuad(slideProgress) * leftEdgeDistanceToMove);
+                const rightBezierBottomX = rightBezierTopX + (easeInOutQuad(slideProgress) * rightEdgeDistanceToMove);
                 
-                // Top width shrinks later (delayed)
-                const topShrinkProgress = Math.max(0, (progress - 0.25) / 0.75);
-                const topWidthRatio = 1 - easeInOutQuad(topShrinkProgress) * 0.98;
-                const topWidth = initialWidth * topWidthRatio;
+                // Functions to get X position along the bezier curve for a given Y
+                function leftBezierPosition(y) {
+                    if (y <= bezierTopY) return leftBezierTopX;
+                    if (y >= bezierBottomY) return leftBezierBottomX;
+                    const progress = easeInOutQuad((y - bezierTopY) / bezierHeight);
+                    return leftBezierTopX + progress * (leftBezierBottomX - leftBezierTopX);
+                }
                 
-                // Bottom edge moves toward center first
-                const bottomCenterX = initialCenterX + (targetX - initialCenterX) * easedSlide;
+                function rightBezierPosition(y) {
+                    if (y <= bezierTopY) return rightBezierTopX;
+                    if (y >= bezierBottomY) return rightBezierBottomX;
+                    const progress = easeInOutQuad((y - bezierTopY) / bezierHeight);
+                    return rightBezierTopX + progress * (rightBezierBottomX - rightBezierTopX);
+                }
                 
-                // Top edge moves toward center later
-                const topCenterX = initialCenterX + (targetX - initialCenterX) * easeInOutQuad(topShrinkProgress);
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
-                // Vertical translation - bottom reaches target first, creating the "flow" effect
-                const bottomY = initialBottom + (targetY - initialBottom) * easedTranslate;
-                const topTranslateProgress = Math.max(0, (translateProgress - 0.15) / 0.85);
-                const topY = initialTop + (targetY - initialTop) * easeInOutQuad(topTranslateProgress);
+                // Draw the warped modal as mesh strips
+                const currentHeight = Math.max(1, bottomEdgeY - topEdgeY);
                 
-                // Current dimensions
-                const currentHeight = Math.max(1, bottomY - topY);
+                // Get computed styles for colors
+                const isDark = document.body.classList.contains('dark');
+                const bgColor = isDark ? '#1f2335' : '#ffffff';
+                const headerColor = isDark ? '#292e42' : '#ecf0f5';
+                const borderColor = isDark ? '#3b4261' : '#e0e6ed';
                 
-                // Scale factors
-                const avgWidth = (topWidth + bottomWidth) / 2;
-                const scaleX = Math.max(0.001, avgWidth / initialWidth);
-                const scaleY = Math.max(0.001, currentHeight / initialHeight);
+                // Draw each row of the mesh
+                for (let row = 0; row < rowCount; row++) {
+                    const rowFraction = row / rowCount;
+                    const nextRowFraction = (row + 1) / rowCount;
+                    
+                    // Y positions for this strip
+                    const y1 = topEdgeY + (currentHeight * rowFraction);
+                    const y2 = topEdgeY + (currentHeight * nextRowFraction);
+                    
+                    // X positions along bezier curves
+                    const x1Left = leftBezierPosition(y1);
+                    const x1Right = rightBezierPosition(y1);
+                    const x2Left = leftBezierPosition(y2);
+                    const x2Right = rightBezierPosition(y2);
+                    
+                    // Draw the strip as a quadrilateral
+                    ctx.beginPath();
+                    ctx.moveTo(x1Left, y1);
+                    ctx.lineTo(x1Right, y1);
+                    ctx.lineTo(x2Right, y2);
+                    ctx.lineTo(x2Left, y2);
+                    ctx.closePath();
+                    
+                    // Color based on position (header vs body)
+                    const originalY = initialTop + (initialHeight * rowFraction);
+                    const headerHeight = 44; // Approximate header height
+                    if (originalY < initialTop + headerHeight) {
+                        ctx.fillStyle = headerColor;
+                    } else {
+                        ctx.fillStyle = bgColor;
+                    }
+                    ctx.fill();
+                    
+                    // Add subtle border effect on edges
+                    if (row === 0 || row === rowCount - 1) {
+                        ctx.strokeStyle = borderColor;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
                 
-                // Translation to move toward target
-                const avgCenterX = (topCenterX + bottomCenterX) / 2;
-                const translateXAmount = avgCenterX - initialCenterX;
-                const translateYAmount = ((topY + bottomY) / 2) - ((initialTop + initialBottom) / 2);
+                // Draw left and right edges
+                ctx.beginPath();
+                ctx.moveTo(leftBezierPosition(topEdgeY), topEdgeY);
+                for (let i = 0; i <= rowCount; i++) {
+                    const y = topEdgeY + (currentHeight * i / rowCount);
+                    ctx.lineTo(leftBezierPosition(y), y);
+                }
+                ctx.strokeStyle = borderColor;
+                ctx.lineWidth = 1;
+                ctx.stroke();
                 
-                // Apply transform
-                content.style.transform = `translate(${translateXAmount}px, ${translateYAmount}px) scale(${scaleX}, ${scaleY})`;
+                ctx.beginPath();
+                ctx.moveTo(rightBezierPosition(topEdgeY), topEdgeY);
+                for (let i = 0; i <= rowCount; i++) {
+                    const y = topEdgeY + (currentHeight * i / rowCount);
+                    ctx.lineTo(rightBezierPosition(y), y);
+                }
+                ctx.stroke();
                 
-                // Funnel-shaped clip-path (the key to the genie look)
-                // Calculate the skew of bottom relative to top for the pinched funnel shape
-                const topLeftPct = 50 - (topWidthRatio * 50);
-                const topRightPct = 50 + (topWidthRatio * 50);
+                // Apply opacity fade
+                ctx.globalAlpha = 1 - (fraction * fraction);
                 
-                // Bottom offset based on where it's moving relative to top
-                const bottomOffset = ((bottomCenterX - topCenterX) / initialWidth) * 100;
-                const bottomLeftPct = 50 - (bottomWidthRatio * 50) + bottomOffset;
-                const bottomRightPct = 50 + (bottomWidthRatio * 50) + bottomOffset;
-                
-                content.style.clipPath = `polygon(${topLeftPct}% 0%, ${topRightPct}% 0%, ${bottomRightPct}% 100%, ${bottomLeftPct}% 100%)`;
-                
-                // Fade out near the end
-                content.style.opacity = Math.max(0, 1 - progress * progress * progress);
-                
-                if (progress < 1) {
+                if (fraction < 1) {
                     requestAnimationFrame(animate);
                 } else {
                     // Cleanup
+                    canvas.remove();
                     modal.classList.remove('closing');
                     content.classList.remove('genie-animating');
                     content.classList.remove('dragged');
+                    content.style.visibility = '';
                     content.style.position = '';
                     content.style.left = '';
                     content.style.top = '';
