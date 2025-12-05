@@ -17,6 +17,9 @@
             --card-border: #e0e6ed;
             --icon-bg: #ecf0f5;
             --accent: #2ecc71;
+            --aurora-1: rgba(52, 152, 219, 0.3);
+            --aurora-2: rgba(46, 204, 113, 0.25);
+            --aurora-3: rgba(155, 89, 182, 0.2);
         }
 
         .dark {
@@ -28,13 +31,122 @@
             --card-border: #3b4261;
             --icon-bg: #292e42;
             --accent: #9ece6a;
+            --aurora-1: rgba(122, 162, 247, 0.3);
+            --aurora-2: rgba(158, 206, 106, 0.2);
+            --aurora-3: rgba(187, 154, 247, 0.25);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -1;
+            background: var(--bg);
+        }
+
+        .aurora-bg::before,
+        .aurora-bg::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background-image: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, var(--aurora-1) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 20%, var(--aurora-2) 0%, transparent 50%),
+                radial-gradient(ellipse 70% 60% at 50% 80%, var(--aurora-3) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: aurora 20s ease-in-out infinite;
+            filter: blur(40px);
+            opacity: 0.8;
+        }
+
+        .aurora-bg::after {
+            background-image: 
+                radial-gradient(ellipse 50% 80% at 70% 60%, var(--aurora-2) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 40% at 30% 80%, var(--aurora-3) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 60% at 60% 30%, var(--aurora-1) 0%, transparent 50%);
+            animation: aurora 25s ease-in-out infinite reverse;
+            animation-delay: -5s;
+            opacity: 0.6;
+        }
+
+        @keyframes aurora {
+            0%, 100% {
+                background-position: 0% 50%, 100% 50%, 50% 100%;
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                background-position: 100% 0%, 0% 100%, 100% 0%;
+                transform: rotate(3deg) scale(1.05);
+            }
+            50% {
+                background-position: 100% 100%, 0% 0%, 0% 50%;
+                transform: rotate(0deg) scale(1.1);
+            }
+            75% {
+                background-position: 0% 100%, 100% 0%, 50% 0%;
+                transform: rotate(-3deg) scale(1.05);
+            }
+        }
+
+        /* Additional aurora orbs */
+        .aurora-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .aurora-orb:nth-child(1) {
+            width: 40vw;
+            height: 40vw;
+            background: var(--aurora-1);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .aurora-orb:nth-child(2) {
+            width: 35vw;
+            height: 35vw;
+            background: var(--aurora-2);
+            top: 50%;
+            right: -15%;
+            animation-delay: -5s;
+            animation-duration: 18s;
+        }
+
+        .aurora-orb:nth-child(3) {
+            width: 45vw;
+            height: 45vw;
+            background: var(--aurora-3);
+            bottom: -20%;
+            left: 30%;
+            animation-delay: -10s;
+            animation-duration: 22s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(5%, 10%) scale(1.1);
+            }
+            50% {
+                transform: translate(-5%, 5%) scale(0.95);
+            }
+            75% {
+                transform: translate(10%, -5%) scale(1.05);
+            }
+        }
+
         body {
             font-family: 'Nunito', sans-serif;
-            background: var(--bg);
+            background: transparent;
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -42,7 +154,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         .top-controls {
@@ -58,8 +170,10 @@
             width: 44px;
             height: 44px;
             border-radius: 12px;
-            border: 2px solid var(--card-border);
-            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -68,17 +182,27 @@
             color: var(--text);
         }
 
+        .dark .control-btn {
+            background: rgba(31, 35, 53, 0.7);
+        }
+
         .control-btn:hover { transform: scale(1.05); }
 
         .main-content {
             text-align: center;
             max-width: 640px;
             width: 90%;
-            background: var(--card-bg);
+            background: rgba(var(--card-bg-rgb, 255, 255, 255), 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--card-border);
+        }
+
+        .dark .main-content {
+            background: rgba(31, 35, 53, 0.85);
         }
 
         .window-bar {
@@ -206,7 +330,9 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             width: 100%;
             max-width: 480px;
             max-height: 80vh;
@@ -218,6 +344,10 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--card-border);
             transform-origin: center top;
             position: relative;
+        }
+
+        .dark .modal-content {
+            background: rgba(31, 35, 53, 0.9);
         }
 
         .modal-content.dragging {
@@ -530,7 +660,7 @@
             padding: 16px;
             font-size: 11px;
             color: var(--text-light);
-            background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+            background: transparent;
         }
 
         .footer-links {
@@ -571,6 +701,13 @@
     </style>
 </head>
 <body>
+    <!-- Aurora Background -->
+    <div class="aurora-bg">
+        <div class="aurora-orb"></div>
+        <div class="aurora-orb"></div>
+        <div class="aurora-orb"></div>
+    </div>
+
     <div class="top-controls">
         <button class="control-btn" id="themeBtn" title="Toggle theme">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
