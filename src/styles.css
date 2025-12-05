@@ -1,34 +1,38 @@
 :root {
-  --bg: #f5f7fa;
-  --text: #2c3e50;
-  --text-light: #7f8c8d;
-  --primary: #3498db;
+  --bg: #fafafa;
+  --text: #1a1a2e;
+  --text-light: #6b7280;
+  --primary: #6366f1;
   --card-bg: #ffffff;
-  --card-border: #e0e6ed;
-  --icon-bg: #ecf0f5;
-  --accent: #2ecc71;
-  --aurora-1: rgba(52, 152, 219, 0.3);
-  --aurora-2: rgba(46, 204, 113, 0.25);
-  --aurora-3: rgba(155, 89, 182, 0.2);
+  --card-border: #e5e7eb;
+  --icon-bg: #f3f4f6;
+  --accent: #10b981;
+  --gradient-1: #a855f7;
+  --gradient-2: #6366f1;
+  --gradient-3: #ec4899;
+  --gradient-4: #3b82f6;
+  --gradient-5: #14b8a6;
 }
 
 .dark {
-  --bg: #24283b;
-  --text: #c0caf5;
-  --text-light: #7982a9;
-  --primary: #7aa2f7;
-  --card-bg: #1f2335;
-  --card-border: #3b4261;
-  --icon-bg: #292e42;
-  --accent: #9ece6a;
-  --aurora-1: rgba(122, 162, 247, 0.3);
-  --aurora-2: rgba(158, 206, 106, 0.2);
-  --aurora-3: rgba(187, 154, 247, 0.25);
+  --bg: #0a0a0f;
+  --text: #f1f5f9;
+  --text-light: #94a3b8;
+  --primary: #818cf8;
+  --card-bg: #12121a;
+  --card-border: #1e293b;
+  --icon-bg: #1e1e2e;
+  --accent: #34d399;
+  --gradient-1: #c084fc;
+  --gradient-2: #818cf8;
+  --gradient-3: #f472b6;
+  --gradient-4: #60a5fa;
+  --gradient-5: #2dd4bf;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Aurora Background */
+/* Mesh Gradient Background */
 .aurora-bg {
   position: fixed;
   inset: 0;
@@ -37,86 +41,136 @@
   background: var(--bg);
 }
 
-.aurora-bg::before,
+/* Animated gradient mesh */
+.aurora-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 0% 0%, var(--gradient-1) 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, var(--gradient-4) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, var(--gradient-3) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, var(--gradient-5) 0%, transparent 50%);
+  opacity: 0.15;
+  animation: meshMove 20s ease-in-out infinite;
+}
+
 .aurora-bg::after {
   content: '';
   position: absolute;
-  inset: -50%;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 20% 40%, var(--aurora-1) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, var(--aurora-2) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 60% at 50% 80%, var(--aurora-3) 0%, transparent 50%);
-  background-size: 200% 200%;
-  animation: aurora 20s ease-in-out infinite;
-  filter: blur(40px);
-  opacity: 0.8;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 50%, var(--gradient-2) 0%, transparent 40%);
+  opacity: 0.1;
+  animation: pulse 8s ease-in-out infinite;
 }
 
-.aurora-bg::after {
-  background-image: 
-    radial-gradient(ellipse 50% 80% at 70% 60%, var(--aurora-2) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 40% at 30% 80%, var(--aurora-3) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 60% at 60% 30%, var(--aurora-1) 0%, transparent 50%);
-  animation: aurora 25s ease-in-out infinite reverse;
-  animation-delay: -5s;
-  opacity: 0.6;
-}
-
-@keyframes aurora {
+@keyframes meshMove {
   0%, 100% {
-    background-position: 0% 50%, 100% 50%, 50% 100%;
-    transform: rotate(0deg) scale(1);
-  }
-  25% {
-    background-position: 100% 0%, 0% 100%, 100% 0%;
-    transform: rotate(3deg) scale(1.05);
+    transform: scale(1) rotate(0deg);
   }
   50% {
-    background-position: 100% 100%, 0% 0%, 0% 50%;
-    transform: rotate(0deg) scale(1.1);
-  }
-  75% {
-    background-position: 0% 100%, 100% 0%, 50% 0%;
-    transform: rotate(-3deg) scale(1.05);
+    transform: scale(1.1) rotate(3deg);
   }
 }
 
-/* Aurora orbs */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.2);
+  }
+}
+
+/* Floating gradient blobs */
 .aurora-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.4;
-  animation: float 15s ease-in-out infinite;
+  filter: blur(80px);
+  mix-blend-mode: normal;
+  animation: blobFloat 20s ease-in-out infinite;
 }
 
 .aurora-orb:nth-child(1) {
-  width: 40vw;
-  height: 40vw;
-  background: var(--aurora-1);
-  top: -10%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+  top: -20%;
   left: -10%;
+  opacity: 0.3;
   animation-delay: 0s;
 }
 
 .aurora-orb:nth-child(2) {
-  width: 35vw;
-  height: 35vw;
-  background: var(--aurora-2);
-  top: 50%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 500px;
+  max-height: 500px;
+  background: linear-gradient(135deg, var(--gradient-3), var(--gradient-4));
+  top: 40%;
   right: -15%;
-  animation-delay: -5s;
-  animation-duration: 18s;
+  opacity: 0.25;
+  animation-delay: -7s;
+  animation-duration: 25s;
 }
 
 .aurora-orb:nth-child(3) {
   width: 45vw;
   height: 45vw;
-  background: var(--aurora-3);
-  bottom: -20%;
-  left: 30%;
-  animation-delay: -10s;
+  max-width: 550px;
+  max-height: 550px;
+  background: linear-gradient(135deg, var(--gradient-5), var(--gradient-2));
+  bottom: -25%;
+  left: 20%;
+  opacity: 0.2;
+  animation-delay: -14s;
   animation-duration: 22s;
+}
+
+@keyframes blobFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(5%, 5%) scale(1.05) rotate(5deg);
+  }
+  50% {
+    transform: translate(-3%, 8%) scale(0.95) rotate(-3deg);
+  }
+  75% {
+    transform: translate(8%, -5%) scale(1.02) rotate(3deg);
+  }
+}
+
+/* Subtle grid pattern overlay */
+.aurora-bg .grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.5;
+}
+
+.dark .aurora-bg .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+}
+
+/* Noise texture overlay for depth */
+.aurora-bg .noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
 }
 
 @keyframes float {

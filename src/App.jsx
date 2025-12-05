@@ -78,6 +78,8 @@ function AuroraBackground() {
       <div className="aurora-orb"></div>
       <div className="aurora-orb"></div>
       <div className="aurora-orb"></div>
+      <div className="grid-overlay"></div>
+      <div className="noise"></div>
     </div>
   )
 }
