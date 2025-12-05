@@ -1,6 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Wave from 'react-wavify'
+import { Howl } from 'howler'
+
+// Click sound using Howler.js
+const clickSound = new Howl({
+  src: ['/click.mp3', '/click.wav', 'https://cdn.freesound.org/previews/256/256116_3263906-lq.mp3'],
+  volume: 0.3,
+  preload: true
+})
+
+const playClickSound = () => {
+  clickSound.play()
+}
 
 // Icons as SVG components
 const UserIcon = () => (
@@ -589,7 +601,7 @@ export default function App() {
 
           <nav className="icon-grid">
             {apps.map((app) => (
-              <button key={app.id} className="icon-item" onClick={() => openModal(app.id)}>
+              <button key={app.id} className="icon-item" onClick={() => { playClickSound(); openModal(app.id); }}>
                 <div className="icon-box">{app.icon}</div>
                 <span className="icon-label">{app.label}</span>
               </button>

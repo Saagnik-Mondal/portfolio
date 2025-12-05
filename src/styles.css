@@ -234,6 +234,7 @@ body, #root {
   box-sizing: border-box;
   user-select: none;
   pointer-events: auto;
+  z-index: 10;
   
   font-family: var(--font-body);
   line-height: inherit;
