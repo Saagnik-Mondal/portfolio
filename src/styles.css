@@ -11,7 +11,7 @@
   /* macOS Sonoma-inspired colors - Light mode (warm sunrise tones) */
   --desktop-bg-1: #fef3e2;
   --desktop-bg-2: #fce7d6;
-  --desktop-bg-3: #f8d5c4;
+  --desktop-bg-3: rgb(248, 213, 196);
   --aurora-1: rgba(255, 149, 128, 0.5);
   --aurora-2: rgba(255, 183, 77, 0.4);
   --aurora-3: rgba(255, 218, 185, 0.5);
@@ -200,8 +200,10 @@ body, #root {
   text-align: center;
   width: 720px;
   height: 560px;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
+  background: rgb(255, 222, 206);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--card-border);
   border-radius: 0 0 16px 16px;
   overflow: visible;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -214,8 +216,8 @@ body, #root {
 }
 
 .dark .main-content {
-  background: #1c1c1e;
-  border-color: #000000;
+  background: rgba(28, 28, 30, 0.72);
+  border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -224,8 +226,10 @@ body, #root {
   top: 0;
   left: -2px;
   right: -2px;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid var(--card-border);
   border-radius: 16px 16px 0 0;
   padding: 10px 16px;
   display: flex;
@@ -235,8 +239,8 @@ body, #root {
 }
 
 .dark .window-bar {
-  background: #1c1c1e;
-  border-color: #000000;
+  background: rgba(28, 28, 30, 0.72);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .window-title {
