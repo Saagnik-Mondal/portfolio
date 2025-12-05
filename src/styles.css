@@ -10,7 +10,7 @@
   
   /* macOS Sonoma-inspired colors - Light mode (warm sunrise tones) */
   --desktop-bg-1: #fef3e2;
-  --desktop-bg-2: rgb(252, 231, 214);
+  --desktop-bg-2: #fce7d6;
   --desktop-bg-3: rgb(248, 213, 196);
   --aurora-1: rgba(255, 149, 128, 0.5);
   --aurora-2: rgba(255, 183, 77, 0.4);
@@ -45,6 +45,11 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
 
 /* macOS Sonoma-inspired Desktop Background */
 .desktop-bg {
@@ -156,6 +161,7 @@ body, #root {
   background: transparent;
   color: var(--text);
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,6 +169,7 @@ body, #root {
   padding: 20px;
   transition: color 0.3s ease;
   width: 100%;
+  overflow: hidden;
 }
 
 .top-controls {
