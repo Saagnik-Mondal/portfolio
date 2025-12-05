@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Wave from 'react-wavify'
 
 // Icons as SVG components
 const UserIcon = () => (
@@ -71,14 +72,64 @@ const LinkedInIcon = ({ size = 20 }) => (
   </svg>
 )
 
-// Aurora Background Component
-function AuroraBackground() {
+// Wave Background Component
+function WaveBackground() {
   return (
-    <div className="aurora-bg">
-      <div className="aurora-orb"></div>
-      <div className="aurora-orb"></div>
-      <div className="aurora-orb"></div>
-      <div className="grid-overlay"></div>
+    <div className="wave-bg">
+      {/* Base gradient */}
+      <div className="wave-gradient"></div>
+      
+      {/* Multiple layered waves */}
+      <Wave
+        className="wave wave-1"
+        fill="rgba(139, 92, 246, 0.3)"
+        paused={false}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}
+        options={{
+          height: 40,
+          amplitude: 30,
+          speed: 0.15,
+          points: 4
+        }}
+      />
+      <Wave
+        className="wave wave-2"
+        fill="rgba(99, 102, 241, 0.25)"
+        paused={false}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2 }}
+        options={{
+          height: 60,
+          amplitude: 25,
+          speed: 0.2,
+          points: 3
+        }}
+      />
+      <Wave
+        className="wave wave-3"
+        fill="rgba(168, 85, 247, 0.2)"
+        paused={false}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3 }}
+        options={{
+          height: 80,
+          amplitude: 20,
+          speed: 0.25,
+          points: 5
+        }}
+      />
+      <Wave
+        className="wave wave-4"
+        fill="rgba(236, 72, 153, 0.15)"
+        paused={false}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 4 }}
+        options={{
+          height: 100,
+          amplitude: 15,
+          speed: 0.12,
+          points: 3
+        }}
+      />
+      
+      {/* Noise overlay for texture */}
       <div className="noise"></div>
     </div>
   )
@@ -521,7 +572,7 @@ export default function App() {
 
   return (
     <>
-      <AuroraBackground />
+      <WaveBackground />
       
       <div className="top-controls">
         <button className="control-btn" onClick={() => setDark(!dark)} title="Toggle theme">
