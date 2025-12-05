@@ -72,64 +72,63 @@ const LinkedInIcon = ({ size = 20 }) => (
   </svg>
 )
 
-// Wave Background Component
-function WaveBackground() {
+// macOS-inspired Desktop Background Component
+function DesktopBackground() {
   return (
-    <div className="wave-bg">
-      {/* Base gradient */}
-      <div className="wave-gradient"></div>
+    <div className="desktop-bg">
+      {/* macOS Sonoma-inspired layered gradient */}
+      <div className="sonoma-gradient"></div>
       
-      {/* Multiple layered waves */}
+      {/* Subtle animated aurora blobs */}
+      <div className="aurora-layer">
+        <div className="aurora-blob aurora-1"></div>
+        <div className="aurora-blob aurora-2"></div>
+        <div className="aurora-blob aurora-3"></div>
+      </div>
+      
+      {/* Soft wave accent at bottom - very subtle */}
       <Wave
-        className="wave wave-1"
-        fill="rgba(139, 92, 246, 0.3)"
+        className="desktop-wave"
+        fill="url(#waveGradient)"
         paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px', opacity: 0.4 }}
         options={{
-          height: 40,
-          amplitude: 30,
-          speed: 0.15,
+          height: 20,
+          amplitude: 15,
+          speed: 0.1,
           points: 4
         }}
       />
       <Wave
-        className="wave wave-2"
-        fill="rgba(99, 102, 241, 0.25)"
+        className="desktop-wave-2"
+        fill="url(#waveGradient2)"
         paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2 }}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '180px', opacity: 0.3 }}
         options={{
-          height: 60,
-          amplitude: 25,
-          speed: 0.2,
-          points: 3
-        }}
-      />
-      <Wave
-        className="wave wave-3"
-        fill="rgba(168, 85, 247, 0.2)"
-        paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3 }}
-        options={{
-          height: 80,
-          amplitude: 20,
-          speed: 0.25,
-          points: 5
-        }}
-      />
-      <Wave
-        className="wave wave-4"
-        fill="rgba(236, 72, 153, 0.15)"
-        paused={false}
-        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 4 }}
-        options={{
-          height: 100,
-          amplitude: 15,
-          speed: 0.12,
+          height: 30,
+          amplitude: 12,
+          speed: 0.08,
           points: 3
         }}
       />
       
-      {/* Noise overlay for texture */}
+      {/* SVG definitions for gradients */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <defs>
+          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="var(--wave-color-1)" />
+            <stop offset="50%" stopColor="var(--wave-color-2)" />
+            <stop offset="100%" stopColor="var(--wave-color-3)" />
+          </linearGradient>
+          <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="var(--wave-color-3)" />
+            <stop offset="50%" stopColor="var(--wave-color-1)" />
+            <stop offset="100%" stopColor="var(--wave-color-2)" />
+          </linearGradient>
+        </defs>
+      </svg>
+      
+      {/* Noise texture for that premium feel */}
       <div className="noise"></div>
     </div>
   )
@@ -572,7 +571,7 @@ export default function App() {
 
   return (
     <>
-      <WaveBackground />
+      <DesktopBackground />
       
       <div className="top-controls">
         <button className="control-btn" onClick={() => setDark(!dark)} title="Toggle theme">
