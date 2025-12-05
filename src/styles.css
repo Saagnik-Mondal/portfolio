@@ -220,6 +220,7 @@ body, #root {
   align-items: center;
   position: relative;
   margin: 0;
+  margin-top: 40px; /* Offset for the window bar */
 }
 
 .dark .main-content {
