@@ -15,6 +15,16 @@
   --radius-lg: 0.5rem;
   --font-mono: "Roboto Mono", monospace;
   --font-weight-medium: 500;
+  --coffee: #6F4E37;
+  --translate: translate(-50%, -60%);
+  
+  /* Icon container variables */
+  --container-xs: 20rem;
+  --icon-container-margin: 0 clamp(5rem, calc(4vw - 3rem), 10rem);
+  --font-body: "Zen Kaku Gothic New", sans-serif;
+  --body-size: clamp(0.3rem, calc(3vw + 0.1rem), 1rem);
+  --color-gray: #6b7280;
+  --tw-duration: 0.2s;
   
   /* macOS Sonoma-inspired colors - Light mode (warm sunrise tones) */
   --desktop-bg-1: #fef3e2;
@@ -212,23 +222,36 @@ body, #root {
 .control-btn:hover { transform: scale(1.05); }
 
 .main-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: var(--translate);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: auto;
+  
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  
+  /* Visual styling */
   text-align: center;
   width: 720px;
   height: 560px;
   background: rgb(252, 231, 214);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 2px solid var(--card-border);
   border-radius: 0 0 16px 16px;
   overflow: visible;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  margin: 0;
-  margin-top: 40px; /* Offset for the window bar */
 }
 
 .dark .main-content {
@@ -254,7 +277,7 @@ body, #root {
   padding-block: calc(var(--spacing) * 3);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   transform: translateY(-100%);
   font-size: var(--text-xl);
   line-height: var(--text-xl--line-height);
@@ -271,7 +294,7 @@ body, #root {
 .window-title {
   font-size: inherit;
   font-weight: inherit;
-  color: var(--text);
+  color: var(--coffee);
   font-family: inherit;
   line-height: inherit;
 }
@@ -314,13 +337,23 @@ body, #root {
 }
 
 .icon-grid {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  margin: 40px 16px;
-  min-width: 320px;
-  gap: 0;
+  min-width: var(--container-xs);
+  margin: var(--icon-container-margin);
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: auto;
+  
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: inherit;
+  
+  -webkit-font-smoothing: antialiased;
 }
 
 .icon-item {
