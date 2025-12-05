@@ -584,8 +584,7 @@ export default function App() {
           <span className="window-title">home</span>
         </div>
         <div className="card-body">
-          <p className="greeting">hello, i'm</p>
-          <h1 className="title"><span className="name">saagnik mondal</span></h1>
+          <h1 className="title">hi! <span className="name">i'm saagnik</span></h1>
           <p className="subtitle">animator & ai/ml developer</p>
 
           <nav className="icon-grid">
