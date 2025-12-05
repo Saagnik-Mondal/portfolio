@@ -273,12 +273,12 @@ body, #root {
 }
 
 .title {
-  font-size: 28px;
+  font-size: clamp(3.5rem, 5vw, 5rem);
   font-weight: 500;
   margin-bottom: 4px;
-  padding-top: 24px;
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
+  padding-top: clamp(24px, 4vw, 48px);
+  color: var(--text-light);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
   text-align: center;
 }
 
