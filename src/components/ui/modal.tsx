@@ -55,6 +55,7 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
                 y: initialPosition.y, 
                 opacity: 1,
                 x: initialPosition.x,
+                scaleX: 1,
                 transition: {
                   type: "spring",
                   stiffness: 300,
@@ -62,12 +63,13 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
                 }
               }}
               exit={{ 
-                scale: 0,
+                scale: 0.1,
+                scaleX: 0.3,
                 y: "100vh",
                 opacity: 0,
                 transition: {
-                  duration: 0.5,
-                  ease: [0.4, 0, 0.6, 0.1]
+                  duration: 0.4,
+                  ease: [0.32, 0, 0.67, 0]
                 }
               }}
               drag
@@ -76,39 +78,34 @@ export function Modal({ isOpen, onClose, title, children, initialPosition = { x:
               onDragStart={() => setIsDragging(true)}
               onDragEnd={() => setIsDragging(false)}
             >
-              {/* macOS-style Header */}
+              {/* Header */}
               <div 
-                className="modal-header flex items-center px-4 py-3 cursor-grab active:cursor-grabbing"
+                className="modal-header flex items-center justify-between px-4 py-3 cursor-grab active:cursor-grabbing"
                 style={{
                   background: 'linear-gradient(180deg, var(--icon-bg), var(--card-bg))',
                   borderBottom: '1px solid var(--card-border)'
                 }}
               >
-                {/* Traffic Lights */}
-                <div className="flex gap-2 mr-3">
-                  <button
-                    onClick={onClose}
-                    className="w-3 h-3 rounded-full transition-all hover:brightness-110"
-                    style={{ background: '#ff5f56' }}
-                    aria-label="Close"
-                  />
-                  <div 
-                    className="w-3 h-3 rounded-full"
-                    style={{ background: '#ffbd2e' }}
-                  />
-                  <div 
-                    className="w-3 h-3 rounded-full"
-                    style={{ background: '#27c93f' }}
-                  />
-                </div>
-                
                 {/* Title */}
                 <span 
-                  className="flex-1 text-center text-sm font-semibold mr-12"
+                  className="flex-1 text-center text-sm font-semibold"
                   style={{ color: 'var(--text)' }}
                 >
                   {title}
                 </span>
+                
+                {/* Close Button - Double Arrow */}
+                <button
+                  onClick={onClose}
+                  className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-[var(--icon-bg)]"
+                  style={{ color: 'var(--text-light)' }}
+                  aria-label="Close"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="7 13 12 18 17 13" />
+                    <polyline points="7 6 12 11 17 6" />
+                  </svg>
+                </button>
               </div>
               
               {/* Body */}

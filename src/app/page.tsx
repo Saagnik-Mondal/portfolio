@@ -247,47 +247,48 @@ export default function Home() {
     <AuroraBackground>
       <ThemeToggle />
       
-      {/* Main content card */}
+      {/* Main content card - macOS app window style */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-5">
         <motion.main
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center w-[90%] max-w-[640px] bg-white/85 dark:bg-[#1f2335]/85 backdrop-blur-xl rounded-xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-700"
+          className="text-center w-[95%] max-w-[520px] bg-white/90 dark:bg-[#1f2335]/90 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-zinc-200/80 dark:border-zinc-700/80"
+          style={{ minHeight: '480px' }}
         >
-          {/* Window bar */}
-          <div className="bg-gradient-to-b from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700 px-5 py-3 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
+          {/* Window bar - macOS style */}
+          <div className="bg-gradient-to-b from-zinc-100 to-zinc-50 dark:from-zinc-800 dark:to-zinc-900 px-5 py-4 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
             <span className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">home</span>
           </div>
           
           {/* Card body */}
-          <div className="px-12 py-12 md:py-14">
-            <p className="text-base text-zinc-500 dark:text-zinc-400 font-semibold mb-2">hello, i&apos;m</p>
-            <h1 className="text-4xl font-extrabold mb-1.5 text-zinc-900 dark:text-white">
+          <div className="px-10 py-16 md:py-20 flex flex-col justify-center" style={{ minHeight: '420px' }}>
+            <p className="text-lg text-zinc-500 dark:text-zinc-400 font-semibold mb-3">hello, i&apos;m</p>
+            <h1 className="text-5xl font-extrabold mb-2 text-zinc-900 dark:text-white">
               <span className="text-[var(--primary)]">saagnik mondal</span>
             </h1>
-            <p className="text-base text-zinc-500 dark:text-zinc-400 font-medium mb-9">animator & ai/ml developer</p>
+            <p className="text-lg text-zinc-500 dark:text-zinc-400 font-medium mb-12">animator & ai/ml developer</p>
 
             {/* Icon grid */}
-            <nav className="grid grid-cols-4 gap-4 max-[380px]:grid-cols-2">
+            <nav className="grid grid-cols-4 gap-5 max-[380px]:grid-cols-2">
               {apps.map((app, index) => (
                 <motion.button
                   key={app.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openModal(app.id)}
-                  className="flex flex-col items-center gap-2.5 p-4 rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group"
+                  className="flex flex-col items-center gap-3 p-4 rounded-2xl hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80 transition-colors group"
                 >
                   <motion.div
-                    whileHover={{ y: -3 }}
-                    className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center text-[var(--primary)] group-hover:shadow-md transition-shadow"
+                    whileHover={{ y: -4 }}
+                    className="w-[72px] h-[72px] bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center text-[var(--primary)] group-hover:shadow-lg transition-all"
                   >
                     {app.icon}
                   </motion.div>
-                  <span className="text-[13px] font-bold text-zinc-500 dark:text-zinc-400">
+                  <span className="text-sm font-bold text-zinc-500 dark:text-zinc-400">
                     {app.label}
                   </span>
                 </motion.button>
