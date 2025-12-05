@@ -10,7 +10,7 @@
   
   /* macOS Sonoma-inspired colors - Light mode (warm sunrise tones) */
   --desktop-bg-1: #fef3e2;
-  --desktop-bg-2: #fce7d6;
+  --desktop-bg-2: rgb(252, 231, 214);
   --desktop-bg-3: rgb(248, 213, 196);
   --aurora-1: rgba(255, 149, 128, 0.5);
   --aurora-2: rgba(255, 183, 77, 0.4);
@@ -200,7 +200,7 @@ body, #root {
   text-align: center;
   width: 720px;
   height: 560px;
-  background: rgb(255, 222, 206);
+  background: rgb(252, 231, 214);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 2px solid var(--card-border);
