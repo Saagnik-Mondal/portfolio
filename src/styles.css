@@ -16,7 +16,7 @@
   --font-mono: "Roboto Mono", monospace;
   --font-weight-medium: 500;
   --coffee: #6F4E37;
-  --translate: translate(-50%, -60%);
+  --translate: translate(-50%, -50%);
   
   /* Icon container variables */
   --container-xs: 20rem;
@@ -236,7 +236,6 @@ body, #root {
   pointer-events: auto;
   
   font-family: var(--font-body);
-  font-size: var(--body-size);
   line-height: inherit;
   -webkit-font-smoothing: antialiased;
   
@@ -343,14 +342,13 @@ body, #root {
   flex-wrap: wrap;
   justify-content: center;
   min-width: var(--container-xs);
-  margin: var(--icon-container-margin);
+  margin: 40px 16px;
   padding: 0;
   box-sizing: border-box;
   user-select: none;
   pointer-events: auto;
   
   font-family: var(--font-body);
-  font-size: var(--body-size);
   line-height: inherit;
   
   -webkit-font-smoothing: antialiased;
