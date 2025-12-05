@@ -1,36 +1,49 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Wave from 'react-wavify'
-import { Moon } from 'lucide-react'
 
-// Sound effects hook
-function useSounds() {
-  const sounds = useRef({})
+// Preload and cache audio for instant playback
+const audioCache = {
+  click: null,
+  close: null,
+  mascot: null
+}
+
+// Preload all sounds immediately
+if (typeof window !== 'undefined') {
+  audioCache.click = new Audio('/click_general.mp3')
+  audioCache.close = new Audio('/click_close.mp3')
+  audioCache.mascot = new Audio('/mascotsound.mp3')
   
-  useEffect(() => {
-    sounds.current = {
-      click: new Audio('/click_general.mp3'),
-      close: new Audio('/click_close.mp3'),
-      mascot: new Audio('/mascotsound.mp3')
-    }
-    // Set volumes
-    sounds.current.click.volume = 0.4
-    sounds.current.close.volume = 0.4
-    sounds.current.mascot.volume = 0.5
-  }, [])
-  
-  const play = (type) => {
-    const sound = sounds.current[type]
-    if (sound) {
-      sound.currentTime = 0
-      sound.play().catch(() => {})
-    }
+  // Preload by loading metadata
+  Object.values(audioCache).forEach(audio => {
+    audio.preload = 'auto'
+    audio.load()
+  })
+}
+
+// Sound play functions
+const playClick = () => {
+  if (audioCache.click) {
+    audioCache.click.currentTime = 0
+    audioCache.click.volume = 0.4
+    audioCache.click.play().catch(() => {})
   }
-  
-  return {
-    playClick: () => play('click'),
-    playClose: () => play('close'),
-    playMascot: () => play('mascot')
+}
+
+const playClose = () => {
+  if (audioCache.close) {
+    audioCache.close.currentTime = 0
+    audioCache.close.volume = 0.4
+    audioCache.close.play().catch(() => {})
+  }
+}
+
+const playMascot = () => {
+  if (audioCache.mascot) {
+    audioCache.mascot.currentTime = 0
+    audioCache.mascot.volume = 0.5
+    audioCache.mascot.play().catch(() => {})
   }
 }
 
@@ -250,7 +263,7 @@ function ContactContent() {
 }
 
 // Modal Component with Genie Effect
-function Modal({ id, title, children, onClose, zIndex, onBringToFront, playClose }) {
+function Modal({ id, title, children, onClose, zIndex, onBringToFront }) {
   const contentRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
   const [position, setPosition] = useState(null)
@@ -262,7 +275,7 @@ function Modal({ id, title, children, onClose, zIndex, onBringToFront, playClose
   const handleClose = useCallback(() => {
     if (isClosing) return
     setIsClosing(true)
-    playClose?.()
+    playClose()
     
     const content = contentRef.current
     if (!content) return
@@ -499,7 +512,7 @@ function Modal({ id, title, children, onClose, zIndex, onBringToFront, playClose
 }
 
 // Mascot Component
-function Mascot({ playMascot }) {
+function Mascot() {
   const [frame, setFrame] = useState(1)
   const blinkingRef = useRef(false)
 
@@ -522,7 +535,7 @@ function Mascot({ playMascot }) {
 
   const handleClick = () => {
     blink()
-    playMascot?.()
+    playMascot()
   }
 
   useEffect(() => {
@@ -584,7 +597,6 @@ export default function App() {
   const [openModals, setOpenModals] = useState([])
   const [modalZIndexes, setModalZIndexes] = useState({})
   const baseZIndex = useRef(200)
-  const { playClick, playClose, playMascot } = useSounds()
 
   useEffect(() => {
     document.body.classList.toggle('dark', dark)
@@ -613,8 +625,8 @@ export default function App() {
       <DesktopBackground />
       
       <div className="top-controls">
-        <button className="control-btn" onClick={() => setDark(!dark)} title="Toggle theme">
-          {dark ? <SunIcon /> : <Moon />}
+        <button className="control-btn" onClick={() => { playClick(); setDark(!dark); }} title="Toggle theme">
+          <SunIcon />
         </button>
       </div>
 
@@ -648,7 +660,6 @@ export default function App() {
               onClose={() => closeModal(id)}
               zIndex={modalZIndexes[id] || 200}
               onBringToFront={() => bringToFront(id)}
-              playClose={playClose}
             >
               {modal.content}
             </Modal>
@@ -656,7 +667,7 @@ export default function App() {
         })}
       </AnimatePresence>
 
-      <Mascot playMascot={playMascot} />
+      <Mascot />
       <Footer />
     </>
   )
